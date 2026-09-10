@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q3 - Gradient Background</title>
+    <link rel="stylesheet" href="question3.css">
+</head>
+<body>
+    
+    <header class="fixed-header">
+        <h1>CSS Gradients</h1>
+        <a href="index.html" class="nav-btn">&larr; Back to Index</a>
+    </header>
+    <main class="main-container">
+        
+        <section class="gradient-section section-linear">
+            <div class="content-card">
+                <span class="badge">Linear Gradient</span>
+                <h2>Linear Gradient + Parallax</h2>
+                <p>This section uses <code>linear-gradient(135deg, ...)</code> as the background. The gradient transitions color linearly along a 135-degree diagonal direction.</p>
+                <p>The <code>background-attachment: fixed;</code> property creates a parallax effect — the background stays fixed to the viewport while content scrolls over it.</p>
+            </div>
+        </section>
+        
+        <section class="gradient-section section-radial">
+            <div class="content-card">
+                <span class="badge badge-radial">Radial Gradient</span>
+                <h2>Radial Gradient Background</h2>
+                <p>This section uses <code>radial-gradient(circle at center, ...)</code>. The gradient radiates outward from a central point in a circular pattern.</p>
+                <p>The bright teal color at the center fades into deep dark blue toward the outer edges of the section.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="fixed-footer">
+        <p>&copy; 2026 Assignment 7 | Question 3 - Gradient Backgrounds</p>
+    </footer>
+</body>
+</html>

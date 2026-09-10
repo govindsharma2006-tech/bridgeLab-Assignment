@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q10 - Navigation Bar with Transitions</title>
+    <link rel="stylesheet" href="question10.css">
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="nav-brand">NavDemo</div>
+        <ul class="nav-links">
+            
+            <li><a href="#home" class="nav-link active" id="nav-home">Home</a></li>
+            <li><a href="#about" class="nav-link" id="nav-about">About</a></li>
+            <li><a href="#services" class="nav-link" id="nav-services">Services</a></li>
+            <li><a href="#portfolio" class="nav-link" id="nav-portfolio">Portfolio</a></li>
+            <li><a href="#contact" class="nav-link" id="nav-contact">Contact</a></li>
+        </ul>
+        <a href="index.html" class="back-btn">&larr; Index</a>
+    </nav>
+
+    
+    <main class="page-content">
+        <section class="hero-section" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">Navigation Bar Demo</h1>
+                <p class="hero-subtitle">Horizontal navbar with smooth hover transitions, active link highlight, and responsive stacking below 700px.</p>
+                <div class="feature-pills">
+                    <span class="pill">transition: all 0.3s ease</span>
+                    <span class="pill">Hover Effects</span>
+                    <span class="pill">Active Link</span>
+                    <span class="pill">Responsive</span>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="content-section" id="about">
+            <h2>About</h2>
+            <p>This section is linked from the <strong>About</strong> nav link above. Click nav items to jump to sections.</p>
+        </section>
+        <section class="content-section alt" id="services">
+            <h2>Services</h2>
+            <p>Linked from the <strong>Services</strong> nav link. Hover transitions use <code>transition: all 0.3s ease</code>.</p>
+        </section>
+        <section class="content-section" id="portfolio">
+            <h2>Portfolio</h2>
+            <p>Linked from the <strong>Portfolio</strong> nav link. The active link is highlighted with a distinct underline.</p>
+        </section>
+        <section class="content-section alt" id="contact">
+            <h2>Contact</h2>
+            <p>Linked from the <strong>Contact</strong> nav link. Resize below 700px to see the navbar stack vertically.</p>
+        </section>
+    </main>
+
+    
+    <footer class="page-footer">
+        <p>&copy; 2026 Assignment 7 | Question 10 - Navigation Bar with Transitions</p>
+    </footer>
+</body>
+</html>

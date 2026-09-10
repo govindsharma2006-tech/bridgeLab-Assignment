@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q8 - Box Model Exploration</title>
+    <link rel="stylesheet" href="question8.css">
+</head>
+<body>
+    <header class="page-header">
+        <h1>Box Model Exploration</h1>
+        <p>Visualizing content, padding, border, and margin layers with box-sizing comparison.</p>
+        <a href="index.html" class="back-link">&larr; Back to Index</a>
+    </header>
+    <main class="main-container">
+        
+        <section class="demo-section">
+            <h2 class="section-title">Box Model Layers</h2>
+            <p class="section-desc">Each colored layer represents a different part of the CSS Box Model.</p>
+            
+            <div class="layer-margin">
+                <span class="layer-label label-margin">Margin (outer spacing)</span>
+                <div class="layer-border">
+                    <span class="layer-label label-border">Border (element boundary)</span>
+                    <div class="layer-padding">
+                        <span class="layer-label label-padding">Padding (inner spacing)</span>
+                        <div class="layer-content">
+                            <span class="layer-label label-content">Content</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="demo-section">
+            <h2 class="section-title">box-sizing Comparison</h2>
+            <div class="sizing-grid">
+                
+                <div class="sizing-card">
+                    <h3>Default: content-box</h3>
+                    <div class="compare-box box-content-box">
+                        <p>box-sizing: content-box</p>
+                        <p class="note">width: 200px applies ONLY to the content. Padding and border are ADDED on top, making total wider than 200px.</p>
+                    </div>
+                    <code class="code-block">width: 200px;<br>padding: 20px;<br>border: 5px solid;<br>/* Total = 250px */</code>
+                </div>
+                
+                <div class="sizing-card">
+                    <h3>Fixed: border-box</h3>
+                    <div class="compare-box box-border-box">
+                        <p>box-sizing: border-box</p>
+                        <p class="note">width: 200px applies to the TOTAL element. Padding and border are included inside — total stays exactly 200px.</p>
+                    </div>
+                    <code class="code-block">width: 200px;<br>padding: 20px;<br>border: 5px solid;<br>/* Total = 200px */</code>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer">
+        <p>&copy; 2026 Assignment 7 | Question 8 - Box Model Exploration</p>
+    </footer>
+</body>
+</html>

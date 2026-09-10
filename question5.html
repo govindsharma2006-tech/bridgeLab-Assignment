@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q5 - Advanced CSS Selectors</title>
+    <link rel="stylesheet" href="question5.css">
+</head>
+<body>
+    <header class="page-header">
+        <h1>Advanced CSS Selectors</h1>
+        <p>Attribute Selectors, Pseudo-Classes, Pseudo-Elements, and Combinators.</p>
+        <a href="index.html" class="back-link">&larr; Back to Index</a>
+    </header>
+    <main class="main-container">
+        
+        <section class="demo-card">
+            <h2>1. Attribute Selectors</h2>
+            <p>The input below is styled using <code>[type="text"]</code> attribute selector.</p>
+            <div class="form-group">
+                <label for="username">Text Input <code>[type="text"]</code>:</label>
+                <input type="text" id="username" placeholder="Focus to see styled outline...">
+            </div>
+            <p>Links below styled with <code>[href^="https"]</code> (prefix match):</p>
+            <ul class="link-list">
+                <li><a href="https://developer.mozilla.org" target="_blank">MDN Web Docs (secure https)</a></li>
+                <li><a href="https://w3.org" target="_blank">W3C Website (secure https)</a></li>
+                <li><a href="http://example.com">Insecure link (http - not styled)</a></li>
+            </ul>
+        </section>
+        
+        <section class="demo-card">
+            <h2>2. Pseudo-Classes &amp; Pseudo-Elements</h2>
+            <p>List items styled with <code>:nth-child(odd/even)</code>, <code>:hover</code>, <code>:last-child</code>, <code>::before</code>, <code>::after</code>.</p>
+            <ul class="styled-list">
+                <li class="list-item">Item 1 — odd child (blue border)</li>
+                <li class="list-item">Item 2 — even child (purple border)</li>
+                <li class="list-item">Item 3 — odd child (blue border)</li>
+                <li class="list-item">Item 4 — even child (purple border)</li>
+                <li class="list-item">Item 5 — last-child (amber right border)</li>
+            </ul>
+        </section>
+        
+        <section class="demo-card combinator-section">
+            <h2>3. CSS Combinators</h2>
+            
+            <div class="parent-box">
+                <p class="direct-child-demo">Direct Child <code>parent &gt; p</code></p>
+                <div class="nested-wrapper">
+                    <p>Descendant paragraph (nested inside div — not a direct child)</p>
+                </div>
+            </div>
+            
+            <div class="sibling-box">
+                <h3 class="trigger-heading">Trigger Heading</h3>
+                <p class="adjacent-p">Adjacent Sibling <code>h3 + p</code></p>
+                <p class="general-p">General Sibling 1 <code>h3 ~ p</code></p>
+                <p class="general-p">General Sibling 2 <code>h3 ~ p</code></p>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer">
+        <p>&copy; 2026 Assignment 7 | Question 5 - Advanced CSS Selectors</p>
+    </footer>
+</body>
+</html>

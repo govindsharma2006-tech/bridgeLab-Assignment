@@ -1,0 +1,107 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    color: #ffffff;
+    line-height: 1.7;
+    background-color: #020617;
+}
+
+.fixed-header {
+    position: fixed;     
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background-color: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(10px); 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 1000;       
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.fixed-header h1 { font-size: 1.5rem; color: #38bdf8; }
+
+.nav-btn {
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #0284c7, #2563eb);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+}
+.nav-btn:hover { transform: translateY(-2px); }
+
+.fixed-footer {
+    position: fixed;   
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    background-color: rgba(15, 23, 42, 0.95);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    z-index: 1000;
+}
+
+.main-container {
+    padding-top: 65px;  
+    padding-bottom: 48px; 
+}
+
+.gradient-section {
+    min-height: calc(100vh - 113px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 1.5rem;
+}
+
+.section-linear {
+    background-image: linear-gradient(135deg, #2e1065 0%, #4c1d95 40%, #831843 100%);
+    background-attachment: fixed; 
+    background-size: cover;
+    background-position: center;
+}
+
+.section-radial {
+    background-image: radial-gradient(circle at center, #0284c7 0%, #0f172a 65%, #020617 100%);
+    background-size: cover;
+}
+
+.content-card {
+    background-color: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 680px;
+    width: 100%;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.badge-radial { background: linear-gradient(135deg, #0ea5e9, #06b6d4); }
+
+.content-card h2 { font-size: 1.8rem; margin-bottom: 1rem; color: #f8fafc; }
+.content-card p { color: #cbd5e1; margin-bottom: 1rem; }
+.content-card code { color: #38bdf8; font-family: monospace; }

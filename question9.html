@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q9 - Outline and Focus Styling Form</title>
+    <link rel="stylesheet" href="question9.css">
+</head>
+<body>
+    <header class="page-header">
+        <h1>Outline &amp; Focus Styling Form</h1>
+        <p>Demonstrates outline styles, outline-offset, :focus selector, and form aesthetics.</p>
+        <a href="index.html" class="back-link">&larr; Back to Index</a>
+    </header>
+    <main class="main-container">
+        <section class="form-card">
+            <h2 class="form-title">Contact Us</h2>
+            <p class="form-subtitle">Click on any field to see the focus outline effect.</p>
+            <form action="#" method="post" class="contact-form">
+                
+                <div class="field-group">
+                    <label for="name" class="field-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input input-solid" placeholder="e.g. Govind Sharma">
+                    <span class="hint">outline-style: solid on focus</span>
+                </div>
+                
+                <div class="field-group">
+                    <label for="email" class="field-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input input-dashed" placeholder="e.g. govind@example.com">
+                    <span class="hint">outline-style: dashed on focus</span>
+                </div>
+                
+                <div class="field-group">
+                    <label for="subject" class="field-label">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-input input-dotted" placeholder="e.g. Query about Assignment 7">
+                    <span class="hint">outline-style: dotted on focus</span>
+                </div>
+                
+                <div class="field-group">
+                    <label for="message" class="field-label">Message</label>
+                    <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Write your message here..."></textarea>
+                    <span class="hint">outline-style: double with outline-offset: 3px on focus</span>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <footer class="page-footer">
+        <p>&copy; 2026 Assignment 7 | Question 9 - Outline and Focus Styling</p>
+    </footer>
+</body>
+</html>

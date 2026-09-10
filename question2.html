@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q2 - Height and Width Layout</title>
+    <link rel="stylesheet" href="question2.css">
+</head>
+<body>
+    <header class="page-header">
+        <h1>Height &amp; Width Practice Layout</h1>
+        <p>Demonstrating px, %, vh, em units with min-height, max-width, and overflow.</p>
+        <a href="index.html" class="back-link">&larr; Back to Index</a>
+    </header>
+    
+    <main class="main-wrapper">
+        <section class="boxes-wrapper">
+            
+            <div class="box box-one">
+                <h2>Box 1</h2>
+                <p class="unit-label">width: 100% &bull; height: 220px</p>
+                <p>Fixed pixel height (220px) with full percentage width. Resizes fluidly with parent.</p>
+            </div>
+            
+            <div class="box box-two">
+                <h2>Box 2</h2>
+                <p class="unit-label">min-height: 25vh &bull; max-width: 30em</p>
+                <p>min-height prevents the box from shrinking below 25% of the viewport height. max-width caps the width at 30em.</p>
+            </div>
+            
+            <div class="box box-three">
+                <h2>Box 3</h2>
+                <p class="unit-label">width: 350px &bull; height: 220px &bull; overflow: auto</p>
+                <p>This box has a fixed size. When content overflows, the browser shows a scrollbar automatically.</p>
+                <p>Extra text to demonstrate overflow scrolling behavior. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</p>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer">
+        <p>&copy; 2026 Assignment 7 | Question 2 - Height and Width</p>
+    </footer>
+</body>
+</html>
