@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 6 - Layout & Animations Master Directory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #0b0f19;
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 3rem 1.5rem;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    header h1 {
+      font-size: 2.75rem;
+      color: #38bdf8;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      color: #94a3b8;
+      font-size: 1.15rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #38bdf8;
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
+    }
+    .q-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #6366f1;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      color: #f8fafc;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .tag {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.25rem 0.75rem;
+      background-color: #0f172a;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #38bdf8;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Assignment 6 Solutions</h1>
+      <p>HTML5 & CSS3 Layouts, Flexbox, CSS Grid & Animation Suite</p>
+    </header>
+
+    <div class="grid">
+      <a href="question1.html" class="card">
+        <div>
+          <span class="q-num">Question 1</span>
+          <h3>Personal Portfolio</h3>
+          <p>Flexbox layout with responsive navigation header, side-by-side about & image sections, and centered footer.</p>
+        </div>
+        <span class="tag">Flexbox</span>
+      </a>
+
+      <a href="question2.html" class="card">
+        <div>
+          <span class="q-num">Question 2</span>
+          <h3>4-Column Product Gallery</h3>
+          <p>CSS Grid product gallery with 8 cards, responsive breakpoints (4 / 2 / 1 columns), equal height cards, and scale transformations.</p>
+        </div>
+        <span class="tag">CSS Grid</span>
+      </a>
+
+      <a href="question3.html" class="card">
+        <div>
+          <span class="q-num">Question 3</span>
+          <h3>3-Section Homepage</h3>
+          <p>Flexbox homepage with space-around navigation links, 3 horizontal feature boxes with hover rotation (rotate 2deg), and full-width footer.</p>
+        </div>
+        <span class="tag">Flexbox</span>
+      </a>
+
+      <a href="question4.html" class="card">
+        <div>
+          <span class="q-num">Question 4</span>
+          <h3>Dashboard Layout</h3>
+          <p>CSS Grid admin dashboard with top header, vertical sidebar, 2x2 grid box arrangement with a 2-column spanning widget, fr units, and hover shadows.</p>
+        </div>
+        <span class="tag">CSS Grid</span>
+      </a>
+
+      <a href="question5.html" class="card">
+        <div>
+          <span class="q-num">Question 5</span>
+          <h3>Pricing Section</h3>
+          <p>Flexbox pricing cards featuring a highlighted middle plan, page load fade-in animation, hover rise effect, and mobile vertical collapse.</p>
+        </div>
+        <span class="tag">Flexbox & Keyframes</span>
+      </a>
+
+      <a href="question6.html" class="card">
+        <div>
+          <span class="q-num">Question 6</span>
+          <h3>Responsive Blog Layout</h3>
+          <p>CSS Grid blog layout using grid-template-areas, left sidebar with categories, 2-column blog posts, and responsive sidebar repositioning below 800px.</p>
+        </div>
+        <span class="tag">CSS Grid Areas</span>
+      </a>
+
+      <a href="question7.html" class="card">
+        <div>
+          <span class="q-num">Question 7</span>
+          <h3>CSS Loading Animation</h3>
+          <p>Bouncing loader animation created purely using div elements, keyframe translateY motion, animation-delay offsets, and centered Flexbox alignment.</p>
+        </div>
+        <span class="tag">Animations & Flexbox</span>
+      </a>
+
+      <a href="question8.html" class="card">
+        <div>
+          <span class="q-num">Question 8</span>
+          <h3>Photo Gallery Zoom</h3>
+          <p>Auto-fit minmax Grid photo gallery with image figure captions and 0.5s smooth hover zoom transformations.</p>
+        </div>
+        <span class="tag">CSS Grid & Transitions</span>
+      </a>
+
+      <a href="question9.html" class="card">
+        <div>
+          <span class="q-num">Question 9</span>
+          <h3>3D Card Flip Animation</h3>
+          <p>Interactive 180-degree 3D card flip effect built using preserve-3d, perspective 1000px, rotateY(180deg), and Flexbox centering.</p>
+        </div>
+        <span class="tag">3D Transforms</span>
+      </a>
+
+      <a href="question10.html" class="card">
+        <div>
+          <span class="q-num">Question 10</span>
+          <h3>Flexbox & Grid Webpage</h3>
+          <p>Comprehensive layout combining Flexbox header nav, 2-column Grid main article/sidebar, inner Flexbox feature boxes, keyframe title animation, and mobile single column collapse.</p>
+        </div>
+        <span class="tag">Flexbox + Grid</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

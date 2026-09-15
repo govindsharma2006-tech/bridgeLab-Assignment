@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 9 - 3D Card Flip Animation</title>
+  <link rel="stylesheet" href="question9.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Container centered on screen using Flexbox -->
+  <div class="center-wrapper">
+    <!-- Outer perspective container -->
+    <div class="card-perspective">
+      <!-- 3D Flipping Card -->
+      <div class="card">
+        <!-- Front side: Title and Image -->
+        <div class="card-face card-front">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=500&q=80" alt="Cosmic Art">
+          </div>
+          <h2>Cosmic Voyage</h2>
+          <span class="hover-hint">Hover to Reveal &rarr;</span>
+        </div>
+
+        <!-- Back side: Text Description -->
+        <div class="card-face card-back">
+          <h2>About The Voyage</h2>
+          <p>
+            Experience an immersive journey through deep space, nebulae, and stellar galaxies. Engineered with cutting-edge 3D CSS transformations and GPU-accelerated rendering.
+          </p>
+          <button class="action-btn">Explore Mission</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

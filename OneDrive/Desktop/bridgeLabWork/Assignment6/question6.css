@@ -1,0 +1,204 @@
+/* Question 6 - Responsive Blog Layout using CSS Grid */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+/* Grid Layout structured with grid-template-areas and gap spacing */
+.blog-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 90vh;
+}
+
+/* Header Area */
+.blog-header {
+  grid-area: header;
+  background-color: #1e293b;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.blog-title {
+  font-size: 1.8rem;
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.blog-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.blog-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.blog-nav a:hover {
+  color: #38bdf8;
+}
+
+/* Sidebar Area */
+.blog-sidebar {
+  grid-area: sidebar;
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  height: fit-content;
+}
+
+.blog-sidebar h3 {
+  color: #f1f5f9;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #38bdf8;
+  padding-bottom: 0.5rem;
+}
+
+.category-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.category-list a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.category-list a:hover {
+  color: #38bdf8;
+}
+
+/* Main Area displaying two blog posts side-by-side */
+.blog-main {
+  grid-area: main;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.post-card {
+  background-color: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-img {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.post-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.post-content h2 {
+  font-size: 1.25rem;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.meta {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+}
+
+.post-content p {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.read-more {
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Footer Area */
+.blog-footer {
+  grid-area: footer;
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Responsive breakpoint: Below 800px sidebar moves below main content */
+@media (max-width: 800px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar"
+      "footer";
+  }
+
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

@@ -1,0 +1,190 @@
+/* Question 5 - Pricing Section using Flexbox */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #0b0f19;
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+}
+
+.pricing-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.pricing-header h1 {
+  font-size: 2.75rem;
+  color: #f1f5f9;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-header p {
+  color: #94a3b8;
+  font-size: 1.15rem;
+}
+
+/* Three pricing cards aligned horizontally using Flexbox */
+.pricing-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* Keyframes Fade-In Animation on Page Load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pricing Card Standard */
+.pricing-card {
+  flex: 1;
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #334155;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+  /* Fade-in animation */
+  animation: fadeIn 0.8s ease-out forwards;
+  /* Smooth transition for hover effects */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Middle card slightly larger & highlighted with different background */
+.pricing-card.featured {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  border: 2px solid #6366f1;
+  transform: scale(1.08); /* Slightly larger */
+  box-shadow: 0 15px 35px rgba(99, 102, 241, 0.3);
+  z-index: 2;
+}
+
+.badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #6366f1;
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Hover effect requirement: transform: translateY(-10px) with smooth transition */
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
+}
+
+.pricing-card.featured:hover {
+  transform: scale(1.08) translateY(-10px);
+  box-shadow: 0 25px 45px rgba(99, 102, 241, 0.45);
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  color: #38bdf8;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 1.5rem;
+}
+
+.price span {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.features {
+  list-style: none;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.features li {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.features li::before {
+  content: "✓";
+  color: #10b981;
+  font-weight: 700;
+}
+
+.plan-btn {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #334155;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.plan-btn:hover {
+  background-color: #475569;
+}
+
+.featured-btn {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.featured-btn:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+}
+
+/* Media Query: Stack vertically below 750px */
+@media (max-width: 750px) {
+  .pricing-container {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .pricing-card.featured {
+    transform: scale(1);
+  }
+
+  .pricing-card.featured:hover {
+    transform: translateY(-10px);
+  }
+}

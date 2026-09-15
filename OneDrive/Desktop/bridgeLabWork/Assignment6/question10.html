@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 10 - Combined Flexbox & Grid Webpage</title>
+  <link rel="stylesheet" href="question10.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header with logo and nav links using Flexbox -->
+  <header class="header-flex">
+    <div class="logo">FlexGrid Studio</div>
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Animated Header Title using @keyframes -->
+  <div class="hero-banner">
+    <h1 class="animated-title">Next-Gen Web Engineering</h1>
+    <p class="hero-subtext">Combining CSS Grid layout structures with dynamic Flexbox component alignment.</p>
+  </div>
+
+  <!-- Main area divided into a 2-column Grid (Article + Sidebar) -->
+  <div class="main-grid">
+    <!-- Article Column -->
+    <article class="main-article">
+      <h2>Featured Article: Layout Architecture</h2>
+      <p class="article-lead">
+        Modern web design relies heavily on mixing CSS Grid for page-level structural framing and Flexbox for component-level item distribution.
+      </p>
+
+      <!-- Inside main article: 3 boxes aligned using Flexbox -->
+      <div class="article-boxes-flex">
+        <div class="flex-box">
+          <h3>Flexbox Feature 1</h3>
+          <p>One-dimensional directional layout control with vertical centering.</p>
+        </div>
+        <div class="flex-box">
+          <h3>Flexbox Feature 2</h3>
+          <p>Flexible space distribution using grow, shrink, and basis ratios.</p>
+        </div>
+        <div class="flex-box">
+          <h3>Flexbox Feature 3</h3>
+          <p>Seamless responsive wrapping for adaptable multi-line items.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Sidebar Column -->
+    <aside class="sidebar">
+      <h3>Quick Links</h3>
+      <ul class="sidebar-links">
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">CSS Grid Guide</a></li>
+        <li><a href="#">Flexbox Cheatsheet</a></li>
+        <li><a href="#">Keyframe Animations</a></li>
+      </ul>
+      <div class="sidebar-widget">
+        <h4>Newsletter</h4>
+        <p>Subscribe for weekly frontend layout tips.</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Footer spans full width with centered text -->
+  <footer class="footer-full">
+    <p>&copy; 2026 FlexGrid Studio. All rights reserved. Full width centered footer.</p>
+  </footer>
+</body>
+</html>

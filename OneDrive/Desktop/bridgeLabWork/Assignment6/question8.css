@@ -1,0 +1,82 @@
+/* Question 8 - Photo Gallery using Grid with Hover Transformations */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #0d1117;
+  color: #f0f6fc;
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem;
+}
+
+.gallery-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.gallery-header h1 {
+  font-size: 2.5rem;
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-header p {
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+/* CSS Grid using auto-fit and minmax(200px, 1fr) */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Figure card container */
+.gallery-card {
+  background-color: #161b22;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #30363d;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container for zoom masking */
+.img-container {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+/* Each image filling cell completely & zoom transformation on hover */
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Requirement: transition: transform 0.5s ease; */
+  transition: transform 0.5s ease;
+}
+
+/* Scale up slightly on hover requirement */
+.gallery-card:hover .img-container img {
+  transform: scale(1.12);
+}
+
+/* Caption formatting using <figcaption> */
+figcaption {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #c9d1d9;
+  background-color: #161b22;
+  border-top: 1px solid #21262d;
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 4 - CSS Grid Dashboard</title>
+  <link rel="stylesheet" href="question4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-grid">
+    <!-- Header spanning across all columns -->
+    <header class="dash-header">
+      <div class="dash-logo">Admin Dashboard</div>
+      <div class="user-profile">
+        <span>Welcome, Admin</span>
+        <div class="avatar">A</div>
+      </div>
+    </header>
+
+    <!-- Sidebar on the left with vertical navigation -->
+    <aside class="dash-sidebar">
+      <nav class="sidebar-nav">
+        <a href="#" class="active">Overview</a>
+        <a href="#">Analytics</a>
+        <a href="#">Orders</a>
+        <a href="#">Customers</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area containing 4 boxes in 2 rows & 2 columns -->
+    <main class="dash-main">
+      <div class="box-grid">
+        <!-- Box spanning 2 columns -->
+        <div class="dash-box span-2">
+          <h3>Total Revenue & Analytics</h3>
+          <div class="stat-value">$124,500.00</div>
+          <p>Revenue grew by 24% compared to last quarter with over 12,000 active customer transactions.</p>
+        </div>
+
+        <div class="dash-box">
+          <h3>Active Users</h3>
+          <div class="stat-value">8,420</div>
+          <p>Currently online active users across desktop and mobile devices.</p>
+        </div>
+
+        <div class="dash-box">
+          <h3>Pending Tasks</h3>
+          <div class="stat-value">18</div>
+          <p>System tickets requiring immediate administrator review.</p>
+        </div>
+
+        <div class="dash-box">
+          <h3>Conversion Rate</h3>
+          <div class="stat-value">4.8%</div>
+          <p>Average conversion rate achieved across all marketing funnels.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+/* Question 7 - CSS Loading Animation using only div elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Center animation on page using Flexbox alignment */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0b0f19;
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-box {
+  background-color: #1e293b;
+  padding: 3rem 4rem;
+  border-radius: 20px;
+  border: 1px solid #334155;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Flexbox container for circles */
+.circles-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  height: 60px;
+}
+
+/* Three small circles */
+.circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+  /* Keyframe animation setup */
+  animation-name: bounceMotion;
+  animation-duration: 0.6s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite; /* Requirement */
+  animation-timing-function: ease-in-out;
+}
+
+/* Requirement: Each circle starts its animation with a slight delay */
+.circle-1 {
+  animation-delay: 0s;
+}
+
+.circle-2 {
+  animation-delay: 0.2s;
+  background: linear-gradient(135deg, #818cf8, #a855f7);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+}
+
+.circle-3 {
+  animation-delay: 0.4s;
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.6);
+}
+
+/* Keyframes controlling up and down motion using transform: translateY() */
+@keyframes bounceMotion {
+  0% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-28px);
+    opacity: 1;
+  }
+}
+
+.loader-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+}

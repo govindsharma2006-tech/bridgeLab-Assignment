@@ -1,0 +1,134 @@
+/* Question 9 - 3D Card Flip Animation */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Requirement: Card must remain centered on screen using Flexbox */
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #0b0f19;
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Perspective container requirement: perspective: 1000px; */
+.card-perspective {
+  perspective: 1000px;
+  width: 320px;
+  height: 440px;
+}
+
+/* 3D Card structure requirement: transform-style: preserve-3d; */
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Requirement: Implement the flip using transform: rotateY(180deg); on hover */
+.card-perspective:hover .card {
+  transform: rotateY(180deg);
+}
+
+/* Card faces shared styles */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #334155;
+}
+
+/* Front Side: Title & Image */
+.card-front {
+  background-color: #1e293b;
+  color: #f8fafc;
+  text-align: center;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-front h2 {
+  font-size: 1.6rem;
+  color: #38bdf8;
+}
+
+.hover-hint {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Back Side: Text Description (rotated 180deg) */
+.card-back {
+  background: linear-gradient(135deg, #1e1b4b, #4338ca);
+  color: white;
+  text-align: center;
+  transform: rotateY(180deg); /* Pre-rotated for back side */
+  border-color: #6366f1;
+}
+
+.card-back h2 {
+  font-size: 1.6rem;
+  color: #818cf8;
+  margin-bottom: 1rem;
+}
+
+.card-back p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e0e7ff;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.action-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #38bdf8;
+  color: #0f172a;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: #7dd3fc;
+}

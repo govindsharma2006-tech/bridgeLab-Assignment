@@ -1,0 +1,169 @@
+/* Question 4 - Dashboard Layout using CSS Grid */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Outer Dashboard Grid layout using fr units and grid-gap */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-gap: 20px;
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Header spanning top across all columns */
+.dash-header {
+  grid-area: header;
+  background-color: #1e293b;
+  padding: 1.25rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dash-logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #6366f1;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  background-color: #6366f1;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+/* Sidebar on the left with vertical navigation */
+.dash-sidebar {
+  grid-area: sidebar;
+  background-color: #1e293b;
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sidebar-nav a {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: #6366f1;
+  color: #ffffff;
+}
+
+/* Main Content with 4 boxes arranged in 2 rows and 2 columns using Grid & fr units */
+.dash-main {
+  grid-area: main;
+}
+
+.box-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+/* Card Boxes */
+.dash-box {
+  background-color: #1e293b;
+  padding: 1.75rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Requirement: One box spans two columns (grid-column: span 2;) */
+.dash-box.span-2 {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #1e293b, #2d3748);
+  border-left: 4px solid #6366f1;
+}
+
+/* Hover effects that scale up the box and cast a shadow */
+.dash-box:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 25px rgba(99, 102, 241, 0.3);
+  border-color: #6366f1;
+}
+
+.dash-box h3 {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+}
+
+.stat-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 0.75rem;
+}
+
+.dash-box p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main";
+  }
+
+  .box-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-box.span-2 {
+    grid-column: span 1;
+  }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 6 - Grid Blog Layout</title>
+  <link rel="stylesheet" href="question6.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="blog-grid">
+    <!-- Header with title and nav links -->
+    <header class="blog-header">
+      <h1 class="blog-title">Tech Pulse Blog</h1>
+      <nav class="blog-nav">
+        <a href="#">Home</a>
+        <a href="#">Articles</a>
+        <a href="#">Tutorials</a>
+        <a href="#">Subscribe</a>
+      </nav>
+    </header>
+
+    <!-- Sidebar on left containing categories -->
+    <aside class="blog-sidebar">
+      <h3>Categories</h3>
+      <ul class="category-list">
+        <li><a href="#">Web Development (14)</a></li>
+        <li><a href="#">CSS Grid & Flexbox (8)</a></li>
+        <li><a href="#">JavaScript Trends (12)</a></li>
+        <li><a href="#">UI/UX Design (6)</a></li>
+        <li><a href="#">Cloud Computing (9)</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main content area displaying two blog posts side-by-side -->
+    <main class="blog-main">
+      <div class="posts-grid">
+        <article class="post-card">
+          <div class="post-img">
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=500&q=80" alt="Mastering CSS Grid">
+          </div>
+          <div class="post-content">
+            <h2>Mastering CSS Grid Layouts</h2>
+            <p class="meta">Published on Sept 14, 2026 • 5 min read</p>
+            <p>CSS Grid layout allows web developers to build complex, two-dimensional responsive layouts effortlessly without cluttering markup.</p>
+            <a href="#" class="read-more">Read Full Post &rarr;</a>
+          </div>
+        </article>
+
+        <article class="post-card">
+          <div class="post-img">
+            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=500&q=80" alt="Modern Web Design">
+          </div>
+          <div class="post-content">
+            <h2>The Future of Modern Web Architecture</h2>
+            <p class="meta">Published on Sept 12, 2026 • 8 min read</p>
+            <p>Explore the evolution of frontend technologies, component frameworks, micro-frontends, and performance optimization techniques.</p>
+            <a href="#" class="read-more">Read Full Post &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Footer with contact info -->
+    <footer class="blog-footer">
+      <p>Contact Us: contact@techpulseblog.com | +1 (800) 555-0199</p>
+      <p>&copy; 2026 Tech Pulse Blog. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>
