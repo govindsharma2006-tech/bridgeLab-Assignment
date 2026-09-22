@@ -1,0 +1,31 @@
+/* =========================================================
+   pricing_plans.css
+   Pricing Plans — Assignment 10, Q8
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+}
+
+/* Hover effects using .shadow-lg and transitions */
+.pricing-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  border-radius: 16px;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Featured card extra emphasis */
+.featured-card {
+  transform: scale(1.03);
+}
+
+.featured-card:hover {
+  transform: scale(1.03) translateY(-8px);
+}

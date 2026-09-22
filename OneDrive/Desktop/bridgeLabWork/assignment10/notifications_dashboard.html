@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Notifications Dashboard with Alerts and Summary Well built using Bootstrap 5" />
+  <title>Notifications Dashboard</title>
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="notifications_dashboard.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bg-dark text-white py-4 shadow-sm mb-4">
+    <div class="container text-center">
+      <h1 class="fw-bold mb-1">User Dashboard</h1>
+      <p class="text-muted mb-0">System Alerts &amp; Notification Management</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          
+          <!-- Card grouping alerts -->
+          <div class="card border-0 shadow-sm p-4 mb-4">
+            <h2 class="h4 fw-bold mb-4">System Notifications</h2>
+
+            <!-- Dismissible Alert (Warning) -->
+            <!-- .alert & .alert-warning: contextual warning box -->
+            <!-- .alert-dismissible & .fade & .show: allows closing the alert with smooth fade -->
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Action Required!</strong> Your password expires in 3 days. Please update it in account settings.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- 1. Success Alert (New Message) -->
+            <div class="alert alert-success d-flex align-items-center mb-3" role="alert">
+              <span class="me-2 fs-5">✉️</span>
+              <div>
+                <strong>New Message:</strong> You received a new project update from Sarah in Team Workspace.
+              </div>
+            </div>
+
+            <!-- 2. Info Alert (Tip) -->
+            <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+              <span class="me-2 fs-5">💡</span>
+              <div>
+                <strong>Pro Tip:</strong> Enable Two-Factor Authentication (2FA) to increase your account security by 90%.
+              </div>
+            </div>
+
+            <!-- 3. Danger Alert (System Warning) -->
+            <div class="alert alert-danger d-flex align-items-center mb-0" role="alert">
+              <span class="me-2 fs-5">⚠️</span>
+              <div>
+                <strong>Server Warning:</strong> High memory usage detected on Production Server Node-04.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Summary Well (Bordered, padded .bg-light section) -->
+          <!-- Recreating classic Bootstrap "well" style using utilities -->
+          <div class="summary-well p-4 bg-light border rounded shadow-sm">
+            <h3 class="h5 fw-bold text-dark mb-3">Notification Summary</h3>
+            <div class="row text-center">
+              <div class="col-4 border-end">
+                <h4 class="fw-bold text-success mb-0">1</h4>
+                <small class="text-muted">Unread Message</small>
+              </div>
+              <div class="col-4 border-end">
+                <h4 class="fw-bold text-info mb-0">1</h4>
+                <small class="text-muted">System Tip</small>
+              </div>
+              <div class="col-4">
+                <h4 class="fw-bold text-danger mb-0">2</h4>
+                <small class="text-muted">Critical Alerts</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    <div class="container">
+      <p class="mb-0">&copy; 2026 Notifications Dashboard — Assignment 10, Q6</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

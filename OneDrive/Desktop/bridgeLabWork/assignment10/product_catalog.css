@@ -1,0 +1,28 @@
+/* =========================================================
+   product_catalog.css
+   Product Catalog — Assignment 10, Q3
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f6f8;
+}
+
+/* Hover effects using custom transitions and elevation */
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}

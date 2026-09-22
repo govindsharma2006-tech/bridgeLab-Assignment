@@ -1,0 +1,27 @@
+/* =========================================================
+   notifications_dashboard.css
+   Notifications Dashboard — Assignment 10, Q6
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+}
+
+/* Custom styling for the Well section */
+.summary-well {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  border-radius: 12px;
+}
+
+.alert {
+  border-radius: 10px;
+  border: none;
+}
+
+.card {
+  border-radius: 14px;
+}

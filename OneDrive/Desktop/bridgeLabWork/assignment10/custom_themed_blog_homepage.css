@@ -1,0 +1,92 @@
+/* =========================================================
+   custom_themed_blog_homepage.css
+   Custom Themed Blog Homepage — Assignment 10, Q5
+   ========================================================= */
+
+/* Google Font: Plus Jakarta Sans */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Override Bootstrap Root CSS Variables */
+:root {
+  --bs-primary: #0d9488;          /* Custom Teal primary color */
+  --bs-primary-rgb: 13, 148, 136;
+  --bs-font-sans-serif: 'Plus Jakarta Sans', sans-serif;
+  
+  --custom-accent: #8b5cf6;        /* Custom Violet accent */
+  --custom-dark: #0f172a;
+}
+
+body {
+  font-family: var(--bs-font-sans-serif);
+  background-color: #f8fafc;
+  color: #334155;
+}
+
+/* Custom Header with theme gradient */
+.blog-header {
+  background: linear-gradient(135deg, var(--bs-primary) 0%, var(--custom-accent) 100%);
+  color: #ffffff;
+}
+
+.site-title {
+  color: #ffffff;
+}
+
+/* Custom Button overrides */
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+  background-color: #0f766e;
+  border-color: #0f766e;
+}
+
+.btn-custom-accent {
+  background-color: var(--custom-accent);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-custom-accent:hover {
+  background-color: #7c3aed;
+  color: #ffffff;
+}
+
+/* Badge Customization */
+.bg-custom-primary {
+  background-color: var(--bs-primary) !important;
+  color: #ffffff;
+}
+
+.bg-custom-accent {
+  background-color: var(--custom-accent) !important;
+  color: #ffffff;
+}
+
+.section-heading {
+  color: var(--custom-dark);
+}
+
+/* Card Styling */
+.blog-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(13, 148, 136, 0.15) !important;
+}
+
+.blog-card .card-img-top {
+  height: 220px;
+  object-fit: cover;
+}
+
+/* Footer Styling */
+.blog-footer {
+  background-color: var(--custom-dark);
+}

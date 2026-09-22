@@ -1,0 +1,28 @@
+/* =========================================================
+   task_tracker_with_badges.css
+   Task Tracker with Badges — Assignment 10, Q7
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+}
+
+.list-group-item {
+  transition: background-color 0.2s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8fafc;
+}
+
+.form-check-input:checked + .form-check-label {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.card {
+  border-radius: 14px;
+}

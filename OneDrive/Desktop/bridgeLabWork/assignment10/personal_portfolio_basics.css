@@ -1,0 +1,36 @@
+/* =========================================================
+   personal_portfolio_basics.css
+   Personal Portfolio Basics — Assignment 10, Q2
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Custom styling for profile image */
+.profile-img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero section custom background gradient */
+.profile-hero {
+  background: linear-gradient(180deg, #eef2f7 0%, #f8f9fa 100%);
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Custom button hover transitions */
+.btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

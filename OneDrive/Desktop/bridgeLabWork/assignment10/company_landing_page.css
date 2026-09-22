@@ -1,0 +1,42 @@
+/* =========================================================
+   company_landing_page.css
+   Company Landing Page — Assignment 10, Q1
+   ========================================================= */
+
+/* ---- Google Font ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Hero Section ---- */
+/* Gradient background for the hero area */
+.hero-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+/* ---- Feature Icon ---- */
+.feature-icon {
+  font-size: 2.5rem;
+}
+
+/* ---- Card Hover Effect ---- */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ---- Navbar brand styling ---- */
+.navbar-brand {
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+}

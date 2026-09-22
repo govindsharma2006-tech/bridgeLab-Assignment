@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Restaurant Menu Page built with Bootstrap CSS Components" />
+  <title>Bella Italia — Today's Menu</title>
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="restaurant_menu_page.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bg-dark text-white py-5 text-center">
+    <div class="container">
+      <h1 class="display-4 fw-bold">Bella Italia</h1>
+      <p class="lead text-warning mb-0">Authentic Italian Cuisine &bull; Fresh Ingredients Daily</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container">
+
+      <!-- Featured Image & Intro -->
+      <div class="row mb-5 align-items-center">
+        <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+          <!-- .img-fluid for responsive image -->
+          <figure class="figure mb-0">
+            <img src="https://picsum.photos/seed/pasta/600/350" class="figure-img img-fluid rounded shadow-sm" alt="Signature Pasta Dish" />
+            <figcaption class="figure-caption text-center">Signature Handmade Truffle Tagliatelle</figcaption>
+          </figure>
+        </div>
+        <div class="col-md-6 text-center text-md-start">
+          <h2 class="fw-bold mb-3">Chef's Specials</h2>
+          <p class="lead text-muted">Crafted with passion by Head Chef Marco Rossi. Experience the true flavors of Italy.</p>
+          
+          <!-- Bootstrap List Group component -->
+          <ul class="list-group list-group-flush shadow-sm rounded">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><strong>Truffle Tagliatelle</strong> — Fresh pasta with black truffle cream</span>
+              <span class="badge bg-danger rounded-pill">$24.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><strong>Wood-fired Margherita</strong> — San Marzano tomatoes &amp; fresh mozzarella</span>
+              <span class="badge bg-danger rounded-pill">$18.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><strong>Osso Buco</strong> — Braised veal shanks with saffron risotto</span>
+              <span class="badge bg-danger rounded-pill">$32.00</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Menu Table Section -->
+      <section class="mt-5">
+        <h2 class="text-center fw-bold mb-4">Today's Menu</h2>
+        <!-- Bootstrap Table component -->
+        <div class="table-responsive shadow-sm rounded">
+          <table class="table table-hover table-striped align-middle mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Dish Name</th>
+                <th scope="col">Description</th>
+                <th scope="col" class="text-end">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Appetizer</td>
+                <td>Bruschetta Classica</td>
+                <td>Grilled bread rubbed with garlic and topped with tomatoes &amp; basil</td>
+                <td class="text-end fw-bold">$10.50</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Appetizer</td>
+                <td>Caprese Salad</td>
+                <td>Fresh mozzarella, ripe tomatoes, and sweet basil drizzled with balsamic</td>
+                <td class="text-end fw-bold">$12.00</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Main Course</td>
+                <td>Spaghetti Carbonara</td>
+                <td>Crispy guanciale, egg yolk, pecorino cheese, and black pepper</td>
+                <td class="text-end fw-bold">$19.50</td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td>Main Course</td>
+                <td>Grilled Salmon</td>
+                <td>Pan-seared salmon fillet served with asparagus and lemon herb butter</td>
+                <td class="text-end fw-bold">$26.00</td>
+              </tr>
+              <tr>
+                <th scope="row">5</th>
+                <td>Dessert</td>
+                <td>Tiramisu Classico</td>
+                <td>Classic espresso-soaked ladyfingers with mascarpone cream</td>
+                <td class="text-end fw-bold">$9.00</td>
+              </tr>
+              <tr>
+                <th scope="row">6</th>
+                <td>Dessert</td>
+                <td>Panna Cotta</td>
+                <td>Vanilla bean cooked cream with wild berry compote</td>
+                <td class="text-end fw-bold">$8.50</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-0">&copy; 2026 Bella Italia Restaurant — Assignment 10, Q4</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

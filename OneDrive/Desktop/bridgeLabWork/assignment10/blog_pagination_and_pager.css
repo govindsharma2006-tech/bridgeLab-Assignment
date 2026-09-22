@@ -1,0 +1,27 @@
+/* =========================================================
+   blog_pagination_and_pager.css
+   Blog Pagination & Pager — Assignment 10, Q9
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.pagination .page-link {
+  border-radius: 8px;
+  margin: 0 3px;
+  color: #0f172a;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+}
