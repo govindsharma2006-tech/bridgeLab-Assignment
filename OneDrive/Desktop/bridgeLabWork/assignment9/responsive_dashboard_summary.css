@@ -1,0 +1,222 @@
+/* =========================================================
+   responsive_dashboard_summary.css
+   Responsive Dashboard Summary — Assignment 9, Q10
+   ========================================================= */
+
+/* ---- Google Font ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* ---- Reset ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0f0f1a;
+  color: #e0e0f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Load animation keyframes ---- */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Dashboard Grid Layout ---- */
+/* Header spans full width; sidebar on left, main on right */
+.dashboard {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+  min-height: 100vh;
+}
+
+/* ---- Dashboard Header ---- */
+.dash-header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.dash-header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #c084fc, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dash-nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.dash-nav a {
+  text-decoration: none;
+  color: rgba(224,224,240,0.6);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.dash-nav a:hover {
+  color: #c084fc;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  grid-area: sidebar;
+  background: #161b22;
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar h2 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(224,224,240,0.4);
+  margin-bottom: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: rgba(224,224,240,0.65);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  display: block;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar a:hover {
+  background-color: rgba(192, 132, 252, 0.1);
+  color: #c084fc;
+}
+
+/* ---- Main Content ---- */
+.dash-main {
+  grid-area: main;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  align-content: start;
+}
+
+/* ---- Dashboard Card ---- */
+.dash-card {
+  background: #1e1e32;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  /* Hover: scale up with shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Load animation */
+  animation: slideUp 0.6s ease both;
+}
+
+/* Stagger card animations */
+.dash-card:nth-child(1) { animation-delay: 0.1s; }
+.dash-card:nth-child(2) { animation-delay: 0.2s; }
+.dash-card:nth-child(3) { animation-delay: 0.3s; }
+.dash-card:nth-child(4) { animation-delay: 0.4s; }
+
+.dash-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 36px rgba(192, 132, 252, 0.15);
+}
+
+.dash-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c084fc;
+  margin-bottom: 0.6rem;
+}
+
+.dash-card p {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgba(224,224,240,0.6);
+}
+
+/* ---- Footer ---- */
+.site-footer {
+  text-align: center;
+  padding: 1.25rem;
+  background: #1a1a2e;
+  font-size: 0.8rem;
+  color: rgba(224,224,240,0.35);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ---- Below 750px: sidebar shifts to top, content stacks below ---- */
+@media (max-width: 750px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main";
+  }
+
+  .dash-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .dash-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 1rem 1.25rem;
+  }
+
+  .sidebar ul {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .dash-main {
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1rem;
+  }
+}

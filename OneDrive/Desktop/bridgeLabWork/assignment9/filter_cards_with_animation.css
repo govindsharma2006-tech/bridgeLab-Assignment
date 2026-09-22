@@ -1,0 +1,160 @@
+/* =========================================================
+   filter_cards_with_animation.css
+   Filter Cards with Animation — Assignment 9, Q5
+   ========================================================= */
+
+/* ---- Google Font ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* ---- Reset ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0f0f1a;
+  color: #e0e0f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Fade-in keyframe animation ---- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Header ---- */
+.site-header {
+  text-align: center;
+  padding: 2.5rem 1.5rem 1.5rem;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.site-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #34d399, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: rgba(224,224,240,0.5);
+}
+
+/* ---- Main ---- */
+main {
+  flex: 1;
+  padding: 3rem 1.5rem;
+}
+
+/* ---- Cards Container — Flexbox ---- */
+.cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* ---- Profile Card ---- */
+.profile-card {
+  flex: 1 1 280px;
+  max-width: 300px;
+  background: #1e1e32;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  overflow: hidden;
+  /* Hover lift transition */
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  /* Fade-in animation on page load */
+  animation: fadeIn 0.7s ease both;
+}
+
+/* Stagger the animation for each card */
+.profile-card:nth-child(1) { animation-delay: 0.1s; }
+.profile-card:nth-child(2) { animation-delay: 0.3s; }
+.profile-card:nth-child(3) { animation-delay: 0.5s; }
+
+/* Hover: lift the card */
+.profile-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 14px 40px rgba(52, 211, 153, 0.15);
+}
+
+/* ---- Card Image — filter applied by default ---- */
+.profile-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  /* Grayscale/sepia filters */
+  transition: filter 0.5s ease;
+}
+
+/* Alternate filters for variety */
+.profile-card:nth-child(1) img { filter: grayscale(100%); }
+.profile-card:nth-child(2) img { filter: sepia(80%); }
+.profile-card:nth-child(3) img { filter: grayscale(100%); }
+
+/* Remove filter on hover */
+.profile-card:hover img {
+  filter: none;
+}
+
+/* ---- Card Info ---- */
+.card-info {
+  padding: 1.25rem 1.5rem;
+}
+
+.card-info h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #34d399;
+  margin-bottom: 0.5rem;
+}
+
+.card-info p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(224,224,240,0.6);
+}
+
+/* ---- Footer ---- */
+.site-footer {
+  text-align: center;
+  padding: 1.25rem;
+  background: #1a1a2e;
+  font-size: 0.8rem;
+  color: rgba(224,224,240,0.35);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ---- Below 800px: stack cards vertically ---- */
+@media (max-width: 800px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-card {
+    max-width: 400px;
+    width: 100%;
+  }
+}

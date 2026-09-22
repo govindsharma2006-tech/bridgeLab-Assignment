@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Responsive CSS Cheat Sheet covering Filters, Media Queries, Responsive Design, and Typography" />
+  <title>Responsive CSS Cheat Sheet</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="responsive_css_cheat_sheet.css" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <header class="site-header">
+    <h1>CSS Cheat Sheet</h1>
+    <p class="subtitle">Quick reference for key responsive CSS concepts</p>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="cheat-grid" aria-label="CSS Cheat sheet topics">
+
+      <!-- Topic 1: CSS Filters -->
+      <article class="cheat-box">
+        <h2>CSS Filters</h2>
+        <p>
+          CSS filters apply visual effects like blur, grayscale, sepia, brightness, contrast,
+          and hue-rotate to elements. Syntax:
+        </p>
+        <code>filter: grayscale(100%) blur(2px);</code>
+      </article>
+
+      <!-- Topic 2: Media Queries -->
+      <article class="cheat-box">
+        <h2>Media Queries</h2>
+        <p>
+          Media queries allow applying styles based on viewport width, height, orientation,
+          and other features. They are the backbone of responsive design.
+        </p>
+        <code>@media (max-width: 768px) { ... }</code>
+      </article>
+
+      <!-- Topic 3: Responsive Design -->
+      <article class="cheat-box">
+        <h2>Responsive Design</h2>
+        <p>
+          Responsive design ensures layouts adapt to any screen size using fluid grids,
+          flexible images, and CSS breakpoints for an optimal user experience.
+        </p>
+        <code>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));</code>
+      </article>
+
+      <!-- Topic 4: Typography -->
+      <article class="cheat-box">
+        <h2>Responsive Typography</h2>
+        <p>
+          Use relative units (rem, em, vw) and the clamp() function to create
+          fluid font sizes that scale with the viewport automatically.
+        </p>
+        <code>font-size: clamp(1rem, 2vw, 1.5rem);</code>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>Assignment 9 &mdash; Q6: Responsive CSS Cheat Sheet</p>
+  </footer>
+
+</body>
+</html>

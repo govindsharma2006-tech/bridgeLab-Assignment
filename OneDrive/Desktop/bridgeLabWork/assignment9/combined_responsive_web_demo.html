@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Combined Responsive Web Demo integrating all responsive CSS techniques" />
+  <title>Combined Responsive Web Demo</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="combined_responsive_web_demo.css" />
+</head>
+<body>
+
+  <!-- Header with Navigation (Flexbox) -->
+  <header class="site-header">
+    <div class="logo">ResponsiveDemo</div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#gallery">Gallery</a>
+      <a href="#about">About</a>
+      <a href="#cheatsheet">Cheat Sheet</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Content — Grid with 3 sections -->
+  <main class="main-grid">
+
+    <!-- Section 1: Image Gallery -->
+    <section id="gallery" class="section-box gallery-section" aria-label="Image gallery">
+      <h2>Image Gallery</h2>
+      <div class="mini-gallery">
+        <img src="https://picsum.photos/seed/demo1/200/150" alt="Gallery image 1" />
+        <img src="https://picsum.photos/seed/demo2/200/150" alt="Gallery image 2" />
+        <img src="https://picsum.photos/seed/demo3/200/150" alt="Gallery image 3" />
+        <img src="https://picsum.photos/seed/demo4/200/150" alt="Gallery image 4" />
+      </div>
+    </section>
+
+    <!-- Section 2: Responsive Design Explanation -->
+    <section id="about" class="section-box text-section" aria-label="Responsive design explanation">
+      <h2>Responsive Design</h2>
+      <p>
+        Responsive web design ensures that websites look great and function well on all
+        devices, from desktop monitors to mobile phones. It uses fluid layouts, flexible
+        images, and CSS media queries to adapt the page structure based on the viewport.
+        Modern techniques like CSS Grid, Flexbox, and clamp() make building responsive
+        layouts intuitive and powerful.
+      </p>
+    </section>
+
+    <!-- Section 3: Cheat Sheet Preview -->
+    <section id="cheatsheet" class="section-box cheat-section" aria-label="Cheat sheet preview">
+      <h2>CSS Cheat Sheet</h2>
+      <dl class="cheat-list">
+        <dt>Flexbox</dt>
+        <dd>display: flex; justify-content: center;</dd>
+        <dt>Grid</dt>
+        <dd>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));</dd>
+        <dt>clamp()</dt>
+        <dd>font-size: clamp(1rem, 2vw, 1.5rem);</dd>
+        <dt>Media Query</dt>
+        <dd>@media (max-width: 700px) { ... }</dd>
+      </dl>
+    </section>
+
+  </main>
+
+  <!-- Footer with Contact Info -->
+  <footer id="contact" class="site-footer">
+    <p>Contact: demo@responsive.dev | +1 (555) 123-4567</p>
+    <p class="copyright">Assignment 9 &mdash; Q7: Combined Responsive Web Demo</p>
+  </footer>
+
+</body>
+</html>

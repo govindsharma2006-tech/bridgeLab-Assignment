@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Responsive Dashboard Summary demonstrating CSS Grid layout with sidebar, cards, and animations" />
+  <title>Responsive Dashboard Summary</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="responsive_dashboard_summary.css" />
+</head>
+<body>
+
+  <!-- Dashboard Layout -->
+  <div class="dashboard">
+
+    <!-- Header -->
+    <header class="dash-header">
+      <h1>Dashboard</h1>
+      <nav class="dash-nav" aria-label="Dashboard navigation">
+        <a href="#filters">Filters</a>
+        <a href="#typography">Typography</a>
+        <a href="#media">Media Queries</a>
+      </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sidebar navigation">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="#filters">Filters</a></li>
+        <li><a href="#typography">Typography</a></li>
+        <li><a href="#media">Media Queries</a></li>
+        <li><a href="#cheatsheet">Cheat Sheet</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content with Cards -->
+    <main class="dash-main">
+
+      <!-- Card 1: Filters -->
+      <article id="filters" class="dash-card">
+        <h3>CSS Filters</h3>
+        <p>Apply visual effects like blur, grayscale, sepia, brightness, contrast, and hue-rotate to any element using the CSS filter property.</p>
+      </article>
+
+      <!-- Card 2: Typography -->
+      <article id="typography" class="dash-card">
+        <h3>Typography</h3>
+        <p>Use relative units (rem, em, vw) and the clamp() function for fluid font sizing that adapts seamlessly across all viewport widths.</p>
+      </article>
+
+      <!-- Card 3: Media Queries -->
+      <article id="media" class="dash-card">
+        <h3>Media Queries</h3>
+        <p>Define breakpoints with @media rules to rearrange layouts, adjust spacing, and optimize the reading experience for different devices.</p>
+      </article>
+
+      <!-- Card 4: Cheat Sheet Links -->
+      <article id="cheatsheet" class="dash-card">
+        <h3>Cheat Sheet Links</h3>
+        <p>Quick reference resources for CSS Grid, Flexbox, responsive design patterns, and modern CSS features like clamp(), min(), and max().</p>
+      </article>
+
+    </main>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>Assignment 9 &mdash; Q10: Responsive Dashboard Summary</p>
+  </footer>
+
+</body>
+</html>

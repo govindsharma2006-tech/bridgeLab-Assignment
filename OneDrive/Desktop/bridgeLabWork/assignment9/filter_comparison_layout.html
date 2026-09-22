@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Filter Comparison Layout — before-and-after image comparison using CSS filters" />
+  <title>Filter Comparison Layout</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="filter_comparison_layout.css" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <header class="site-header">
+    <h1>Filter Comparison</h1>
+    <p class="subtitle">Before &amp; After — hover the filtered image to reveal the original</p>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="comparison" aria-label="Image comparison">
+
+      <!-- Left image: original (no filter) -->
+      <figure class="comparison-item original">
+        <img src="https://picsum.photos/seed/landscape/600/400" alt="Original landscape image" />
+        <figcaption>Original Image</figcaption>
+      </figure>
+
+      <!-- Right image: filtered -->
+      <figure class="comparison-item filtered">
+        <img src="https://picsum.photos/seed/landscape/600/400" alt="Filtered landscape image" />
+        <figcaption>Filtered (Brightness + Contrast)</figcaption>
+      </figure>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>Assignment 9 &mdash; Q8: Filter Comparison Layout</p>
+  </footer>
+
+</body>
+</html>

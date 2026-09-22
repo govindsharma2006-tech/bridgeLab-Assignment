@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Responsive Design Principles Summary — Fluid Layouts, Flexible Media, and Breakpoints" />
+  <title>Responsive Design Principles</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="responsive_design_principles_summary.css" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <header class="site-header">
+    <h1>Responsive Design Principles</h1>
+    <p class="subtitle">The three pillars of responsive web design</p>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="principles-grid" aria-label="Responsive design principles">
+
+      <!-- Principle 1: Fluid Layouts -->
+      <article class="principle-box">
+        <h2>Fluid Layouts</h2>
+        <p>
+          Fluid layouts use percentage-based widths instead of fixed pixel values,
+          allowing content to expand and contract relative to the viewport size.
+        </p>
+        <pre><code>.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}</code></pre>
+      </article>
+
+      <!-- Principle 2: Flexible Media -->
+      <article class="principle-box">
+        <h2>Flexible Media</h2>
+        <p>
+          Images and media scale within their containers using max-width: 100%,
+          preventing overflow and maintaining aspect ratios across all screen sizes.
+        </p>
+        <pre><code>img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}</code></pre>
+      </article>
+
+      <!-- Principle 3: Breakpoints -->
+      <article class="principle-box">
+        <h2>Breakpoints</h2>
+        <p>
+          CSS media queries define breakpoints where the layout restructures to
+          fit the device. Common breakpoints target mobile, tablet, and desktop widths.
+        </p>
+        <pre><code>@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>Assignment 9 &mdash; Q9: Responsive Design Principles Summary</p>
+  </footer>
+
+</body>
+</html>
