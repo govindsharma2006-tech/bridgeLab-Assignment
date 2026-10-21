@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Assignment 2 - Interactive Test Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-card: rgba(23, 31, 51, 0.7);
+            --bg-card-hover: rgba(30, 41, 69, 0.85);
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.35);
+            --accent: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.3);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(139, 92, 246, 0.4);
+            --console-bg: #030712;
+            --console-border: rgba(139, 92, 246, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #c084fc;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.75rem);
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 40%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.65rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border-color: var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 960px) {
+            .main-layout {
+                grid-template-columns: 1.15fr 1fr;
+            }
+        }
+
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .q-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .q-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .q-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .q-tag {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #c084fc;
+            border: 1px solid rgba(192, 132, 252, 0.25);
+        }
+
+        .q-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .q-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .run-btn {
+            padding: 0.45rem 1rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border-radius: 8px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #c084fc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .run-btn:hover {
+            background: #7c3aed;
+            color: white;
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        /* Console Output Section */
+        .output-panel {
+            position: sticky;
+            top: 2rem;
+            background: var(--console-bg);
+            border: 1px solid var(--console-border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            max-height: calc(100vh - 4rem);
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .console-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .clear-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-family: inherit;
+        }
+
+        .clear-btn:hover {
+            color: #f8fafc;
+        }
+
+        .console-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+            flex: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .log-entry {
+            margin-bottom: 0.35rem;
+        }
+
+        .log-title {
+            color: #38bdf8;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.2rem;
+        }
+
+        .log-highlight {
+            color: #34d399;
+        }
+
+        .log-warn {
+            color: #fbbf24;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">BridgeLabz Assignment 2 &bull; Functions & Scope &bull; Arrays &bull; Logic</div>
+            <h1>JavaScript Practical Assignment 2</h1>
+            <p>10 standalone JavaScript modules covering scope management, string parsing, Math methods, array iterators, closures, and branching logic.</p>
+            <div class="top-actions">
+                <button class="btn btn-primary" onclick="runAllQuestions()">⚡ Run All 10 Questions</button>
+                <button class="btn btn-secondary" onclick="clearConsole()">🧹 Clear Console Output</button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Questions List -->
+            <div class="cards-list">
+                <!-- Q1 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q1. Scope Conflict Resolver</span>
+                        <span class="q-tag">question1.js</span>
+                    </div>
+                    <p class="q-desc">Demonstrates variable scoping with global bonus, local salary, and conditional bonus additions based on isPermanent boolean flag.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question1.js')">Run Question 1</button>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q2. String Manipulation Report</span>
+                        <span class="q-tag">question2.js</span>
+                    </div>
+                    <p class="q-desc">Cleans and standardizes e-commerce product titles using trim(), split(), map(), join(), replace(), and length.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question2.js')">Run Question 2</button>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q3. Math Utility Dashboard</span>
+                        <span class="q-tag">question3.js</span>
+                    </div>
+                    <p class="q-desc">Evaluates Math.round(), Math.sqrt(), Math.pow(x, 3), and random range (10-50) on number x = 16.75 with template literals.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question3.js')">Run Question 3</button>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q4. Array Performance Analyzer</span>
+                        <span class="q-tag">question4.js</span>
+                    </div>
+                    <p class="q-desc">Generates 8 random scores, finds min/max, computes average via reduce(), filters passing scores (&ge;50), and formats reports.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question4.js')">Run Question 4</button>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q5. Boolean Logic Access System</span>
+                        <span class="q-tag">question5.js</span>
+                    </div>
+                    <p class="q-desc">Checks smart home conditions (door locked, window closed, alarm armed, owner inside) via &amp;&amp;, ||, and ! operators.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question5.js')">Run Question 5</button>
+                    </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q6. Event-Based Counter Simulation</span>
+                        <span class="q-tag">question6.js</span>
+                    </div>
+                    <p class="q-desc">Simulates button click events with increment() and decrement() methods using nested function scoping to mutate counter state.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question6.js')">Run Question 6</button>
+                    </div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q7. Customer Feedback Processor</span>
+                        <span class="q-tag">question7.js</span>
+                    </div>
+                    <p class="q-desc">Parses customer reviews with split() and includes() to count words and detect negative keywords ("bad", "poor").</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question7.js')">Run Question 7</button>
+                    </div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q8. Dynamic Discount Evaluator</span>
+                        <span class="q-tag">question8.js</span>
+                    </div>
+                    <p class="q-desc">Applies category discounts (10% electronics, 5% fashion) plus extra 5% overall volume discount on orders exceeding Rs. 50,000 using reduce().</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question8.js')">Run Question 8</button>
+                    </div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q9. Odd–Even Number Analyzer</span>
+                        <span class="q-tag">question9.js</span>
+                    </div>
+                    <p class="q-desc">Iterates numbers 1 to 30, classifies each as FizzBuzz (divisible by 3 and 5), Even, or Odd using modulo %, and stores via push().</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question9.js')">Run Question 9</button>
+                    </div>
+                </div>
+
+                <!-- Q10 -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <span class="q-title">Q10. Departmental Employee Evaluator</span>
+                        <span class="q-tag">question10.js</span>
+                    </div>
+                    <p class="q-desc">Evaluates department scores using nested arrays and multi-level if-else logic: Excellent (&ge;90), Good (75–89), Average (60–74), Needs Improvement.</p>
+                    <div class="q-footer">
+                        <button class="run-btn" onclick="executeScript('question10.js')">Run Question 10</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Virtual Console Panel -->
+            <div class="output-panel">
+                <div class="console-header">
+                    <div class="dots">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <span class="console-title">terminal / console.log stream</span>
+                    <button class="clear-btn" onclick="clearConsole()">Clear</button>
+                </div>
+                <div class="console-body" id="consoleOutput">Welcome to JavaScript Assignment 2 Interactive Console!
+Click on any question's "Run" button or "Run All" above to see the output here and in your DevTools console.
+</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const consoleEl = document.getElementById('consoleOutput');
+
+        // Hook console.log and console.table to also render to the on-screen console
+        const originalLog = console.log;
+        const originalTable = console.table;
+
+        function appendToScreen(text, type = 'normal') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = text;
+            consoleEl.appendChild(entry);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const formatted = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' ');
+            appendToScreen(formatted);
+        };
+
+        console.table = function(data) {
+            originalTable.apply(console, data);
+            if (Array.isArray(data)) {
+                let tableText = "";
+                data.forEach((row, i) => {
+                    tableText += `[${i}] ` + Object.entries(row).map(([k, v]) => `${k}: ${v}`).join(' | ') + '\n';
+                });
+                appendToScreen(tableText, 'log-highlight');
+            } else {
+                appendToScreen(JSON.stringify(data, null, 2), 'log-highlight');
+            }
+        };
+
+        function clearConsole() {
+            consoleEl.innerHTML = '<div class="log-entry log-warn">Console cleared.</div>';
+        }
+
+        async function executeScript(filename) {
+            appendToScreen(`\n>>> Executing ${filename} <<<`, 'log-title');
+            try {
+                const response = await fetch(filename);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const code = await response.text();
+                // Execute in isolated function scope
+                const runner = new Function(code);
+                runner();
+            } catch (err) {
+                appendToScreen(`Error executing ${filename}: ${err.message}`, 'log-warn');
+            }
+        }
+
+        async function runAllQuestions() {
+            clearConsole();
+            appendToScreen("=== RUNNING ALL 10 ASSIGNMENT 2 QUESTIONS ===", 'log-title');
+            const files = [
+                'question1.js', 'question2.js', 'question3.js', 'question4.js', 'question5.js',
+                'question6.js', 'question7.js', 'question8.js', 'question9.js', 'question10.js'
+            ];
+            for (const file of files) {
+                await executeScript(file);
+            }
+            appendToScreen("\n=== ALL 10 QUESTIONS EXECUTED SUCCESSFULLY ===", 'log-highlight');
+        }
+    </script>
+</body>
+</html>
