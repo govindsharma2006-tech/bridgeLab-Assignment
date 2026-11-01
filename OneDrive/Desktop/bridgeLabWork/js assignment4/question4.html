@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q4 – Custom Form Builder</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .panel {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 1.8rem;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        h2 { color: #f8fafc; font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .subtitle { color: #64748b; font-size: 0.82rem; margin-bottom: 1.5rem; }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.35rem;
+            margin-top: 1rem;
+        }
+        label:first-of-type { margin-top: 0; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            color: #f8fafc;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #6366f1; }
+        textarea { resize: vertical; min-height: 80px; }
+        select option { background: #1e293b; }
+
+        .btn-row { display: flex; gap: 0.8rem; margin-top: 1.4rem; }
+
+        button {
+            flex: 1;
+            padding: 0.72rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        button:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        #submitBtn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; }
+        #resetBtn  { background: #334155; color: #cbd5e1; }
+
+        /* Output panel */
+        pre {
+            background: #020817;
+            color: #4ade80;
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(99,102,241,0.25);
+            min-height: 120px;
+        }
+        #placeholder { color: #475569; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<!-- Left: Dynamic Form -->
+<div class="panel">
+    <h2>⚙️ Dynamic Form Builder</h2>
+    <p class="subtitle">Q4 – FormBuilder Class generates this form from a config array</p>
+
+    <div id="formContainer"></div>
+
+    <div class="btn-row">
+        <button id="submitBtn" onclick="submitForm()">Submit &amp; Get Data</button>
+        <button id="resetBtn"  onclick="resetForm()">Reset</button>
+    </div>
+</div>
+
+<!-- Right: Output -->
+<div class="panel">
+    <h2>📦 Collected Form Data</h2>
+    <p class="subtitle">Result of <code style="color:#818cf8">formBuilder.getFormData()</code></p>
+    <pre id="output"><span id="placeholder">Click "Submit" to see the collected data object here...</span></pre>
+</div>
+
+<script>
+    // ── FormBuilder Class ─────────────────────────────────────────────────────
+
+    class FormBuilder {
+        /**
+         * @param {Array} fields - Array of field config objects
+         * @param {string} containerId - ID of the DOM element to inject into
+         */
+        constructor(fields, containerId) {
+            this.fields      = fields;
+            this.container   = document.getElementById(containerId);
+            this._build();
+        }
+
+        /** Renders all fields into the container using innerHTML. */
+        _build() {
+            let html = '';
+            this.fields.forEach(field => {
+                const { type, label, name, placeholder = '', options = [], required = false } = field;
+                const req = required ? '<span style="color:#ef4444"> *</span>' : '';
+
+                html += `<label for="${name}">${label}${req}</label>`;
+
+                if (type === 'select') {
+                    html += `<select id="${name}" name="${name}">`;
+                    html += `<option value="">-- Select --</option>`;
+                    options.forEach(opt =>
+                        html += `<option value="${opt.value}">${opt.label}</option>`
+                    );
+                    html += `</select>`;
+                } else if (type === 'textarea') {
+                    html += `<textarea id="${name}" name="${name}" placeholder="${placeholder}"></textarea>`;
+                } else {
+                    html += `<input type="${type}" id="${name}" name="${name}" placeholder="${placeholder}">`;
+                }
+            });
+            this.container.innerHTML = html;
+        }
+
+        /**
+         * Collects all field values and returns them as a plain object.
+         * @returns {Object} key-value pairs for all fields
+         */
+        getFormData() {
+            const data = {};
+            this.fields.forEach(({ name }) => {
+                const el = document.getElementById(name);
+                data[name] = el ? el.value.trim() : '';
+            });
+            return data;
+        }
+
+        /** Resets all fields to empty. */
+        reset() {
+            this.fields.forEach(({ name }) => {
+                const el = document.getElementById(name);
+                if (el) el.value = '';
+            });
+        }
+    }
+
+    // ── Field Configuration Array ─────────────────────────────────────────────
+
+    const fieldConfig = [
+        { type: 'text',     label: 'Username',    name: 'username',  placeholder: 'e.g. govind_2021',  required: true  },
+        { type: 'email',    label: 'Email',        name: 'email',     placeholder: 'e.g. you@mail.com', required: true  },
+        { type: 'password', label: 'Password',     name: 'password',  placeholder: 'Min 8 characters',  required: true  },
+        { type: 'tel',      label: 'Phone',        name: 'phone',     placeholder: '10-digit number',   required: false },
+        { type: 'date',     label: 'Date of Birth',name: 'dob',       placeholder: '',                  required: false },
+        {
+            type: 'select', label: 'Course', name: 'course', required: true,
+            options: [
+                { value: 'fullstack', label: 'Full Stack Development' },
+                { value: 'datascience', label: 'Data Science' },
+                { value: 'devops', label: 'DevOps & Cloud' },
+                { value: 'uiux', label: 'UI/UX Design' }
+            ]
+        },
+        { type: 'textarea', label: 'About Yourself', name: 'bio', placeholder: 'Tell us briefly about yourself...' }
+    ];
+
+    // ── Instantiate FormBuilder ───────────────────────────────────────────────
+
+    const formBuilder = new FormBuilder(fieldConfig, 'formContainer');
+
+    // ── Collect & Display on Submit ───────────────────────────────────────────
+
+    function submitForm() {
+        const data    = formBuilder.getFormData();
+        const outputEl = document.getElementById('output');
+        outputEl.innerHTML = JSON.stringify(data, null, 2);
+    }
+
+    function resetForm() {
+        formBuilder.reset();
+        document.getElementById('output').innerHTML =
+            '<span id="placeholder">Click "Submit" to see the collected data object here...</span>';
+    }
+</script>
+</body>
+</html>

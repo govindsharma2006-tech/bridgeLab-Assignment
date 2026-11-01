@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q5 – Movie Ticket Booking</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem 2.2rem;
+            width: 100%;
+            max-width: 430px;
+        }
+
+        h2 { color: #f8fafc; font-size: 1.4rem; margin-bottom: 0.3rem; }
+        .sub { color: #94a3b8; font-size: 0.82rem; margin-bottom: 1.6rem; }
+
+        .form-group { margin-bottom: 1.1rem; }
+
+        label {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            background: rgba(0,0,0,0.35);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #a78bfa; }
+        input.valid   { border-color: #22c55e !important; }
+        input.invalid { border-color: #f87171 !important; }
+
+        .err-msg { font-size: 0.75rem; color: #f87171; margin-top: 0.3rem; min-height: 1rem; }
+        .ok-msg  { font-size: 0.75rem; color: #22c55e; margin-top: 0.3rem; min-height: 1rem; }
+
+        .btn-book {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 0.6rem;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-book:hover { opacity: 0.88; transform: translateY(-2px); }
+
+        /* Ticket */
+        .ticket {
+            display: none;
+            background: linear-gradient(135deg, #1e1b4b, #2e1065);
+            border: 1px solid #7c3aed;
+            border-radius: 16px;
+            padding: 1.8rem;
+            color: #f8fafc;
+        }
+        .ticket h3 { color: #a78bfa; font-size: 1.1rem; margin-bottom: 1rem; text-align: center; }
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+        .ticket-row:last-child { border-bottom: none; }
+        .ticket-row span:first-child { color: #94a3b8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .ticket-row span:last-child  { color: #f8fafc; font-weight: 600; }
+        .ticket-id { text-align: center; margin-top: 1rem; font-size: 0.78rem; color: #6d28d9; letter-spacing: 0.08em; }
+    </style>
+</head>
+<body>
+
+<!-- Booking Form -->
+<div class="card">
+    <h2>🎬 Movie Ticket Booking</h2>
+    <p class="sub">Q5 – Objects + RegExp Validation</p>
+
+    <form id="bookingForm" novalidate>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Alphabets only">
+            <div id="nameMsg" class="err-msg"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="user@domain.com">
+            <div id="emailMsg" class="err-msg"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Number of Seats (1–10)</label>
+            <input type="number" id="seats" placeholder="Enter 1 to 10" min="1" max="10">
+            <div id="seatsMsg" class="err-msg"></div>
+        </div>
+
+        <button class="btn-book" type="submit">🎟 Book Tickets</button>
+    </form>
+</div>
+
+<!-- Ticket Display -->
+<div class="card ticket" id="ticketCard">
+    <h3>🎫 Booking Confirmed!</h3>
+    <div class="ticket-row"><span>Passenger</span><span id="t-name"></span></div>
+    <div class="ticket-row"><span>Email</span><span id="t-email"></span></div>
+    <div class="ticket-row"><span>Movie</span><span id="t-movie"></span></div>
+    <div class="ticket-row"><span>Seats</span><span id="t-seats"></span></div>
+    <div class="ticket-row"><span>Show Time</span><span id="t-time"></span></div>
+    <div class="ticket-row"><span>Total Price</span><span id="t-price"></span></div>
+    <div class="ticket-id" id="t-id"></div>
+</div>
+
+<script>
+    // ── Patterns ──────────────────────────────────────────────────────────────
+    const NAME_RE  = /^[A-Za-z\s]{2,}$/;
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    const MOVIES = ["Interstellar", "Inception", "The Dark Knight", "Dune Part II", "Oppenheimer"];
+    const TIMES  = ["10:00 AM", "1:00 PM", "4:30 PM", "7:00 PM", "9:45 PM"];
+    const PRICE_PER_SEAT = 250;
+
+    function setMsg(id, text, isOk) {
+        const el  = document.getElementById(id + 'Msg');
+        const inp = document.getElementById(id);
+        el.textContent  = text;
+        el.className    = isOk ? 'ok-msg' : 'err-msg';
+        inp.classList.toggle('valid',   isOk);
+        inp.classList.toggle('invalid', !isOk && text !== '');
+    }
+
+    function validateName() {
+        const v = document.getElementById('name').value.trim();
+        if (!v) { setMsg('name', '', false); return false; }
+        const ok = NAME_RE.test(v);
+        setMsg('name', ok ? '✅ Valid name.' : '❌ Only alphabets and spaces.', ok);
+        return ok;
+    }
+
+    function validateEmail() {
+        const v = document.getElementById('email').value.trim();
+        if (!v) { setMsg('email', '', false); return false; }
+        const ok = EMAIL_RE.test(v);
+        setMsg('email', ok ? '✅ Valid email.' : '❌ Invalid email format.', ok);
+        return ok;
+    }
+
+    function validateSeats() {
+        const v = parseInt(document.getElementById('seats').value, 10);
+        const ok = !isNaN(v) && v >= 1 && v <= 10;
+        setMsg('seats', ok ? '✅ Valid seat count.' : '❌ Enter a number between 1 and 10.', ok);
+        return ok;
+    }
+
+    // Live validation
+    document.getElementById('name').addEventListener('input', validateName);
+    document.getElementById('email').addEventListener('input', validateEmail);
+    document.getElementById('seats').addEventListener('input', validateSeats);
+
+    // Submit handler
+    document.getElementById('bookingForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const n = validateName(), em = validateEmail(), s = validateSeats();
+        if (!n || !em || !s) return;
+
+        // Build booking object
+        const booking = {
+            name:  document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            seats: parseInt(document.getElementById('seats').value, 10),
+            movie: MOVIES[Math.floor(Math.random() * MOVIES.length)],
+            time:  TIMES[Math.floor(Math.random() * TIMES.length)],
+            total: parseInt(document.getElementById('seats').value, 10) * PRICE_PER_SEAT,
+            id:    'TKT-' + Math.random().toString(36).slice(2,10).toUpperCase()
+        };
+
+        // Display ticket
+        document.getElementById('t-name').textContent  = booking.name;
+        document.getElementById('t-email').textContent = booking.email;
+        document.getElementById('t-movie').textContent = booking.movie;
+        document.getElementById('t-seats').textContent = `${booking.seats} seat(s)`;
+        document.getElementById('t-time').textContent  = booking.time;
+        document.getElementById('t-price').textContent = `Rs. ${booking.total}`;
+        document.getElementById('t-id').textContent    = `Booking ID: ${booking.id}`;
+
+        document.getElementById('ticketCard').style.display = 'block';
+        console.log("Booking Object:", booking);
+    });
+</script>
+</body>
+</html>

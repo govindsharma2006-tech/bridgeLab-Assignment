@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q7 – Login Form Validation</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 18px;
+            padding: 2.2rem 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .logo { font-size: 2rem; text-align: center; margin-bottom: 0.5rem; }
+        h2 { color: #f8fafc; font-size: 1.4rem; text-align: center; margin-bottom: 0.3rem; }
+        .sub { color: #64748b; font-size: 0.82rem; text-align: center; margin-bottom: 1.8rem; }
+
+        .form-group { margin-bottom: 1.3rem; position: relative; }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.4rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.72rem 1rem;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus  { border-color: #38bdf8; }
+        input.valid  { border-color: #22c55e !important; }
+        input.invalid{ border-color: #f87171 !important; }
+
+        .error-list {
+            list-style: none;
+            margin-top: 0.5rem;
+        }
+        .error-list li {
+            font-size: 0.76rem;
+            padding: 0.2rem 0;
+            color: #f87171;
+        }
+        .error-list li.pass { color: #22c55e; }
+
+        button {
+            width: 100%;
+            padding: 0.82rem;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            margin-top: 0.3rem;
+        }
+        button:hover { opacity: 0.88; transform: translateY(-2px); }
+
+        #result {
+            margin-top: 1.2rem;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        #result.success {
+            background: rgba(34,197,94,0.15);
+            color: #22c55e;
+            border: 1px solid #22c55e;
+        }
+        #result.failure {
+            background: rgba(248,113,113,0.12);
+            color: #f87171;
+            border: 1px solid #f87171;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 99px;
+            margin-top: 0.5rem;
+            background: #334155;
+            overflow: hidden;
+        }
+        .strength-fill {
+            height: 100%;
+            border-radius: 99px;
+            transition: width 0.3s, background 0.3s;
+            width: 0%;
+        }
+        .strength-label { font-size: 0.72rem; color: #64748b; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">🔐</div>
+    <h2>Secure Login</h2>
+    <p class="sub">Q7 – RegExp-Based Validation</p>
+
+    <form id="loginForm" novalidate>
+
+        <!-- Username -->
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Min 5 characters">
+            <ul class="error-list" id="usernameErrors">
+                <li id="u-len">At least 5 characters</li>
+            </ul>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Min 8 chars">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-label" id="strengthLabel">Password strength</div>
+            <ul class="error-list" id="passwordErrors">
+                <li id="p-len">At least 8 characters</li>
+                <li id="p-upper">At least 1 uppercase letter</li>
+                <li id="p-lower">At least 1 lowercase letter</li>
+                <li id="p-num">At least 1 number</li>
+                <li id="p-special">At least 1 special character (!@#$%^&*)</li>
+            </ul>
+        </div>
+
+        <button type="submit">Login</button>
+        <div id="result"></div>
+    </form>
+</div>
+
+<script>
+    // ── RegExp Rules ──────────────────────────────────────────────────────────
+    const rules = {
+        username: {
+            len: { re: /^.{5,}$/, id: 'u-len', msg: 'At least 5 characters' }
+        },
+        password: {
+            len:     { re: /^.{8,}$/,        id: 'p-len',     msg: 'At least 8 characters'              },
+            upper:   { re: /[A-Z]/,           id: 'p-upper',   msg: 'At least 1 uppercase letter'        },
+            lower:   { re: /[a-z]/,           id: 'p-lower',   msg: 'At least 1 lowercase letter'        },
+            num:     { re: /[0-9]/,           id: 'p-num',     msg: 'At least 1 number'                  },
+            special: { re: /[^A-Za-z0-9]/,   id: 'p-special', msg: 'At least 1 special character'       }
+        }
+    };
+
+    function checkField(value, fieldRules) {
+        let passed = 0;
+        const total = Object.keys(fieldRules).length;
+        Object.values(fieldRules).forEach(rule => {
+            const ok = rule.re.test(value);
+            const li = document.getElementById(rule.id);
+            if (li) {
+                li.textContent = (ok ? '✅ ' : '❌ ') + rule.msg;
+                li.className   = ok ? 'pass' : '';
+            }
+            if (ok) passed++;
+        });
+        return { passed, total, allPassed: passed === total };
+    }
+
+    // Password strength bar
+    function updateStrength(value) {
+        const { passed } = checkField(value, rules.password);
+        const pct = (passed / 5) * 100;
+        const fill  = document.getElementById('strengthFill');
+        const label = document.getElementById('strengthLabel');
+        fill.style.width = pct + '%';
+
+        if (passed <= 1)     { fill.style.background = '#ef4444'; label.textContent = 'Weak'; }
+        else if (passed <= 3){ fill.style.background = '#f59e0b'; label.textContent = 'Moderate'; }
+        else if (passed === 4){ fill.style.background = '#3b82f6'; label.textContent = 'Strong'; }
+        else                  { fill.style.background = '#22c55e'; label.textContent = 'Very Strong'; }
+    }
+
+    // Live listeners
+    document.getElementById('username').addEventListener('input', e => {
+        const { allPassed } = checkField(e.target.value, rules.username);
+        e.target.className = allPassed ? 'valid' : (e.target.value ? 'invalid' : '');
+    });
+
+    document.getElementById('password').addEventListener('input', e => {
+        const { allPassed } = checkField(e.target.value, rules.password);
+        e.target.className = allPassed ? 'valid' : (e.target.value ? 'invalid' : '');
+        updateStrength(e.target.value);
+    });
+
+    // Submit
+    document.getElementById('loginForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const uVal = document.getElementById('username').value.trim();
+        const pVal = document.getElementById('password').value;
+        const uOk  = checkField(uVal, rules.username).allPassed;
+        const pOk  = checkField(pVal, rules.password).allPassed;
+
+        const resultEl = document.getElementById('result');
+        resultEl.style.display = 'block';
+
+        if (uOk && pOk) {
+            resultEl.className   = 'success';
+            resultEl.textContent = `✅ Welcome back, ${uVal}! Login successful.`;
+        } else {
+            resultEl.className   = 'failure';
+            resultEl.textContent = '❌ Fix the errors above before logging in.';
+        }
+    });
+</script>
+</body>
+</html>

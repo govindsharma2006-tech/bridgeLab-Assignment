@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q2 – Student Form Validator</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            color: #f8fafc;
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+        }
+        .subtitle { color: #64748b; font-size: 0.88rem; margin-bottom: 1.8rem; }
+
+        .form-group { margin-bottom: 1.2rem; }
+
+        label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #6366f1; }
+        input.valid   { border-color: #22c55e !important; }
+        input.invalid { border-color: #ef4444 !important; }
+
+        .msg {
+            font-size: 0.78rem;
+            margin-top: 0.35rem;
+            min-height: 1rem;
+            font-weight: 500;
+        }
+        .msg.ok  { color: #22c55e; }
+        .msg.err { color: #ef4444; }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        #result {
+            margin-top: 1.2rem;
+            padding: 0.9rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+        }
+        #result.success { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid #22c55e; }
+        #result.failure { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>🎓 Student Registration</h2>
+    <p class="subtitle">Q2 – Form Validation with RegExp</p>
+
+    <form id="regForm" novalidate>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="e.g. Govind Meena">
+            <div class="msg" id="nameMsg"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="e.g. govind@example.com">
+            <div class="msg" id="emailMsg"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="10-digit mobile number">
+            <div class="msg" id="phoneMsg"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Min 8 chars, 1 upper, 1 number, 1 special">
+            <div class="msg" id="passwordMsg"></div>
+        </div>
+
+        <button type="submit">Register Student</button>
+        <div id="result"></div>
+    </form>
+</div>
+
+<script>
+    // ── RegExp Patterns ───────────────────────────────────────────────────────
+    const PATTERNS = {
+        name:     /^[A-Za-z\s]{2,50}$/,
+        email:    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
+        phone:    /^\d{10}$/,
+        password: /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/
+    };
+
+    const MESSAGES = {
+        name:     { err: "❌ Only alphabets and spaces (min 2 chars).",  ok: "✅ Valid name."     },
+        email:    { err: "❌ Enter a valid email (user@domain.com).",     ok: "✅ Valid email."    },
+        phone:    { err: "❌ Phone must be exactly 10 digits.",           ok: "✅ Valid phone."    },
+        password: { err: "❌ Min 8 chars with 1 uppercase, 1 number, 1 special char.", ok: "✅ Strong password." }
+    };
+
+    // ── Live Validation on Input ──────────────────────────────────────────────
+    function validate(id) {
+        const input   = document.getElementById(id);
+        const msgEl   = document.getElementById(id + 'Msg');
+        const isValid = PATTERNS[id].test(input.value.trim());
+
+        input.className = isValid ? 'valid' : 'invalid';
+        msgEl.className = 'msg ' + (isValid ? 'ok' : 'err');
+        msgEl.textContent = isValid ? MESSAGES[id].ok : MESSAGES[id].err;
+        return isValid;
+    }
+
+    // Attach live listeners
+    ['name', 'email', 'phone', 'password'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => validate(id));
+    });
+
+    // ── Form Submit ───────────────────────────────────────────────────────────
+    document.getElementById('regForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const results = ['name', 'email', 'phone', 'password'].map(validate);
+        const allValid = results.every(Boolean);
+        const resultEl = document.getElementById('result');
+        resultEl.style.display = 'block';
+
+        if (allValid) {
+            const name = document.getElementById('name').value.trim();
+            resultEl.className = 'success';
+            resultEl.textContent = `✅ Registration successful! Welcome, ${name}.`;
+        } else {
+            resultEl.className = 'failure';
+            resultEl.textContent = '❌ Please fix the errors above before submitting.';
+        }
+    });
+</script>
+</body>
+</html>

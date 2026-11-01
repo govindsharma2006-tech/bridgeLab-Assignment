@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q9 – Shopping Cart with Coupon</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #f8fafc;
+        }
+
+        h1 { text-align: center; font-size: 1.6rem; margin-bottom: 0.3rem; }
+        .sub { text-align: center; color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: #1e293b;
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+        }
+        .panel h3 { font-size: 1rem; color: #38bdf8; margin-bottom: 1rem; }
+
+        /* Add Item Form */
+        .row { display: flex; gap: 0.6rem; margin-bottom: 0.7rem; align-items: center; }
+        .row input {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            background: #0f172a;
+            border: 1.5px solid #334155;
+            border-radius: 8px;
+            color: #f8fafc;
+            font-size: 0.88rem;
+            outline: none;
+        }
+        .row input:focus { border-color: #38bdf8; }
+        .row input::placeholder { color: #475569; }
+
+        .btn {
+            padding: 0.62rem 1.1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .btn:hover { opacity: 0.86; transform: translateY(-1px); }
+        .btn-blue  { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; }
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-red   { background: #ef4444; color: white; padding: 0.3rem 0.6rem; font-size: 0.75rem; border-radius: 6px; }
+
+        /* Cart Table */
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { padding: 0.55rem 0.7rem; text-align: left; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #334155; }
+        td { padding: 0.6rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        .empty-cart { text-align: center; color: #475569; padding: 1.5rem; font-size: 0.85rem; }
+
+        /* Summary */
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.55rem 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .summary-row:last-child { border-bottom: none; }
+        .summary-row.total { font-size: 1.05rem; font-weight: 700; color: #34d399; margin-top: 0.3rem; }
+        .summary-row.discount { color: #f87171; }
+
+        /* Coupon */
+        .coupon-row { display: flex; gap: 0.7rem; margin-top: 1.2rem; }
+        .coupon-row input { flex: 1; }
+        .coupon-msg { font-size: 0.78rem; margin-top: 0.4rem; min-height: 1rem; }
+        .coupon-msg.ok  { color: #22c55e; }
+        .coupon-msg.err { color: #f87171; }
+    </style>
+</head>
+<body>
+
+<h1>🛒 Shopping Cart</h1>
+<p class="sub">Q9 – Cart Class + RegExp Coupon Validation</p>
+
+<div class="layout">
+
+    <!-- Left: Add item + cart table -->
+    <div>
+        <div class="panel" style="margin-bottom:1.5rem">
+            <h3>➕ Add Item to Cart</h3>
+            <div class="row">
+                <input type="text"   id="itemName"  placeholder="Product name">
+                <input type="number" id="itemPrice" placeholder="Price (Rs.)" min="1">
+                <input type="number" id="itemQty"   placeholder="Qty" min="1" style="max-width:70px">
+            </div>
+            <button class="btn btn-blue" onclick="addItem()">Add to Cart</button>
+        </div>
+
+        <div class="panel">
+            <h3>🧺 Cart Items</h3>
+            <div id="cartTable">
+                <p class="empty-cart">Your cart is empty. Add some items!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Summary + Coupon -->
+    <div class="panel">
+        <h3>📋 Order Summary</h3>
+
+        <div id="summaryItems"></div>
+
+        <div style="margin-top:1rem">
+            <div class="summary-row"><span>Subtotal</span><span id="subtotal">Rs. 0.00</span></div>
+            <div class="summary-row discount" id="discountRow" style="display:none">
+                <span id="discountLabel">Discount</span>
+                <span id="discountVal"></span>
+            </div>
+            <div class="summary-row total"><span>Total Payable</span><span id="grandTotal">Rs. 0.00</span></div>
+        </div>
+
+        <!-- Coupon -->
+        <div style="margin-top:1.8rem">
+            <h3>🏷️ Apply Coupon</h3>
+            <p style="font-size:0.78rem; color:#64748b; margin-bottom:0.6rem">
+                Format: <code style="color:#a78bfa">SAVE20</code> or <code style="color:#a78bfa">DISC10</code>
+                (keyword + 1–2 digit number)
+            </p>
+            <div class="coupon-row">
+                <input type="text" id="couponInput" placeholder="e.g. SAVE20" style="text-transform:uppercase">
+                <button class="btn btn-green" onclick="applyCoupon()">Apply</button>
+                <button class="btn" style="background:#334155;color:#cbd5e1" onclick="removeCoupon()">Remove</button>
+            </div>
+            <div class="coupon-msg" id="couponMsg"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ── Cart Class ────────────────────────────────────────────────────────────
+
+    class Cart {
+        constructor() {
+            this.items      = [];   // [{ name, price, quantity }]
+            this.discount   = 0;   // active discount percent
+            this.couponCode = '';
+        }
+
+        /** Add or merge item by name. */
+        addItem(name, price, quantity = 1) {
+            const existing = this.items.find(i => i.name.toLowerCase() === name.toLowerCase());
+            if (existing) {
+                existing.quantity += quantity;
+            } else {
+                this.items.push({ name, price, quantity });
+            }
+        }
+
+        /** Remove item by index. */
+        removeItem(index) {
+            this.items.splice(index, 1);
+            this.discount   = 0;
+            this.couponCode = '';
+        }
+
+        /** Returns raw subtotal before any discount. */
+        getSubtotal() {
+            return this.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+        }
+
+        /** Returns final total after discount. */
+        getTotal() {
+            const subtotal = this.getSubtotal();
+            return subtotal - (subtotal * this.discount) / 100;
+        }
+    }
+
+    const cart = new Cart();
+
+    // ── Coupon RegExp ─────────────────────────────────────────────────────────
+    // Matches: SAVE10, DISC20, PROMO5, etc. (word + 1-2 digits)
+    const COUPON_RE = /^([A-Z]+)(\d{1,2})$/;
+
+    function parseCoupon(code) {
+        const match = COUPON_RE.exec(code.trim().toUpperCase());
+        if (!match) return null;
+        const keyword = match[1];
+        const percent = parseInt(match[2], 10);
+        // Valid keywords: SAVE, DISC, DEAL, PROMO
+        const validKeywords = ['SAVE', 'DISC', 'DEAL', 'PROMO'];
+        if (!validKeywords.includes(keyword)) return null;
+        if (percent < 1 || percent > 50)      return null;
+        return { keyword, percent };
+    }
+
+    // ── DOM Rendering ─────────────────────────────────────────────────────────
+
+    function renderCart() {
+        const container = document.getElementById('cartTable');
+        if (cart.items.length === 0) {
+            container.innerHTML = '<p class="empty-cart">Your cart is empty. Add some items!</p>';
+        } else {
+            let rows = cart.items.map((item, i) => `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>Rs. ${item.price.toFixed(2)}</td>
+                    <td>${item.quantity}</td>
+                    <td>Rs. ${(item.price * item.quantity).toFixed(2)}</td>
+                    <td><button class="btn-red btn" onclick="removeItem(${i})">✕</button></td>
+                </tr>
+            `).join('');
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th><th>Price</th><th>Qty</th><th>Total</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>`;
+        }
+        renderSummary();
+    }
+
+    function renderSummary() {
+        const subtotal   = cart.getSubtotal();
+        const total      = cart.getTotal();
+        const discountRs = subtotal - total;
+
+        document.getElementById('subtotal').textContent   = `Rs. ${subtotal.toFixed(2)}`;
+        document.getElementById('grandTotal').textContent = `Rs. ${total.toFixed(2)}`;
+
+        const discRow = document.getElementById('discountRow');
+        if (cart.discount > 0) {
+            discRow.style.display = 'flex';
+            document.getElementById('discountLabel').textContent = `Coupon (${cart.couponCode} -${cart.discount}%)`;
+            document.getElementById('discountVal').textContent   = `-Rs. ${discountRs.toFixed(2)}`;
+        } else {
+            discRow.style.display = 'none';
+        }
+    }
+
+    // ── Event Handlers ────────────────────────────────────────────────────────
+
+    function addItem() {
+        const name  = document.getElementById('itemName').value.trim();
+        const price = parseFloat(document.getElementById('itemPrice').value);
+        const qty   = parseInt(document.getElementById('itemQty').value, 10) || 1;
+
+        if (!name || isNaN(price) || price <= 0) {
+            alert('Please enter a valid product name and price.');
+            return;
+        }
+        cart.addItem(name, price, qty);
+        document.getElementById('itemName').value  = '';
+        document.getElementById('itemPrice').value = '';
+        document.getElementById('itemQty').value   = '';
+        renderCart();
+    }
+
+    function removeItem(i) {
+        cart.removeItem(i);
+        renderCart();
+        document.getElementById('couponMsg').textContent = '';
+        document.getElementById('couponInput').value    = '';
+    }
+
+    function applyCoupon() {
+        const code   = document.getElementById('couponInput').value;
+        const msgEl  = document.getElementById('couponMsg');
+        const parsed = parseCoupon(code);
+
+        if (!parsed) {
+            msgEl.className   = 'coupon-msg err';
+            msgEl.textContent = `❌ Invalid coupon. Use format like SAVE20 or DISC10 (1–50%).`;
+            cart.discount     = 0;
+            cart.couponCode   = '';
+        } else {
+            cart.discount     = parsed.percent;
+            cart.couponCode   = code.toUpperCase();
+            msgEl.className   = 'coupon-msg ok';
+            msgEl.textContent = `✅ Coupon "${cart.couponCode}" applied — ${parsed.percent}% off!`;
+        }
+        renderSummary();
+    }
+
+    function removeCoupon() {
+        cart.discount   = 0;
+        cart.couponCode = '';
+        document.getElementById('couponInput').value    = '';
+        document.getElementById('couponMsg').textContent = '';
+        renderSummary();
+    }
+
+    // Pre-populate with demo items
+    cart.addItem("Wireless Headphones", 2499, 1);
+    cart.addItem("Gaming Mouse",         1799, 2);
+    cart.addItem("Desk Lamp",            1299, 1);
+    renderCart();
+</script>
+</body>
+</html>
