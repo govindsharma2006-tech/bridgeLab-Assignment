@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q2 – Live Character Counter</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .container { width: 100%; max-width: 480px; }
+    h1 { font-size: 1.5rem; color: #818cf8; margin-bottom: 24px; text-align: center; }
+    textarea { width: 100%; height: 160px; resize: none; background: #1e293b; border: 2px solid #334155; border-radius: 10px; color: #e2e8f0; font-size: 1rem; font-family: inherit; padding: 14px; outline: none; transition: border-color 0.2s; }
+    textarea:focus { border-color: #818cf8; }
+    .counter-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    #counter { font-size: 1rem; font-weight: 700; color: #94a3b8; transition: color 0.3s; }
+    #counter.warning { color: #fbbf24; }
+    #counter.danger  { color: #f87171; }
+    #resetBtn { padding: 8px 18px; background: #4f46e5; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    #resetBtn:hover { background: #4338ca; }
+    .bar-track { margin-top: 12px; height: 6px; background: #334155; border-radius: 3px; }
+    .bar-fill { height: 100%; border-radius: 3px; background: #818cf8; transition: width 0.2s, background 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✏️ Live Character Counter</h1>
+    <textarea id="textArea" placeholder="Start typing... (max 100 characters)"></textarea>
+
+    <div class="bar-track">
+      <div class="bar-fill" id="barFill" style="width: 0%;"></div>
+    </div>
+
+    <div class="counter-row">
+      <span id="counter">100 characters remaining</span>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const textArea = document.getElementById("textArea");
+    const counter  = document.getElementById("counter");
+    const barFill  = document.getElementById("barFill");
+    const resetBtn = document.getElementById("resetBtn");
+    const MAX      = 100;
+
+    // ── Update counter and bar on each input event ──
+    textArea.addEventListener("input", () => updateCounter());
+
+    // ── Prevent typing beyond max using keydown (preventDefault) ──
+    textArea.addEventListener("keydown", (e) => {
+      const remaining = MAX - textArea.value.length;
+      // Allow control keys (Backspace, Delete, arrows) even at limit
+      const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"];
+      if (remaining <= 0 && !allowed.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault(); // Block further typing at 0 chars left
+      }
+    });
+
+    function updateCounter() {
+      const used      = textArea.value.length;
+      const remaining = MAX - used;
+      const percent   = (used / MAX) * 100;
+
+      counter.textContent = `${remaining} character${remaining !== 1 ? "s" : ""} remaining`;
+
+      // ── Color transitions based on remaining count ──
+      counter.classList.remove("warning", "danger");
+      barFill.style.background = "#818cf8";
+
+      if (remaining <= 0) {
+        counter.classList.add("danger");
+        barFill.style.background = "#f87171";
+      } else if (remaining <= 20) {
+        counter.classList.add("warning");
+        barFill.style.background = "#fbbf24";
+      }
+
+      barFill.style.width = `${percent}%`;
+    }
+
+    // ── Reset clears the textarea and counter ──
+    resetBtn.addEventListener("click", () => {
+      textArea.value = "";
+      updateCounter();
+      textArea.focus();
+    });
+  </script>
+</body>
+</html>
+

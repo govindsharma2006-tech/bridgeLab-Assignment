@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q9 – Form Submit Blocker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 36px; width: 100%; max-width: 440px; }
+    h1 { font-size: 1.4rem; color: #818cf8; text-align: center; margin-bottom: 28px; }
+    .field { margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; color: #94a3b8; font-weight: 600; margin-bottom: 6px; }
+    input { width: 100%; padding: 11px 14px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #e2e8f0; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+    input:focus { border-color: #818cf8; }
+    input.valid   { border-color: #34d399; }
+    input.invalid { border-color: #f87171; }
+    .err { font-size: 0.8rem; color: #f87171; min-height: 18px; margin-top: 4px; }
+    .btn-submit { width: 100%; padding: 12px; background: #4f46e5; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+    .btn-submit:hover { background: #4338ca; }
+    .success-msg { display: none; text-align: center; background: #064e3b; border: 1px solid #34d399; border-radius: 10px; padding: 20px; color: #34d399; font-weight: 700; font-size: 1.1rem; margin-top: 20px; }
+    .success-msg.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔒 Form Submit Blocker</h1>
+
+    <form id="myForm" novalidate>
+      <!-- Name field -->
+      <div class="field">
+        <label for="name">Full Name <span style="color:#f87171">*</span></label>
+        <input type="text" id="name" placeholder="Enter your name" />
+        <div class="err" id="nameErr"></div>
+      </div>
+
+      <!-- Email field -->
+      <div class="field">
+        <label for="email">Email Address <span style="color:#f87171">*</span></label>
+        <input type="text" id="email" placeholder="Enter your email" />
+        <div class="err" id="emailErr"></div>
+      </div>
+
+      <!-- Password field -->
+      <div class="field">
+        <label for="password">Password <span style="color:#f87171">*</span></label>
+        <input type="password" id="password" placeholder="Minimum 6 characters" />
+        <div class="err" id="passwordErr"></div>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Form</button>
+    </form>
+
+    <div class="success-msg" id="successMsg">✅ Form Submitted Successfully!</div>
+  </div>
+
+  <script>
+    const form       = document.getElementById("myForm");
+    const nameInput  = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passInput  = document.getElementById("password");
+    const successMsg = document.getElementById("successMsg");
+
+    // ── Validate a single field, show/clear error ──
+    function validateField(input, errId, rules) {
+      const val = input.value.trim();
+      let errorMsg = "";
+
+      for (const rule of rules) {
+        if (!rule.check(val)) { errorMsg = rule.message; break; }
+      }
+
+      const errEl = document.getElementById(errId);
+      errEl.textContent = errorMsg;
+
+      if (errorMsg) {
+        input.classList.add("invalid");
+        input.classList.remove("valid");
+        return false;
+      } else if (val) {
+        input.classList.add("valid");
+        input.classList.remove("invalid");
+      }
+      return true;
+    }
+
+    const nameRules = [
+      { check: v => v.length > 0,          message: "Name is required." },
+    ];
+
+    const emailRules = [
+      { check: v => v.length > 0,          message: "Email is required." },
+      { check: v => v.includes("@"),        message: "Email must contain @." },
+      { check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), message: "Enter a valid email format." },
+    ];
+
+    const passRules = [
+      { check: v => v.length > 0,          message: "Password is required." },
+      { check: v => v.length >= 6,         message: "Password must be at least 6 characters." },
+    ];
+
+    // ── Live validation: errors disappear automatically as user types ──
+    nameInput.addEventListener("input",  () => validateField(nameInput,  "nameErr",     nameRules));
+    emailInput.addEventListener("input", () => validateField(emailInput, "emailErr",    emailRules));
+    passInput.addEventListener("input",  () => validateField(passInput,  "passwordErr", passRules));
+
+    // ── Intercept form submission with preventDefault() ──
+    form.addEventListener("submit", (e) => {
+      e.preventDefault(); // Always stop default form submission
+
+      const nameValid  = validateField(nameInput,  "nameErr",     nameRules);
+      const emailValid = validateField(emailInput, "emailErr",    emailRules);
+      const passValid  = validateField(passInput,  "passwordErr", passRules);
+
+      if (nameValid && emailValid && passValid) {
+        // All fields valid — show success
+        successMsg.classList.add("show");
+        form.style.opacity = "0.4";
+        form.style.pointerEvents = "none";
+      }
+    });
+  </script>
+</body>
+</html>
+

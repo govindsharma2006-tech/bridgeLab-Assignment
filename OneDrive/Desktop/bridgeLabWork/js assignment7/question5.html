@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q5 – Image Gallery with Modal</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 40px 16px; }
+    h1 { font-size: 1.5rem; color: #818cf8; text-align: center; margin-bottom: 28px; }
+
+    /* ── Image grid ── */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 700px; margin: 0 auto; }
+    .gallery img { width: 100%; height: 170px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid #334155; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .gallery img:hover { transform: scale(1.04); border-color: #818cf8; box-shadow: 0 4px 20px rgba(129,140,248,0.3); }
+
+    /* ── Modal backdrop ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    /* ── Modal inner box ── */
+    .modal-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 16px;
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+    }
+    .modal-box img { max-width: 70vw; max-height: 70vh; border-radius: 10px; display: block; }
+    .modal-close { position: absolute; top: -12px; right: -12px; background: #ef4444; color: #fff; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .modal-caption { text-align: center; margin-top: 10px; color: #94a3b8; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>🖼️ Image Gallery with Modal Preview</h1>
+
+  <div class="gallery" id="gallery">
+    <!-- Images from picsum with different seeds for variety -->
+    <img src="https://picsum.photos/seed/nature1/400/300"    alt="Nature 1"      data-caption="Nature — Mountains" />
+    <img src="https://picsum.photos/seed/city2/400/300"      alt="City 2"        data-caption="City — Skyline" />
+    <img src="https://picsum.photos/seed/ocean3/400/300"     alt="Ocean 3"       data-caption="Ocean — Waves" />
+    <img src="https://picsum.photos/seed/forest4/400/300"    alt="Forest 4"      data-caption="Forest — Trees" />
+    <img src="https://picsum.photos/seed/desert5/400/300"    alt="Desert 5"      data-caption="Desert — Dunes" />
+    <img src="https://picsum.photos/seed/flowers6/400/300"   alt="Flowers 6"     data-caption="Flowers — Bloom" />
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose">✕</button>
+      <img src="" alt="" id="modalImg" />
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    const backdrop     = document.getElementById("modalBackdrop");
+    const modalImg     = document.getElementById("modalImg");
+    const modalCaption = document.getElementById("modalCaption");
+    const modalBox     = document.getElementById("modalBox");
+
+    // ── Open modal on image click ──
+    document.getElementById("gallery").addEventListener("click", (e) => {
+      if (e.target.tagName === "IMG") {
+        modalImg.src         = e.target.src.replace("400/300", "800/600");
+        modalImg.alt         = e.target.alt;
+        modalCaption.textContent = e.target.dataset.caption || "";
+        backdrop.classList.add("open");
+      }
+    });
+
+    // ── Clicking the backdrop (outside modal box) closes it ──
+    backdrop.addEventListener("click", () => backdrop.classList.remove("open"));
+
+    // ── stopPropagation prevents click inside modal box from reaching backdrop ──
+    modalBox.addEventListener("click", (e) => e.stopPropagation());
+
+    // ── Close button ──
+    document.getElementById("modalClose").addEventListener("click", () => {
+      backdrop.classList.remove("open");
+    });
+
+    // ── Escape key closes modal ──
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") backdrop.classList.remove("open");
+    });
+  </script>
+</body>
+</html>
+

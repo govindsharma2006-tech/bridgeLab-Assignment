@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q1 – Dynamic Product List Manager</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 16px; }
+    h1 { font-size: 1.5rem; color: #818cf8; margin-bottom: 24px; }
+    .input-row { display: flex; gap: 10px; margin-bottom: 24px; width: 100%; max-width: 500px; }
+    input[type="text"] { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #e2e8f0; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+    input[type="text"]:focus { border-color: #818cf8; }
+    button { padding: 10px 18px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-add { background: #4f46e5; color: #fff; }
+    .btn-add:hover { background: #4338ca; }
+    ul { list-style: none; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 10px; }
+    li { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; transition: border-color 0.2s; }
+    li:hover { border-color: #818cf8; }
+    .product-name { flex: 1; font-size: 1rem; }
+    .edit-input { flex: 1; background: #0f172a; border: 1px solid #818cf8; border-radius: 6px; padding: 6px 10px; color: #e2e8f0; font-size: 1rem; outline: none; }
+    .btn-edit { background: #0e7490; color: #fff; font-size: 0.8rem; padding: 6px 12px; }
+    .btn-edit:hover { background: #0891b2; }
+    .btn-delete { background: #be123c; color: #fff; font-size: 0.8rem; padding: 6px 12px; }
+    .btn-delete:hover { background: #e11d48; }
+    .empty { color: #64748b; text-align: center; padding: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🛒 Product List Manager</h1>
+
+  <div class="input-row">
+    <input type="text" id="productInput" placeholder="Enter product name..." />
+    <button class="btn-add" id="addBtn">Add</button>
+  </div>
+
+  <!-- Event delegation: single listener on the ul handles all Edit/Delete -->
+  <ul id="productList">
+    <li class="empty" id="emptyMsg">No products yet. Add one above!</li>
+  </ul>
+
+  <script>
+    const productList  = document.getElementById("productList");
+    const productInput = document.getElementById("productInput");
+    const addBtn       = document.getElementById("addBtn");
+    const emptyMsg     = document.getElementById("emptyMsg");
+    let productCount   = 0;
+
+    // ── Add a new product to the list ──
+    function addProduct() {
+      const name = productInput.value.trim();
+      if (!name) return;
+
+      emptyMsg.style.display = "none";
+      productCount++;
+      const id = `product-${productCount}`;
+
+      const li = document.createElement("li");
+      li.dataset.id = id;
+      li.innerHTML = `
+        <span class="product-name">${name}</span>
+        <button class="btn-edit" data-action="edit">Edit</button>
+        <button class="btn-delete" data-action="delete">Delete</button>
+      `;
+      productList.appendChild(li);
+      productInput.value = "";
+      productInput.focus();
+    }
+
+    // ── Enter key shortcut to add ──
+    productInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addProduct();
+    });
+
+    addBtn.addEventListener("click", addProduct);
+
+    // ── Event Delegation: one listener handles ALL edit & delete clicks ──
+    productList.addEventListener("click", (e) => {
+      const action = e.target.dataset.action;
+      const li     = e.target.closest("li[data-id]");
+      if (!li) return;
+
+      if (action === "delete") {
+        li.remove();
+        if (productList.querySelectorAll("li[data-id]").length === 0) {
+          emptyMsg.style.display = "";
+        }
+      }
+
+      if (action === "edit") {
+        enterEditMode(li);
+      }
+    });
+
+    // ── Switch item to inline edit mode ──
+    function enterEditMode(li) {
+      const nameSpan  = li.querySelector(".product-name");
+      const editBtn   = li.querySelector('[data-action="edit"]');
+      const currentName = nameSpan.textContent;
+
+      // Replace span with input field
+      const editInput = document.createElement("input");
+      editInput.type  = "text";
+      editInput.value = currentName;
+      editInput.className = "edit-input";
+      li.replaceChild(editInput, nameSpan);
+      editBtn.textContent = "Save";
+      editBtn.dataset.action = "save";
+      editInput.focus();
+      editInput.select();
+
+      // ── Auto-save when user clicks outside ──
+      editInput.addEventListener("blur", () => saveEdit(li, editInput));
+      editInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") saveEdit(li, editInput);
+      });
+    }
+
+    // ── Save the edited name and restore normal view ──
+    function saveEdit(li, editInput) {
+      const newName = editInput.value.trim() || editInput.value;
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "product-name";
+      nameSpan.textContent = newName;
+      li.replaceChild(nameSpan, editInput);
+
+      const saveBtn = li.querySelector('[data-action="save"]');
+      if (saveBtn) {
+        saveBtn.textContent = "Edit";
+        saveBtn.dataset.action = "edit";
+      }
+    }
+  </script>
+</body>
+</html>
+

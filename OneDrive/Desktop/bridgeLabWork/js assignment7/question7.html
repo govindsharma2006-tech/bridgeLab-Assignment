@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q7 – Mouse Path & Coordinates Logger</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 16px; }
+    h1 { font-size: 1.5rem; color: #818cf8; margin-bottom: 8px; }
+    p  { color: #64748b; margin-bottom: 24px; font-size: 0.9rem; }
+
+    /* ── Tracking box ── */
+    #trackBox {
+      width: 400px;
+      height: 400px;
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 14px;
+      position: relative;
+      cursor: crosshair;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    #trackBox:hover { border-color: #818cf8; }
+
+    /* ── Coordinate HUD inside the box ── */
+    #coordDisplay {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #818cf8;
+      pointer-events: none;
+    }
+
+    /* ── Red dot dropped on double-click ── */
+    .dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #ef4444;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: popIn 0.2s ease;
+    }
+    @keyframes popIn { from { transform: translate(-50%,-50%) scale(0); } to { transform: translate(-50%,-50%) scale(1); } }
+
+    .info-row { display: flex; gap: 20px; margin-top: 16px; }
+    .info-badge { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-family: monospace; }
+    .info-badge span { color: #818cf8; font-weight: 700; }
+    #clearBtn { margin-top: 14px; padding: 8px 20px; background: #be123c; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    #clearBtn:hover { background: #e11d48; }
+  </style>
+</head>
+<body>
+  <h1>🖱️ Mouse Coordinates Logger</h1>
+  <p>Move mouse inside the box • Double-click to drop a red dot</p>
+
+  <div id="trackBox">
+    <div id="coordDisplay">X: — &nbsp;|&nbsp; Y: —</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-badge">clientX: <span id="xDisplay">—</span></div>
+    <div class="info-badge">clientY: <span id="yDisplay">—</span></div>
+    <div class="info-badge">Dots: <span id="dotCount">0</span></div>
+  </div>
+
+  <button id="clearBtn" onclick="clearDots()">Clear Dots</button>
+
+  <script>
+    const trackBox     = document.getElementById("trackBox");
+    const coordDisplay = document.getElementById("coordDisplay");
+    const xDisplay     = document.getElementById("xDisplay");
+    const yDisplay     = document.getElementById("yDisplay");
+    const dotCountEl   = document.getElementById("dotCount");
+    let dotCount = 0;
+
+    // ── Track mouse movement inside the box ──
+    trackBox.addEventListener("mousemove", (e) => {
+      const rect = trackBox.getBoundingClientRect();
+      // Position relative to the box
+      const relX = Math.round(e.clientX - rect.left);
+      const relY = Math.round(e.clientY - rect.top);
+
+      coordDisplay.innerHTML = `X: ${relX} &nbsp;|&nbsp; Y: ${relY}`;
+      xDisplay.textContent   = e.clientX;
+      yDisplay.textContent   = e.clientY;
+    });
+
+    // ── Reset display when mouse leaves the box ──
+    trackBox.addEventListener("mouseleave", () => {
+      coordDisplay.innerHTML = "X: — &nbsp;|&nbsp; Y: —";
+    });
+
+    // ── Drop a red dot at double-click position ──
+    trackBox.addEventListener("dblclick", (e) => {
+      const rect = trackBox.getBoundingClientRect();
+      const dot  = document.createElement("div");
+      dot.className = "dot";
+      dot.style.left = `${e.clientX - rect.left}px`;
+      dot.style.top  = `${e.clientY - rect.top}px`;
+      trackBox.appendChild(dot);
+      dotCount++;
+      dotCountEl.textContent = dotCount;
+    });
+
+    // ── Clear all dropped dots ──
+    function clearDots() {
+      trackBox.querySelectorAll(".dot").forEach(d => d.remove());
+      dotCount = 0;
+      dotCountEl.textContent = 0;
+    }
+  </script>
+</body>
+</html>
+

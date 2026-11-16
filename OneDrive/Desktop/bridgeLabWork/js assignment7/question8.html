@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q8 – Custom Dropdown</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 16px; }
+    h1 { font-size: 1.5rem; color: #818cf8; margin-bottom: 8px; }
+    p  { color: #64748b; margin-bottom: 32px; font-size: 0.9rem; }
+
+    /* ── Dropdown wrapper ── */
+    .dropdown { position: relative; width: 260px; }
+
+    /* ── Toggle button ── */
+    #dropBtn {
+      width: 100%;
+      padding: 12px 16px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      color: #e2e8f0;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+    #dropBtn:hover { border-color: #818cf8; }
+    #dropBtn.open  { border-color: #818cf8; border-radius: 10px 10px 0 0; }
+    .arrow { transition: transform 0.2s; }
+    .arrow.rotated { transform: rotate(180deg); }
+
+    /* ── Options list ── */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #1e293b;
+      border: 1px solid #818cf8;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      z-index: 50;
+      overflow: hidden;
+    }
+    .dropdown-menu.open { display: block; }
+
+    .dropdown-item {
+      padding: 11px 16px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .dropdown-item:hover { background: #334155; border-left-color: #818cf8; color: #c7d2fe; }
+    .dropdown-item.selected { background: #2e1f6e; color: #818cf8; border-left-color: #818cf8; }
+
+    .selected-display {
+      margin-top: 24px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      text-align: center;
+      width: 260px;
+    }
+    .selected-display strong { color: #818cf8; }
+    .phase-note { margin-top: 12px; font-size: 0.75rem; color: #475569; width: 260px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>🔽 Custom Dropdown</h1>
+  <p>No &lt;select&gt; tag used — built entirely with JavaScript</p>
+
+  <div class="dropdown" id="dropdownWrapper">
+    <button id="dropBtn">
+      <span id="dropLabel">Choose a language...</span>
+      <span class="arrow" id="arrow">▼</span>
+    </button>
+    <div class="dropdown-menu" id="dropMenu">
+      <div class="dropdown-item" data-value="javascript">⚡ JavaScript</div>
+      <div class="dropdown-item" data-value="python">🐍 Python</div>
+      <div class="dropdown-item" data-value="java">☕ Java</div>
+      <div class="dropdown-item" data-value="cpp">⚙️ C++</div>
+      <div class="dropdown-item" data-value="rust">🦀 Rust</div>
+      <div class="dropdown-item" data-value="go">🐹 Go</div>
+    </div>
+  </div>
+
+  <div class="selected-display" id="selectedDisplay">No selection yet</div>
+  <div class="phase-note">📌 Close on outside click uses capturing phase (addEventListener 3rd arg = true)</div>
+
+  <script>
+    const dropBtn     = document.getElementById("dropBtn");
+    const dropMenu    = document.getElementById("dropMenu");
+    const dropLabel   = document.getElementById("dropLabel");
+    const arrow       = document.getElementById("arrow");
+    const display     = document.getElementById("selectedDisplay");
+
+    // ── Toggle dropdown open/close ──
+    function openDropdown() {
+      dropMenu.classList.add("open");
+      dropBtn.classList.add("open");
+      arrow.classList.add("rotated");
+    }
+
+    function closeDropdown() {
+      dropMenu.classList.remove("open");
+      dropBtn.classList.remove("open");
+      arrow.classList.remove("rotated");
+    }
+
+    function toggleDropdown() {
+      dropMenu.classList.contains("open") ? closeDropdown() : openDropdown();
+    }
+
+    dropBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+
+    // ── Selecting an option ──
+    dropMenu.addEventListener("click", (e) => {
+      const item = e.target.closest(".dropdown-item");
+      if (!item) return;
+
+      const value = item.dataset.value;
+      const text  = item.textContent;
+
+      dropLabel.textContent = text;
+      display.innerHTML     = `You selected: <strong>${text}</strong>`;
+
+      // Mark selected item
+      dropMenu.querySelectorAll(".dropdown-item").forEach(i => i.classList.remove("selected"));
+      item.classList.add("selected");
+
+      closeDropdown();
+    });
+
+    // ── Closing on outside click using CAPTURING PHASE (3rd argument = true) ──
+    // Capturing phase means this listener fires before any bubble listeners inside the dropdown
+    document.addEventListener("click", () => closeDropdown(), true);
+
+    // ── Prevent the dropdown itself from triggering the capture-phase close ──
+    document.getElementById("dropdownWrapper").addEventListener("click", (e) => {
+      e.stopPropagation();
+    }, true);
+  </script>
+</body>
+</html>
+

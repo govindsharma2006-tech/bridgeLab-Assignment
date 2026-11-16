@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q6 – Real-Time Table Filter</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 40px 16px; }
+    h1 { font-size: 1.5rem; color: #818cf8; text-align: center; margin-bottom: 24px; }
+    .search-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+    #searchInput { width: 100%; max-width: 440px; padding: 11px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #e2e8f0; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+    #searchInput:focus { border-color: #818cf8; }
+    .table-wrap { max-width: 700px; margin: 0 auto; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { background: #1e293b; color: #818cf8; padding: 12px 16px; text-align: left; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #334155; }
+    tbody tr { border-bottom: 1px solid #1e293b; transition: background 0.15s; }
+    tbody tr:hover { background: #1e293b; }
+    tbody td { padding: 12px 16px; font-size: 0.95rem; }
+    tbody td:last-child { color: #34d399; font-weight: 700; }
+    .no-results { text-align: center; padding: 24px; color: #64748b; font-style: italic; display: none; }
+    .highlight { background: rgba(129,140,248,0.25); border-radius: 3px; padding: 1px 2px; color: #c7d2fe; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Student Table Filter</h1>
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search by name, branch or CGPA..." />
+  </div>
+
+  <div class="table-wrap">
+    <table id="studentTable">
+      <thead>
+        <tr><th>Name</th><th>Branch</th><th>CGPA</th></tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td>Alice Johnson</td><td>Computer Science</td><td>9.2</td></tr>
+        <tr><td>Bob Smith</td><td>Mechanical Engineering</td><td>8.5</td></tr>
+        <tr><td>Charlie Brown</td><td>Electronics</td><td>7.8</td></tr>
+        <tr><td>Diana Prince</td><td>Computer Science</td><td>9.5</td></tr>
+        <tr><td>Ethan Hunt</td><td>Civil Engineering</td><td>8.1</td></tr>
+        <tr><td>Fiona Green</td><td>Electrical Engineering</td><td>8.9</td></tr>
+        <tr><td>George Miller</td><td>Computer Science</td><td>7.6</td></tr>
+        <tr><td>Hannah Davis</td><td>Electronics</td><td>9.0</td></tr>
+        <tr><td>Ian Wright</td><td>Mechanical Engineering</td><td>8.3</td></tr>
+        <tr><td>Julia Roberts</td><td>Civil Engineering</td><td>9.1</td></tr>
+      </tbody>
+    </table>
+    <div class="no-results" id="noResults">No results found</div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const tableBody   = document.getElementById("tableBody");
+    const noResults   = document.getElementById("noResults");
+
+    // Store original cell text for clean re-matching
+    const rows = Array.from(tableBody.querySelectorAll("tr"));
+    const originalData = rows.map(row =>
+      Array.from(row.querySelectorAll("td")).map(td => td.textContent)
+    );
+
+    // ── Filter rows live on each input event ──
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      rows.forEach((row, rowIndex) => {
+        const cells    = row.querySelectorAll("td");
+        const rowTexts = originalData[rowIndex];
+        const matches  = rowTexts.some(text => text.toLowerCase().includes(query));
+
+        if (matches || query === "") {
+          row.style.display = "";
+          visibleCount++;
+
+          // ── Highlight matching text ──
+          cells.forEach((td, colIndex) => {
+            const original = rowTexts[colIndex];
+            if (query && original.toLowerCase().includes(query)) {
+              const regex   = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, "gi");
+              td.innerHTML  = original.replace(regex, '<span class="highlight">$1</span>');
+            } else {
+              td.textContent = original;
+            }
+          });
+        } else {
+          row.style.display = "none";
+        }
+      });
+
+      // ── Show "No results" message when nothing matches ──
+      noResults.style.display = visibleCount === 0 ? "block" : "none";
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JS Assignment 7 — DOM Events & Manipulation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0f1a;
+      --surface:  #131627;
+      --card:     #181c2e;
+      --border:   #252d4a;
+      --accent:   #6366f1;
+      --accent2:  #818cf8;
+      --accent3:  #c7d2fe;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --success:  #34d399;
+      --error:    #f87171;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 24px 16px 60px;
+    }
+
+    /* ── HEADER ── */
+    header { text-align: center; margin-bottom: 36px; }
+    header h1 {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p { color: var(--muted); margin-top: 6px; font-size: 0.95rem; }
+    .badge-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .badge {
+      background: #1a1f3d;
+      color: var(--accent2);
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #4338ca, #6366f1);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(99,102,241,0.55); }
+    .btn-secondary { background: var(--surface); color: var(--accent2); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--border); }
+
+    /* ── CARDS GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto 36px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      border-radius: 14px 14px 0 0;
+    }
+    .card:hover { border-color: var(--accent); box-shadow: 0 4px 22px rgba(99,102,241,0.18); }
+
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .card-num {
+      background: linear-gradient(135deg, #4338ca, #818cf8);
+      color: #fff;
+      border-radius: 8px;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .card-status { font-size: 0.72rem; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+    .status-idle { background: #1a1f3d; color: var(--muted); }
+    .status-open { background: #1a2f24; color: var(--success); }
+
+    .card-title  { font-size: 0.95rem; font-weight: 700; color: var(--accent2); margin-bottom: 4px; }
+    .card-desc   { font-size: 0.8rem; color: var(--muted); line-height: 1.4; margin-bottom: 14px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .tag {
+      background: #1a1f3d;
+      color: #a5b4fc;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .btn-open {
+      width: 100%;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid #3730a3;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      color: var(--accent2);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+    .btn-open:hover { background: linear-gradient(135deg, #312e81, #4338ca); border-color: var(--accent); }
+
+    /* ── PREVIEW IFRAME ── */
+    .preview-section {
+      max-width: 1200px;
+      margin: 0 auto 36px;
+      display: none;
+    }
+    .preview-section.active { display: block; }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #131627;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+      padding: 12px 16px;
+    }
+    .preview-title { font-size: 0.85rem; font-weight: 700; color: var(--accent2); display: flex; align-items: center; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ef4444; }
+    .dot-y { background: #eab308; }
+    .dot-g { background: #22c55e; }
+    .btn-close-preview {
+      background: #be123c; color: #fff; border: none; border-radius: 6px;
+      padding: 5px 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-close-preview:hover { background: #e11d48; }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid var(--border);
+      border-radius: 0 0 12px 12px;
+      background: #fff;
+    }
+
+    /* ── INFO PANEL ── */
+    .info-panel {
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      background: #131627;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .info-icon { font-size: 1.2rem; }
+
+    footer { text-align: center; color: var(--muted); font-size: 0.75rem; margin-top: 48px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎯 JS Assignment 7</h1>
+    <p>DOM Events · Event Delegation · Forms · Modals · Custom Components</p>
+    <div class="badge-row">
+      <span class="badge">HTML</span>
+      <span class="badge">CSS</span>
+      <span class="badge">ES6+</span>
+      <span class="badge">Event Delegation</span>
+      <span class="badge">DOM Manipulation</span>
+      <span class="badge">9 Questions</span>
+    </div>
+  </header>
+
+  <!-- Info tip -->
+  <div class="info-panel">
+    <span class="info-icon">💡</span>
+    <span>Click <strong style="color:var(--accent2)">Open Question</strong> on any card to preview it in the panel below, or <strong style="color:var(--accent2)">Open in New Tab</strong> to view it fullscreen.</span>
+  </div>
+
+  <!-- Cards grid -->
+  <div class="grid" id="cardsGrid"></div>
+
+  <!-- Inline preview panel -->
+  <div class="preview-section" id="previewSection">
+    <div class="preview-header">
+      <div class="preview-title">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        &nbsp; <span id="previewTitle">Preview</span>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <a id="newTabLink" href="#" target="_blank" style="background:#1e1b4b;color:var(--accent2);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:0.8rem;font-weight:700;text-decoration:none;">↗ New Tab</a>
+        <button class="btn-close-preview" onclick="closePreview()">✕ Close</button>
+      </div>
+    </div>
+    <iframe id="previewFrame" src="" title="Question Preview"></iframe>
+  </div>
+
+  <footer>
+    <p>Assignment 7 — HTML · CSS · JavaScript ES6+ | DOM Events & Manipulation</p>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        num: 1,
+        file: "question1.html",
+        title: "Dynamic Product List Manager",
+        desc: "Add, edit inline, and delete products. Event delegation handles all actions on the parent &lt;ul&gt;. Clicking outside auto-saves edit mode.",
+        tags: ["Event Delegation", "DOM Manipulation", "Inline Edit"]
+      },
+      {
+        num: 2,
+        file: "question2.html",
+        title: "Live Character Counter",
+        desc: "Textarea with 100-char limit. Counter turns yellow at 20 left, red at 0. Uses preventDefault() to block further typing. Reset button clears all.",
+        tags: ["input Event", "preventDefault()", "Live Counter"]
+      },
+      {
+        num: 3,
+        file: "question3.html",
+        title: "Multi-Step Form",
+        desc: "3-step form: Name → Email → Password. Next only proceeds on valid input. Back navigates without losing data. Final step shows a summary.",
+        tags: ["Form Validation", "Multi-Step", "RegExp"]
+      },
+      {
+        num: 4,
+        file: "question4.html",
+        title: "Theme Switcher",
+        desc: "3 themes: Light, Dark, Blue. All applied via setAttribute() on &lt;body&gt;. Theme stored in data-theme attribute. CSS variables drive all styles.",
+        tags: ["setAttribute()", "data-theme", "CSS Variables"]
+      },
+      {
+        num: 5,
+        file: "question5.html",
+        title: "Image Gallery with Modal",
+        desc: "6-image grid. Click opens a modal with a larger version. Clicking outside closes it. stopPropagation() prevents inner clicks from closing.",
+        tags: ["Modal", "stopPropagation()", "Event Bubbling"]
+      },
+      {
+        num: 6,
+        file: "question6.html",
+        title: "Real-Time Table Filter",
+        desc: "Student table (Name, Branch, CGPA). Live search hides non-matching rows. Case-insensitive. Matching text is highlighted. Shows 'No results found'.",
+        tags: ["input Event", "DOM Filter", "Text Highlight"]
+      },
+      {
+        num: 7,
+        file: "question7.html",
+        title: "Mouse Path & Coordinates",
+        desc: "400×400 tracking box. Live clientX/Y display on mousemove. Double-click drops a red animated dot at cursor position. Clear button removes dots.",
+        tags: ["mousemove", "dblclick", "clientX/Y"]
+      },
+      {
+        num: 8,
+        file: "question8.html",
+        title: "Custom Dropdown (No &lt;select&gt;)",
+        desc: "Button-triggered option list built entirely in JS. Clicking option updates button text. Outside click closes it using the capturing phase.",
+        tags: ["Capturing Phase", "Custom UI", "Event Propagation"]
+      },
+      {
+        num: 9,
+        file: "question9.html",
+        title: "Form Submit Blocker",
+        desc: "Name, Email, Password form. preventDefault() stops submission if invalid. Inline errors appear instantly. Errors auto-clear as user corrects input.",
+        tags: ["preventDefault()", "Inline Validation", "Live Errors"]
+      },
+    ];
+
+    const grid = document.getElementById("cardsGrid");
+    let activeCard = null;
+
+    questions.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.id = `card-${q.num}`;
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-num">${q.num}</div>
+          <span class="card-status status-idle" id="status-${q.num}">Idle</span>
+        </div>
+        <div class="card-title">${q.title}</div>
+        <div class="card-desc">${q.desc}</div>
+        <div class="tags">${q.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-open" style="flex:1" onclick="openPreview(${q.num}, '${q.file}', '${q.title}')">▶ Open Question</button>
+          <a class="btn-open" style="flex:0 0 auto;padding:9px 14px;" href="${q.file}" target="_blank">↗</a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    function openPreview(num, file, title) {
+      // Update active card status
+      if (activeCard !== null) {
+        document.getElementById(`status-${activeCard}`).className = "card-status status-idle";
+        document.getElementById(`status-${activeCard}`).textContent = "Idle";
+      }
+      activeCard = num;
+      const statusEl = document.getElementById(`status-${num}`);
+      statusEl.className = "card-status status-open";
+      statusEl.textContent = "● Open";
+
+      document.getElementById("previewFrame").src    = file;
+      document.getElementById("previewTitle").textContent = `Q${num}: ${title}`;
+      document.getElementById("newTabLink").href     = file;
+
+      const previewSection = document.getElementById("previewSection");
+      previewSection.classList.add("active");
+      previewSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function closePreview() {
+      document.getElementById("previewSection").classList.remove("active");
+      document.getElementById("previewFrame").src = "";
+      if (activeCard !== null) {
+        document.getElementById(`status-${activeCard}`).className = "card-status status-idle";
+        document.getElementById(`status-${activeCard}`).textContent = "Idle";
+        activeCard = null;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q4 – Theme Switcher</title>
+  <style>
+    /* ── Base theme variables ── */
+    body[data-theme="dark"]  { --bg: #0f172a; --surface: #1e293b; --text: #e2e8f0; --accent: #818cf8; --border: #334155; }
+    body[data-theme="light"] { --bg: #f8fafc;  --surface: #ffffff; --text: #1e293b; --accent: #4f46e5; --border: #cbd5e1; }
+    body[data-theme="blue"]  { --bg: #0c1a3a;  --surface: #102a5a; --text: #bfdbfe; --accent: #60a5fa; --border: #1d4ed8; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.4s, color 0.4s, border-color 0.4s; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 16px; }
+    h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 8px; }
+    p  { color: var(--text); opacity: 0.6; margin-bottom: 32px; }
+
+    .theme-buttons { display: flex; gap: 12px; margin-bottom: 40px; }
+    .theme-btn { padding: 10px 24px; border: 2px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .demo-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; width: 100%; max-width: 400px; text-align: center; }
+    .demo-card h2 { font-size: 1.1rem; color: var(--accent); margin-bottom: 10px; }
+    .demo-card p  { font-size: 0.9rem; opacity: 0.7; }
+    .badge { display: inline-block; margin-top: 14px; padding: 5px 14px; background: var(--accent); color: #fff; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+    .attr-display { margin-top: 20px; font-size: 0.8rem; color: var(--text); opacity: 0.5; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>🎨 Theme Switcher</h1>
+  <p>Select a theme using the buttons below</p>
+
+  <div class="theme-buttons">
+    <button class="theme-btn" onclick="setTheme('light')">☀️ Light</button>
+    <button class="theme-btn active" onclick="setTheme('dark')">🌙 Dark</button>
+    <button class="theme-btn" onclick="setTheme('blue')">🌊 Blue</button>
+  </div>
+
+  <div class="demo-card">
+    <h2>Preview Card</h2>
+    <p>This card updates dynamically when you switch themes. All changes use setAttribute().</p>
+    <div class="badge" id="themeBadge">Current: dark</div>
+    <div class="attr-display" id="attrDisplay">body[data-theme="dark"]</div>
+  </div>
+
+  <script>
+    // ── Apply theme by setting attribute on <body> using setAttribute() ──
+    function setTheme(themeName) {
+      // setAttribute() sets/updates the data-theme attribute on <body>
+      document.body.setAttribute("data-theme", themeName);
+
+      // Update badge and attribute display
+      document.getElementById("themeBadge").textContent   = `Current: ${themeName}`;
+      document.getElementById("attrDisplay").textContent  = `body[data-theme="${themeName}"]`;
+
+      // Update active button state
+      document.querySelectorAll(".theme-btn").forEach(btn => {
+        btn.classList.remove("active");
+        if (btn.textContent.toLowerCase().includes(themeName)) {
+          btn.classList.add("active");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+
