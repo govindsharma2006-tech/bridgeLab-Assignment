@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JS Assignment 8 — Classes, Inheritance & Array Methods</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0f1e; --surface: #0f1629; --card: #131d35; --border: #1e2d50;
+      --accent: #3b82f6; --accent2: #60a5fa; --accent3: #bfdbfe;
+      --text: #e2e8f0; --muted: #64748b; --console-bg: #060910;
+      --success: #34d399; --error: #f87171; --warn: #fbbf24;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; padding: 24px 16px 60px; }
+
+    header { text-align: center; margin-bottom: 36px; }
+    header h1 { font-size: clamp(1.4rem,4vw,2.2rem); font-weight: 800; background: linear-gradient(90deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    header p { color: var(--muted); margin-top: 6px; font-size: .95rem; }
+    .badge-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .badge { background: #0d1a3a; color: var(--accent2); border: 1px solid var(--accent); border-radius: 20px; padding: 3px 12px; font-size: .75rem; font-weight: 600; }
+
+    .toolbar { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .btn-primary { background: linear-gradient(135deg,#1d4ed8,#3b82f6); color: #fff; box-shadow: 0 4px 14px rgba(59,130,246,.4); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(59,130,246,.55); }
+    .btn-secondary { background: var(--surface); color: var(--accent2); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--border); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 36px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; transition: border-color .25s, box-shadow .25s; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent3)); border-radius: 14px 14px 0 0; }
+    .card:hover { border-color: var(--accent); box-shadow: 0 4px 22px rgba(59,130,246,.18); }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .card-num { background: linear-gradient(135deg,#1d4ed8,#60a5fa); color: #fff; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+    .card-status { font-size: .72rem; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+    .status-idle    { background: #0d1a3a; color: var(--muted); }
+    .status-running { background: #1a2f24; color: var(--warn); }
+    .status-done    { background: #0d2b20; color: var(--success); }
+    .status-error   { background: #2a1515; color: var(--error); }
+    .card-title { font-size: .95rem; font-weight: 700; color: var(--accent2); margin-bottom: 4px; }
+    .card-desc  { font-size: .8rem; color: var(--muted); line-height: 1.4; margin-bottom: 14px; }
+    .btn-run { width: 100%; padding: 9px; border-radius: 7px; border: 1px solid #1e3a6e; background: linear-gradient(135deg,#0d1f4a,#162d6e); color: var(--accent2); font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .btn-run:hover { background: linear-gradient(135deg,#162d6e,#1d4ed8); border-color: var(--accent); }
+
+    .console-section { max-width: 1200px; margin: 0 auto; }
+    .console-header { display: flex; align-items: center; justify-content: space-between; background: #0c1322; border: 1px solid var(--border); border-bottom: none; border-radius: 12px 12px 0 0; padding: 12px 16px; }
+    .console-title { display: flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 700; color: var(--accent2); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ef4444; } .dot-y { background: #eab308; } .dot-g { background: #22c55e; }
+    .console-output { background: var(--console-bg); border: 1px solid var(--border); border-radius: 0 0 12px 12px; padding: 16px; min-height: 300px; max-height: 540px; overflow-y: auto; font-family: 'Cascadia Code','Consolas','Courier New',monospace; font-size: .82rem; line-height: 1.65; }
+    .log-line { color: var(--accent3); padding: 1px 0; }
+    .log-line.error { color: var(--error); }
+    .log-line.warn  { color: var(--warn); }
+    .log-line.info  { color: #60a5fa; }
+    .log-line.sep   { color: var(--accent); font-weight: 700; }
+    .log-placeholder { color: var(--muted); font-style: italic; }
+    .console-output::-webkit-scrollbar { width: 6px; }
+    .console-output::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    footer { text-align: center; color: var(--muted); font-size: .75rem; margin-top: 48px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔷 JS Assignment 8</h1>
+    <p>Classes · Inheritance · Polymorphism · Array Methods · Error Handling</p>
+    <div class="badge-row">
+      <span class="badge">ES6+</span>
+      <span class="badge">Classes</span>
+      <span class="badge">Inheritance</span>
+      <span class="badge">Private Fields</span>
+      <span class="badge">reduce/filter/map</span>
+      <span class="badge">9 Questions</span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="runAll()">▶ Run All Questions</button>
+    <button class="btn btn-secondary" onclick="clearConsole()">⊘ Clear Console</button>
+  </div>
+
+  <div class="grid" id="cardsGrid"></div>
+
+  <div class="console-section">
+    <div class="console-header">
+      <div class="console-title">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        &nbsp; Virtual Console
+      </div>
+      <span style="color:var(--muted);font-size:.78rem;" id="consoleInfo">Output appears here</span>
+    </div>
+    <div class="console-output" id="consoleOutput">
+      <div class="log-placeholder">▸ Click a question button or "Run All" to see output here...</div>
+    </div>
+  </div>
+
+  <footer><p>Assignment 8 — JavaScript ES6+ | Classes · Inheritance · Array Methods · Error Handling</p></footer>
+
+  <script>
+    const questions = [
+      { num:1, file:"question1.js", title:"Student Result Processing", desc:"Student class with reduce() for average, grade based on average. Tested on 3 students." },
+      { num:2, file:"question2.js", title:"Online Food Ordering",      desc:"calculateBill() uses map() + reduce(). Throws error for invalid menu items. try/catch demo." },
+      { num:3, file:"question3.js", title:"Product Discount System",   desc:"Constructor + prototype applyDiscount(). 3 products with different discounts. Abstraction explained." },
+      { num:4, file:"question4.js", title:"Employee Inheritance",      desc:"Employee + Manager classes. Manager overrides work(). Runtime polymorphism on mixed array." },
+      { num:5, file:"question5.js", title:"Ride-Sharing App",          desc:"User → Driver inheritance. Trip.calculateFare() throws on negative/missing distance. try/catch." },
+      { num:6, file:"question6.js", title:"E-Commerce Inventory",      desc:"filter(), sort(), reduce() for low-stock, price sort, total value, and category grouping." },
+      { num:7, file:"question7.js", title:"Banking Application",       desc:"BankAccount with #balance private field. deposit/withdraw/getBalance. Invalid ops handled." },
+      { num:8, file:"question8.js", title:"Movie Ticket Booking",      desc:"MovieTicket → OnlineTicket. printTicket() on prototype, called from child via chain." },
+      { num:9, file:"question9.js", title:"Fitness App Analytics",     desc:"FitnessAnalytics class: filter active users, reduce average calories, map summaries. Empty error." },
+    ];
+
+    const grid = document.getElementById("cardsGrid");
+    questions.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-num">${q.num}</div>
+          <span class="card-status status-idle" id="status-${q.num}">Idle</span>
+        </div>
+        <div class="card-title">${q.title}</div>
+        <div class="card-desc">${q.desc}</div>
+        <button class="btn-run" onclick="runQuestion(${q.num},'${q.file}')">▶ Run Q${q.num}</button>
+      `;
+      grid.appendChild(card);
+    });
+
+    const consoleOutput = document.getElementById("consoleOutput");
+    const consoleInfo   = document.getElementById("consoleInfo");
+    let logCount = 0;
+
+    function appendLog(text, type = "log") {
+      if (logCount === 0) consoleOutput.innerHTML = "";
+      logCount++;
+      const line = document.createElement("div");
+      line.className = "log-line";
+      if (typeof text === "string" && text.startsWith("===")) line.classList.add("sep");
+      else if (type === "error") { line.classList.add("error"); text = "✗ " + text; }
+      else if (type === "warn")  { line.classList.add("warn");  text = "⚠ " + text; }
+      else if (type === "info")  { line.classList.add("info"); }
+      line.textContent = text;
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      consoleInfo.textContent = `${logCount} line${logCount !== 1 ? "s" : ""} logged`;
+    }
+
+    function setStatus(num, status) {
+      const el = document.getElementById(`status-${num}`);
+      el.className = "card-status";
+      const map    = { idle:"status-idle", running:"status-running", done:"status-done", error:"status-error" };
+      const labels = { idle:"Idle", running:"Running…", done:"✓ Done", error:"✗ Error" };
+      el.classList.add(map[status]);
+      el.textContent = labels[status];
+    }
+
+    function stringify(val) {
+      if (val === null) return "null";
+      if (val === undefined) return "undefined";
+      if (typeof val === "object") { try { return JSON.stringify(val, null, 2); } catch { return String(val); } }
+      return String(val);
+    }
+
+    async function runQuestion(num, file) {
+      setStatus(num, "running");
+      appendLog(`\n--- Running Q${num}: ${questions[num-1].title} ---`, "info");
+      try {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error(`Failed to load ${file}`);
+        const code = await response.text();
+        const patched = `(function(){
+          const _o={log:console.log,warn:console.warn,error:console.error,table:console.table};
+          console.log   = (...a)=>{ _o.log(...a);   appendLog(a.map(stringify).join(' ')); };
+          console.warn  = (...a)=>{ _o.warn(...a);  appendLog(a.map(stringify).join(' '),'warn'); };
+          console.error = (...a)=>{ _o.error(...a); appendLog(a.map(stringify).join(' '),'error'); };
+          console.table = (d)=>{ _o.table(d); if(Array.isArray(d)){d.forEach((item,i)=>appendLog('['+i+'] '+stringify(item)));}else{appendLog(stringify(d));} };
+          try{ ${code} }catch(e){ appendLog(e.message,'error'); }
+          finally{ setTimeout(()=>{ console.log=_o.log;console.warn=_o.warn;console.error=_o.error;console.table=_o.table; },8000); }
+        })();`;
+        const fn = new Function("appendLog","stringify", patched);
+        fn(appendLog, stringify);
+        setTimeout(()=>setStatus(num,"done"), 1000);
+      } catch(err) {
+        appendLog(`Error: ${err.message}`, "error");
+        setStatus(num, "error");
+      }
+    }
+
+    async function runAll() {
+      clearConsole();
+      appendLog("=== Running All 9 Questions ===");
+      for (const q of questions) {
+        await runQuestion(q.num, q.file);
+        await new Promise(r => setTimeout(r, 80));
+      }
+      setTimeout(()=>appendLog("\n=== ✅ All Questions Completed ==="), 2000);
+    }
+
+    function clearConsole() {
+      consoleOutput.innerHTML = '<div class="log-placeholder">▸ Console cleared. Click a question to run it...</div>';
+      logCount = 0;
+      consoleInfo.textContent = "Output appears here";
+      questions.forEach(q => setStatus(q.num, "idle"));
+    }
+  </script>
+</body>
+</html>
