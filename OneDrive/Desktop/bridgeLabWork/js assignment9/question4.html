@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q4 – Special Offer Banner</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#f59e0b;margin-bottom:24px;font-size:1.5rem}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px}
+    .btn{padding:9px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;transition:all .2s}
+    .btn-hide{background:#be123c;color:#fff}.btn-show{background:#15803d;color:#fff}
+    .btn-slide{background:#1d4ed8;color:#fff}.btn-fade{background:#7c3aed;color:#fff}
+    .btn:hover{opacity:.85;transform:translateY(-1px)}
+    .banners{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+    .banner{padding:18px 22px;border-radius:12px;font-weight:600;font-size:1rem;display:flex;justify-content:space-between;align-items:center}
+    .banner-1{background:#7f1d1d;border:1px solid #ef4444}
+    .banner-2{background:#164e63;border:1px solid #22d3ee}
+    .banner-3{background:#14532d;border:1px solid #4ade80}
+    .banner-4{background:#3b0764;border:1px solid #a855f7}
+    .banner-5{background:#1c1917;border:1px solid #f59e0b}
+    .close-btn{background:none;border:none;color:inherit;font-size:1.1rem;cursor:pointer;opacity:.7}
+    .close-btn:hover{opacity:1}
+    .rotation-info{text-align:center;color:#64748b;margin-top:16px;font-size:.8rem}
+  </style>
+</head>
+<body>
+  <h1>🎉 Special Offer Banners</h1>
+  <div class="controls">
+    <button class="btn btn-hide"  id="hideBtn">🙈 Hide All</button>
+    <button class="btn btn-show"  id="showBtn">👁 Show All</button>
+    <button class="btn btn-slide" id="slideBtn">↕ Slide Toggle</button>
+    <button class="btn btn-fade"  id="fadeOutBtn">🌫 Fade Out</button>
+    <button class="btn btn-fade"  id="fadeInBtn">✨ Fade In</button>
+  </div>
+  <div class="banners">
+    <div class="banner banner-1" id="b1">🔥 Flash Sale! 50% off on Electronics today only! <button class="close-btn" data-id="b1">✕</button></div>
+    <div class="banner banner-2" id="b2">🚀 Free Shipping on orders above ₹999! Use code: SHIP999 <button class="close-btn" data-id="b2">✕</button></div>
+    <div class="banner banner-3" id="b3">🌿 Eco Week! Buy 1 Get 1 Free on sustainable products <button class="close-btn" data-id="b3">✕</button></div>
+    <div class="banner banner-4" id="b4">💜 Members get 20% extra cashback this weekend! <button class="close-btn" data-id="b4">✕</button></div>
+    <div class="banner banner-5" id="b5">⭐ New arrivals — Check out the Summer 2026 Collection! <button class="close-btn" data-id="b5">✕</button></div>
+  </div>
+  <div class="rotation-info">Auto-rotating banners every 5 seconds…</div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question4.js"></script>
+</body>
+</html>

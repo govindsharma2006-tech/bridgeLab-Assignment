@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q7 – Search Courses</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#e879f9;margin-bottom:24px;font-size:1.5rem}
+    .search-row{display:flex;gap:10px;max-width:620px;margin:0 auto 10px}
+    #searchInput{flex:1;padding:10px 14px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:1rem;outline:none}
+    #searchInput:focus{border-color:#e879f9}
+    .btn{padding:9px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem}
+    .btn-clear{background:#334155;color:#e2e8f0}.btn-clear:hover{background:#475569}
+    .count-info{text-align:center;color:#a855f7;font-size:.88rem;margin-bottom:16px;min-height:20px}
+    .courses{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+    .course{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:14px 18px;transition:all .2s}
+    .course.hidden{display:none}
+    .course .course-title{font-weight:700;font-size:.98rem;margin-bottom:4px}
+    .course .course-meta{font-size:.78rem;color:#94a3b8}
+    .highlight{background:rgba(232,121,249,.25);color:#e879f9;font-weight:700;border-radius:3px;padding:0 2px}
+    .no-results{text-align:center;color:#64748b;font-style:italic;padding:20px;display:none}
+  </style>
+</head>
+<body>
+  <h1>🔍 Search Courses</h1>
+  <div class="search-row">
+    <input type="text" id="searchInput" placeholder="Search courses by name, language, or category..." />
+    <button class="btn btn-clear" id="clearBtn">✕ Clear</button>
+  </div>
+  <div class="count-info" id="countInfo">Showing all 8 courses</div>
+  <div class="courses" id="courseList">
+    <div class="course"><div class="course-title">JavaScript for Beginners</div><div class="course-meta">📂 Web Dev | ⏱ 12 hrs | ⭐ 4.8</div></div>
+    <div class="course"><div class="course-title">React.js Masterclass</div><div class="course-meta">📂 Frontend | ⏱ 20 hrs | ⭐ 4.9</div></div>
+    <div class="course"><div class="course-title">Python Data Science</div><div class="course-meta">📂 Data | ⏱ 18 hrs | ⭐ 4.7</div></div>
+    <div class="course"><div class="course-title">Node.js Backend Development</div><div class="course-meta">📂 Backend | ⏱ 15 hrs | ⭐ 4.6</div></div>
+    <div class="course"><div class="course-title">Machine Learning with Python</div><div class="course-meta">📂 AI/ML | ⏱ 25 hrs | ⭐ 4.9</div></div>
+    <div class="course"><div class="course-title">CSS & Tailwind Design</div><div class="course-meta">📂 Frontend | ⏱ 10 hrs | ⭐ 4.5</div></div>
+    <div class="course"><div class="course-title">MongoDB & Express APIs</div><div class="course-meta">📂 Backend | ⏱ 14 hrs | ⭐ 4.7</div></div>
+    <div class="course"><div class="course-title">TypeScript for Professionals</div><div class="course-meta">📂 Web Dev | ⏱ 16 hrs | ⭐ 4.8</div></div>
+  </div>
+  <div class="no-results" id="noResults">😕 No courses found matching your search.</div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question7.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q10 – Registration Form Validation</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 16px}
+    .card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:36px;width:100%;max-width:440px}
+    h1{font-size:1.4rem;color:#38bdf8;text-align:center;margin-bottom:28px}
+    .field{margin-bottom:20px}
+    label{display:block;font-size:.85rem;color:#94a3b8;font-weight:600;margin-bottom:6px}
+    input,select{width:100%;padding:11px 14px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:1rem;outline:none;transition:border-color .2s}
+    input:focus{border-color:#38bdf8}
+    .err-msg{font-size:.8rem;color:#f87171;min-height:18px;margin-top:4px}
+    .btn-submit{width:100%;padding:12px;background:#0ea5e9;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px;transition:background .2s}
+    .btn-submit:hover{background:#0284c7}
+    .success-banner{display:none;text-align:center;background:#064e3b;border:1px solid #34d399;border-radius:10px;padding:18px;color:#34d399;font-weight:700;font-size:1rem;margin-top:20px}
+    .registered-emails{margin-top:4px;font-size:.75rem;color:#64748b}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📋 Registration Form</h1>
+    <form id="regForm" novalidate>
+      <div class="field">
+        <label for="regName">Full Name <span style="color:#f87171">*</span></label>
+        <input type="text" id="regName" placeholder="Enter your full name" />
+        <div class="err-msg" id="nameErr"></div>
+      </div>
+      <div class="field">
+        <label for="regEmail">Email Address <span style="color:#f87171">*</span></label>
+        <input type="text" id="regEmail" placeholder="Enter your email" />
+        <div class="err-msg" id="emailErr"></div>
+        <div class="registered-emails">Already registered: alice@example.com, bob@example.com</div>
+      </div>
+      <div class="field">
+        <label for="regPassword">Password <span style="color:#f87171">*</span></label>
+        <input type="password" id="regPassword" placeholder="Minimum 8 characters" />
+        <div class="err-msg" id="passErr"></div>
+      </div>
+      <div class="field">
+        <label for="regRole">Role <span style="color:#f87171">*</span></label>
+        <select id="regRole">
+          <option value="">— Select a role —</option>
+          <option value="student">Student</option>
+          <option value="developer">Developer</option>
+          <option value="designer">Designer</option>
+          <option value="manager">Manager</option>
+          <option value="other">Other</option>
+        </select>
+        <div class="err-msg" id="roleErr"></div>
+      </div>
+      <button type="submit" class="btn-submit">Register Now</button>
+    </form>
+    <div class="success-banner" id="successBanner">✅ Registration Successful! Welcome aboard.</div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question10.js"></script>
+</body>
+</html>

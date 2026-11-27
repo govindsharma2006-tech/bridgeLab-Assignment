@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q2 – Product Highlight</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#38bdf8;margin-bottom:24px;font-size:1.5rem}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;max-width:900px;margin:0 auto}
+    .product{background:#1e293b;border:2px solid #334155;border-radius:12px;padding:18px;cursor:pointer;position:relative;transition:all .3s}
+    .product.highlighted{background:#0c4a6e;border-color:#38bdf8}
+    .product .name{font-weight:700;font-size:1rem;margin-bottom:4px}
+    .product .price{color:#38bdf8;font-weight:700;margin-bottom:4px}
+    .product .details{display:none;font-size:.8rem;color:#94a3b8;margin-top:8px;padding-top:8px;border-top:1px solid #334155}
+    .product .fav{position:absolute;top:10px;right:12px;font-size:1.2rem;cursor:pointer;user-select:none}
+    .product .fav.selected{color:#f43f5e}
+    .product[data-discount="true"] .price::after{content:" (Sale!)";color:#4ade80;font-size:.75rem}
+    .product[data-stock="0"] .name::after{content:" — OUT OF STOCK";color:#f87171;font-size:.7rem}
+    .badge{display:inline-block;background:#0f4c75;color:#38bdf8;border-radius:4px;padding:2px 8px;font-size:.7rem;margin-top:6px}
+  </style>
+</head>
+<body>
+  <h1>🛍️ Product Highlight</h1>
+  <div class="products">
+    <div class="product" data-discount="true" data-stock="10">
+      <span class="fav">🤍</span>
+      <div class="name">Wireless Headphones</div>
+      <div class="price">₹2,499</div>
+      <span class="badge">Electronics</span>
+      <div class="details">Brand: SoundMax | Warranty: 1 yr | Color: Black</div>
+    </div>
+    <div class="product" data-discount="false" data-stock="0">
+      <span class="fav">🤍</span>
+      <div class="name">Running Shoes</div>
+      <div class="price">₹1,899</div>
+      <span class="badge">Footwear</span>
+      <div class="details">Size: 7–11 | Material: Mesh | Weight: 280g</div>
+    </div>
+    <div class="product" data-discount="true" data-stock="5">
+      <span class="fav">🤍</span>
+      <div class="name">Smart Watch</div>
+      <div class="price">₹5,999</div>
+      <span class="badge">Wearable</span>
+      <div class="details">Battery: 7 days | GPS | Water Resistant</div>
+    </div>
+    <div class="product" data-discount="false" data-stock="20">
+      <span class="fav">🤍</span>
+      <div class="name">Leather Wallet</div>
+      <div class="price">₹799</div>
+      <span class="badge">Accessories</span>
+      <div class="details">Genuine leather | 8 card slots | RFID block</div>
+    </div>
+    <div class="product" data-discount="true" data-stock="3">
+      <span class="fav">🤍</span>
+      <div class="name">Mechanical Keyboard</div>
+      <div class="price">₹3,499</div>
+      <span class="badge">Electronics</span>
+      <div class="details">Cherry MX Red | Backlit | TKL layout</div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question2.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q8 – Dynamic Blog Posts</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#fbbf24;margin-bottom:24px;font-size:1.5rem}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px}
+    .btn{padding:9px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;transition:all .2s}
+    .btn-append{background:#065f46;color:#fff}.btn-append:hover{background:#047857}
+    .btn-prepend{background:#1e3a8a;color:#fff}.btn-prepend:hover{background:#1d4ed8}
+    .btn-remove{background:#9f1239;color:#fff}.btn-remove:hover{background:#be123c}
+    .btn-tag{background:#4c1d95;color:#fff}.btn-tag:hover{background:#6d28d9}
+    .btn-keyword{background:#78350f;color:#fff}.btn-keyword:hover{background:#92400e}
+    .keyword-row{display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:16px}
+    #keywordInput{padding:8px 12px;background:#1e293b;border:1px solid #334155;border-radius:7px;color:#e2e8f0;font-size:.88rem;outline:none;width:200px}
+    #keywordInput:focus{border-color:#fbbf24}
+    .posts{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+    .post{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px 18px;transition:all .3s}
+    .post.featured{border-color:#fbbf24;background:#1c1a0f}
+    .post.highlighted{background:#1c180a;border-color:#fbbf24}
+    .post-title{font-weight:700;font-size:1rem;margin-bottom:4px}
+    .post-excerpt{font-size:.82rem;color:#94a3b8;line-height:1.5}
+    .post-tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+    .tag{background:#1e293b;border:1px solid #475569;border-radius:4px;padding:2px 8px;font-size:.72rem;color:#94a3b8}
+    .post-date{font-size:.72rem;color:#64748b;margin-top:6px}
+  </style>
+</head>
+<body>
+  <h1>📝 Dynamic Blog Posts</h1>
+  <div class="controls">
+    <button class="btn btn-append"  id="appendBtn">➕ Add New Post</button>
+    <button class="btn btn-prepend" id="prependBtn">⭐ Prepend Featured</button>
+    <button class="btn btn-remove"  id="removeBtn">🗑 Remove Last Post</button>
+    <button class="btn btn-tag"     id="addTagBtn">🏷 Add Tags</button>
+  </div>
+  <div class="keyword-row">
+    <input type="text" id="keywordInput" placeholder="Keyword to highlight..." />
+    <button class="btn btn-keyword" id="highlightBtn">🔍 Highlight</button>
+  </div>
+  <div class="posts" id="postList">
+    <div class="post">
+      <div class="post-title">Getting Started with JavaScript</div>
+      <div class="post-excerpt">Learn the fundamentals of JavaScript, the most popular programming language for web development.</div>
+      <div class="post-tags"><span class="tag">JavaScript</span><span class="tag">Beginner</span></div>
+      <div class="post-date">Nov 20, 2026</div>
+    </div>
+    <div class="post">
+      <div class="post-title">Understanding jQuery Events</div>
+      <div class="post-excerpt">A deep dive into jQuery event handling, delegation, and the event loop in browsers.</div>
+      <div class="post-tags"><span class="tag">jQuery</span><span class="tag">Events</span></div>
+      <div class="post-date">Nov 22, 2026</div>
+    </div>
+    <div class="post">
+      <div class="post-title">CSS Grid vs Flexbox</div>
+      <div class="post-excerpt">Compare CSS Grid and Flexbox layout systems and learn when to use each for modern web design.</div>
+      <div class="post-tags"><span class="tag">CSS</span><span class="tag">Layout</span></div>
+      <div class="post-date">Nov 24, 2026</div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question8.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q6 – Event Subscription Panel</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#fb923c;margin-bottom:24px;font-size:1.5rem}
+    .panel{max-width:650px;margin:0 auto}
+    .add-row{display:flex;gap:10px;margin-bottom:20px}
+    #newTopicInput{flex:1;padding:10px 14px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:.95rem;outline:none}
+    #newTopicInput:focus{border-color:#fb923c}
+    .btn{padding:9px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;transition:all .2s}
+    .btn-orange{background:#c2410c;color:#fff}.btn-orange:hover{background:#ea580c}
+    .subscription-list{display:flex;flex-direction:column;gap:10px}
+    .sub-item{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .sub-item.active{border-color:#fb923c}
+    .sub-name{font-weight:600;flex:1}
+    .sub-status{font-size:.78rem;padding:3px 8px;border-radius:12px;font-weight:600;background:#0f172a;color:#64748b}
+    .sub-status.on{background:#431407;color:#fb923c}
+    .sub-actions{display:flex;gap:6px}
+    .btn-sm{padding:5px 12px;font-size:.78rem}
+    .btn-sub{background:#0f766e;color:#fff}.btn-sub:hover{background:#0d9488}
+    .btn-unsub{background:#991b1b;color:#fff}.btn-unsub:hover{background:#b91c1c}
+    .btn-remove{background:#334155;color:#e2e8f0}.btn-remove:hover{background:#475569}
+    .success-msg{display:none;background:#14532d;border:1px solid #4ade80;border-radius:8px;padding:10px 16px;color:#4ade80;font-weight:600;font-size:.88rem;margin-top:16px;text-align:center}
+  </style>
+</head>
+<body>
+  <h1>🔔 Event Subscription Panel</h1>
+  <div class="panel">
+    <div class="add-row">
+      <input type="text" id="newTopicInput" placeholder="New subscription topic..." />
+      <button class="btn btn-orange" id="addTopicBtn">+ Add Topic</button>
+    </div>
+    <div class="subscription-list" id="subList">
+      <div class="sub-item" data-topic="Tech News">
+        <span class="sub-name">📰 Tech News</span>
+        <span class="sub-status">Off</span>
+        <div class="sub-actions">
+          <button class="btn btn-sm btn-sub">Subscribe</button>
+          <button class="btn btn-sm btn-unsub">Unsubscribe</button>
+          <button class="btn btn-sm btn-remove">✕</button>
+        </div>
+      </div>
+      <div class="sub-item" data-topic="Product Updates">
+        <span class="sub-name">🚀 Product Updates</span>
+        <span class="sub-status">Off</span>
+        <div class="sub-actions">
+          <button class="btn btn-sm btn-sub">Subscribe</button>
+          <button class="btn btn-sm btn-unsub">Unsubscribe</button>
+          <button class="btn btn-sm btn-remove">✕</button>
+        </div>
+      </div>
+      <div class="sub-item" data-topic="Offers & Deals">
+        <span class="sub-name">🎁 Offers &amp; Deals</span>
+        <span class="sub-status">Off</span>
+        <div class="sub-actions">
+          <button class="btn btn-sm btn-sub">Subscribe</button>
+          <button class="btn btn-sm btn-unsub">Unsubscribe</button>
+          <button class="btn btn-sm btn-remove">✕</button>
+        </div>
+      </div>
+      <div class="sub-item" data-topic="Weekly Digest">
+        <span class="sub-name">📬 Weekly Digest</span>
+        <span class="sub-status">Off</span>
+        <div class="sub-actions">
+          <button class="btn btn-sm btn-sub">Subscribe</button>
+          <button class="btn btn-sm btn-unsub">Unsubscribe</button>
+          <button class="btn btn-sm btn-remove">✕</button>
+        </div>
+      </div>
+      <div class="sub-item" data-topic="Breaking Alerts">
+        <span class="sub-name">🔴 Breaking Alerts</span>
+        <span class="sub-status">Off</span>
+        <div class="sub-actions">
+          <button class="btn btn-sm btn-sub">Subscribe</button>
+          <button class="btn btn-sm btn-unsub">Unsubscribe</button>
+          <button class="btn btn-sm btn-remove">✕</button>
+        </div>
+      </div>
+    </div>
+    <div class="success-msg" id="successMsg"></div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question6.js"></script>
+</body>
+</html>

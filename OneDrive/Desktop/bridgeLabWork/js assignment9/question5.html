@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q5 – Team Members Directory</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#34d399;margin-bottom:24px;font-size:1.5rem}
+    .dept{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:18px;max-width:750px;margin:0 auto 20px;cursor:pointer}
+    .dept-title{font-weight:800;color:#34d399;font-size:1rem;margin-bottom:12px;user-select:none}
+    .dept-title span{font-size:.8rem;color:#64748b;margin-left:8px}
+    .team-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .member{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:10px 14px;transition:all .2s;position:relative}
+    .member.manager{border-color:#34d399;font-weight:700}
+    .member.highlighted{background:#064e3b;border-color:#34d399}
+    .member.sibling-highlight{background:#1e3a2f;border-color:#6ee7b7}
+    .contact-info{display:none;font-size:.78rem;color:#6ee7b7;margin-top:4px}
+    .member-name{cursor:pointer}
+    .controls{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+    .btn{padding:8px 16px;border:none;border-radius:7px;font-weight:700;cursor:pointer;font-size:.82rem;transition:all .2s}
+    .btn-teal{background:#0f766e;color:#fff}.btn-teal:hover{background:#0d9488}
+    .btn-slate{background:#334155;color:#e2e8f0}.btn-slate:hover{background:#475569}
+  </style>
+</head>
+<body>
+  <h1>👥 Team Members Directory</h1>
+  <div class="controls">
+    <button class="btn btn-teal"  id="randomBtn">🎲 Highlight Random Employee</button>
+    <button class="btn btn-slate" id="collapseBtn">⬆ Collapse / Expand All</button>
+  </div>
+
+  <div class="dept" id="dept-engineering">
+    <div class="dept-title">🛠 Engineering <span>(click to highlight all)</span></div>
+    <ul class="team-list">
+      <li class="member manager" data-manager="true">
+        <div class="member-name">Alice Johnson — Engineering Manager</div>
+        <div class="contact-info">📧 alice@company.com | 📞 +91-9000000001</div>
+      </li>
+      <li class="member"><div class="member-name">Bob Smith — Senior Dev</div><div class="contact-info">📧 bob@company.com | 📞 +91-9000000002</div></li>
+      <li class="member"><div class="member-name">Carol White — Backend Dev</div><div class="contact-info">📧 carol@company.com | 📞 +91-9000000003</div></li>
+      <li class="member"><div class="member-name">Dan Lee — Frontend Dev</div><div class="contact-info">📧 dan@company.com | 📞 +91-9000000004</div></li>
+    </ul>
+  </div>
+
+  <div class="dept" id="dept-design">
+    <div class="dept-title">🎨 Design <span>(click to highlight all)</span></div>
+    <ul class="team-list">
+      <li class="member manager" data-manager="true">
+        <div class="member-name">Eve Davis — Design Manager</div>
+        <div class="contact-info">📧 eve@company.com | 📞 +91-9000000005</div>
+      </li>
+      <li class="member"><div class="member-name">Frank Hall — UX Designer</div><div class="contact-info">📧 frank@company.com | 📞 +91-9000000006</div></li>
+      <li class="member"><div class="member-name">Grace Kim — UI Designer</div><div class="contact-info">📧 grace@company.com | 📞 +91-9000000007</div></li>
+    </ul>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="question5.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JS Assignment 9 — jQuery</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0d1a; --surface: #0f1326; --card: #131929;
+      --border: #1e2a45; --accent: #0ea5e9; --accent2: #38bdf8;
+      --accent3: #bae6fd; --text: #e2e8f0; --muted: #64748b;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; padding: 24px 16px 60px; }
+
+    header { text-align: center; margin-bottom: 36px; }
+    header h1 { font-size: clamp(1.4rem,4vw,2.2rem); font-weight: 800; background: linear-gradient(90deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    header p { color: var(--muted); margin-top: 6px; font-size: .95rem; }
+    .badge-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .badge { background: #0c1a30; color: var(--accent2); border: 1px solid var(--accent); border-radius: 20px; padding: 3px 12px; font-size: .75rem; font-weight: 600; }
+
+    .info-panel { max-width: 1200px; margin: 0 auto 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 10px; font-size: .85rem; color: var(--muted); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 36px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; transition: border-color .25s, box-shadow .25s; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent3)); border-radius: 14px 14px 0 0; }
+    .card:hover { border-color: var(--accent); box-shadow: 0 4px 22px rgba(14,165,233,.18); }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .card-num { background: linear-gradient(135deg,#0369a1,#38bdf8); color: #fff; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+    .card-status { font-size: .72rem; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+    .status-idle { background: #0c1a30; color: var(--muted); }
+    .status-open { background: #0c2a1a; color: #34d399; }
+    .card-title { font-size: .95rem; font-weight: 700; color: var(--accent2); margin-bottom: 4px; }
+    .card-desc  { font-size: .8rem; color: var(--muted); line-height: 1.4; margin-bottom: 10px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .tag { background: #0c1a30; color: #7dd3fc; border-radius: 4px; padding: 2px 8px; font-size: .7rem; font-weight: 600; }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-open { flex: 1; padding: 9px; border-radius: 8px; border: 1px solid #0c3a5f; background: linear-gradient(135deg,#0c1f3f,#0c3060); color: var(--accent2); font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .2s; text-decoration: none; display: block; text-align: center; }
+    .btn-open:hover { background: linear-gradient(135deg,#0c3060,#0369a1); border-color: var(--accent); }
+
+    /* Preview pane */
+    .preview-section { max-width: 1200px; margin: 0 auto 36px; display: none; }
+    .preview-section.active { display: block; }
+    .preview-header { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-bottom: none; border-radius: 12px 12px 0 0; padding: 12px 16px; }
+    .preview-title { display: flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 700; color: var(--accent2); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r{background:#ef4444} .dot-y{background:#eab308} .dot-g{background:#22c55e}
+    .btn-close-preview { background: #be123c; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: .8rem; font-weight: 700; cursor: pointer; }
+    iframe { width: 100%; height: 620px; border: 1px solid var(--border); border-radius: 0 0 12px 12px; background: #fff; }
+
+    footer { text-align: center; color: var(--muted); font-size: .75rem; margin-top: 48px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚡ JS Assignment 9</h1>
+    <p>jQuery — DOM Manipulation · Events · Animation · AJAX Patterns</p>
+    <div class="badge-row">
+      <span class="badge">jQuery 3.7.1</span>
+      <span class="badge">Event Delegation</span>
+      <span class="badge">Animations</span>
+      <span class="badge">noConflict()</span>
+      <span class="badge">Dynamic DOM</span>
+      <span class="badge">10 Questions</span>
+    </div>
+  </header>
+
+  <div class="info-panel">
+    💡 Click <strong style="color:var(--accent2)">Open Question</strong> to preview inline, or <strong style="color:var(--accent2)">↗</strong> to open in a new tab (recommended for jQuery animations).
+  </div>
+
+  <div class="grid" id="cardsGrid"></div>
+
+  <div class="preview-section" id="previewSection">
+    <div class="preview-header">
+      <div class="preview-title">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        &nbsp;<span id="previewTitle">Preview</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a id="newTabLink" href="#" target="_blank" style="background:#0c3060;color:var(--accent2);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:.8rem;font-weight:700;text-decoration:none;">↗ New Tab</a>
+        <button class="btn-close-preview" onclick="closePreview()">✕ Close</button>
+      </div>
+    </div>
+    <iframe id="previewFrame" src="" title="Question Preview"></iframe>
+  </div>
+
+  <footer><p>Assignment 9 — jQuery | DOM Events · Animations · Dynamic Manipulation · noConflict()</p></footer>
+
+  <script>
+    const questions = [
+      { num:1,  file:"question1.html",  title:"Welcome Page Greeting",      tags:["Time-based","slideToggle","fadeIn"],       desc:"Time-based greeting on load. Change Greeting cycles quotes. Toggle welcome message. Alert on greeting click." },
+      { num:2,  file:"question2.html",  title:"Product Highlight",          tags:["hover","toggleClass","data-attr"],         desc:"Click highlights product. Hover shows details. Favourite icon toggles. Discount styling. Out-of-stock alert." },
+      { num:3,  file:"question3.html",  title:"Interactive FAQ",            tags:["slideToggle","focus","dblclick"],           desc:"Click toggles answer. Hover changes color. Double-click collapses all. Focus/blur highlights parent item." },
+      { num:4,  file:"question4.html",  title:"Special Offer Banner",       tags:["fadeIn","fadeOut","slideToggle","auto-rotate"], desc:"Hide/Show/Slide/Fade controls. Close individual banners. Auto-rotates every 5 seconds with fadeIn/fadeOut." },
+      { num:5,  file:"question5.html",  title:"Team Members Directory",     tags:[".next()",".children()",".find()",".parent()"], desc:"Manager click highlights reports. Hover shows contact via .next(). Dept click highlights via .children()." },
+      { num:6,  file:"question6.html",  title:"Event Subscription Panel",   tags:[".on()",".off()","dynamic DOM"],            desc:"Subscribe/Unsubscribe with status. Add new topics dynamically with .on(). Remove with .off(). Success DOM message." },
+      { num:7,  file:"question7.html",  title:"Search Courses",             tags:[".keyup()","highlight","filter"],           desc:"Real-time .keyup() filter. Highlights matched text. Hides non-matches. Live count. Clear resets all." },
+      { num:8,  file:"question8.html",  title:"Dynamic Blog Posts",         tags:[".append()",".prepend()",".before()",".after()"], desc:"Append/Prepend posts. Remove last. Add tags via .before()/.after(). Keyword highlight." },
+      { num:9,  file:"question9.html",  title:"Multi-jQuery Widgets",       tags:["noConflict()","carousel","modal","tooltip"], desc:"jQuery 3.6.4 + 3.7.1 via noConflict(). v1: carousel & widget highlighter. v2: modal & hover tooltips." },
+      { num:10, file:"question10.html", title:"Registration Form Validation",tags:["validate",".css()","live errors"],        desc:"Name, email (unique), password, role validation. .css() highlights invalid fields. Success banner on submit." },
+    ];
+
+    const grid = document.getElementById("cardsGrid");
+    let activeCard = null;
+
+    questions.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-num">${q.num}</div>
+          <span class="card-status status-idle" id="status-${q.num}">Idle</span>
+        </div>
+        <div class="card-title">${q.title}</div>
+        <div class="card-desc">${q.desc}</div>
+        <div class="tags">${q.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+        <div class="btn-row">
+          <button class="btn-open" onclick="openPreview(${q.num},'${q.file}','${q.title}')">▶ Open Question</button>
+          <a class="btn-open" style="flex:0 0 auto;padding:9px 14px;" href="${q.file}" target="_blank">↗</a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    function openPreview(num, file, title) {
+      if (activeCard !== null) {
+        document.getElementById(`status-${activeCard}`).className = "card-status status-idle";
+        document.getElementById(`status-${activeCard}`).textContent = "Idle";
+      }
+      activeCard = num;
+      const s = document.getElementById(`status-${num}`);
+      s.className = "card-status status-open"; s.textContent = "● Open";
+      document.getElementById("previewFrame").src    = file;
+      document.getElementById("previewTitle").textContent = `Q${num}: ${title}`;
+      document.getElementById("newTabLink").href     = file;
+      const ps = document.getElementById("previewSection");
+      ps.classList.add("active");
+      ps.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+
+    function closePreview() {
+      document.getElementById("previewSection").classList.remove("active");
+      document.getElementById("previewFrame").src = "";
+      if (activeCard !== null) {
+        document.getElementById(`status-${activeCard}`).className = "card-status status-idle";
+        document.getElementById(`status-${activeCard}`).textContent = "Idle";
+        activeCard = null;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q9 – Multi-jQuery Widgets</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 16px;min-height:100vh}
+    h1{text-align:center;color:#38bdf8;margin-bottom:8px;font-size:1.5rem}
+    .version-info{text-align:center;color:#64748b;font-size:.82rem;margin-bottom:24px}
+    .dashboard{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:600px){.dashboard{grid-template-columns:1fr}}
+    .widget{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:20px}
+    .widget.active-widget{border-color:#38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.2)}
+    .widget h2{font-size:.95rem;color:#38bdf8;margin-bottom:14px}
+
+    /* Carousel */
+    .carousel{overflow:hidden;border-radius:8px;position:relative;height:80px}
+    .slide{height:80px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;border-radius:8px;position:absolute;width:100%;top:0;display:none}
+    .slide:nth-child(1){background:#1e3a5f;color:#60a5fa}
+    .slide:nth-child(2){background:#1a3a2a;color:#34d399}
+    .slide:nth-child(3){background:#3b1f5e;color:#a78bfa}
+    .carousel-btn{margin-top:10px;padding:7px 16px;border:none;border-radius:7px;background:#0ea5e9;color:#fff;font-weight:700;cursor:pointer;font-size:.82rem}
+
+    /* Modal */
+    .modal-trigger{padding:9px 18px;border:none;border-radius:8px;background:#7c3aed;color:#fff;font-weight:700;cursor:pointer;font-size:.88rem;margin-bottom:12px}
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+    .modal-backdrop.open{display:flex}
+    .modal-box{background:#1e293b;border:1px solid #7c3aed;border-radius:14px;padding:28px;max-width:380px;width:90%;text-align:center}
+    .modal-close{margin-top:14px;padding:8px 20px;border:none;border-radius:8px;background:#334155;color:#e2e8f0;cursor:pointer;font-weight:700}
+
+    /* Tooltips */
+    .tooltip-items{display:flex;flex-direction:column;gap:8px}
+    .tooltip-btn{padding:9px 14px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;cursor:pointer;font-size:.88rem;position:relative;text-align:left}
+    .tooltip-box{display:none;position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);background:#0ea5e9;color:#fff;border-radius:6px;padding:5px 10px;font-size:.75rem;white-space:nowrap;z-index:10}
+
+    /* Active widget selector */
+    .widget-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .wbtn{padding:7px 14px;border:none;border-radius:7px;background:#334155;color:#e2e8f0;cursor:pointer;font-size:.8rem;font-weight:700}
+    .wbtn:hover{background:#475569}
+
+    .nc-label{font-size:.72rem;color:#64748b;text-align:center;margin-top:12px}
+  </style>
+</head>
+<body>
+  <h1>🧩 Multi-jQuery Widgets</h1>
+  <div class="version-info">jQuery v1 (3.6.4) + jQuery v2 (3.7.1) running simultaneously via noConflict()</div>
+
+  <div class="dashboard">
+    <!-- Widget 1: Carousel (jQuery v1) -->
+    <div class="widget" id="widget-carousel">
+      <h2>🎠 Carousel Slider <small style="color:#64748b">(jQuery v1)</small></h2>
+      <div class="carousel" id="carousel">
+        <div class="slide">🚀 Launch your product today!</div>
+        <div class="slide">🌟 Discover new features weekly</div>
+        <div class="slide">💡 Learn. Build. Ship. Repeat.</div>
+      </div>
+      <button class="carousel-btn" id="nextSlideBtn">▶ Next Slide</button>
+    </div>
+
+    <!-- Widget 2: Modal Popup (jQuery v2) -->
+    <div class="widget" id="widget-modal">
+      <h2>🔔 Modal Notifications <small style="color:#64748b">(jQuery v2)</small></h2>
+      <button class="modal-trigger" id="openModalBtn">Open Notification</button>
+      <div id="notifList" style="font-size:.82rem;color:#94a3b8">No notifications shown yet.</div>
+    </div>
+
+    <!-- Widget 3: Active Widget Highlighter (jQuery v1) -->
+    <div class="widget" id="widget-active">
+      <h2>🎯 Active Widget Highlighter <small style="color:#64748b">(jQuery v1)</small></h2>
+      <div class="widget-btns">
+        <button class="wbtn" data-target="widget-carousel">Carousel</button>
+        <button class="wbtn" data-target="widget-modal">Modal</button>
+        <button class="wbtn" data-target="widget-active">This Widget</button>
+        <button class="wbtn" data-target="widget-tooltip">Tooltips</button>
+      </div>
+    </div>
+
+    <!-- Widget 4: Tooltips (jQuery v2) -->
+    <div class="widget" id="widget-tooltip">
+      <h2>💬 Hover Tooltips <small style="color:#64748b">(jQuery v2)</small></h2>
+      <div class="tooltip-items">
+        <div class="tooltip-btn">📊 Dashboard Overview <div class="tooltip-box">View your analytics summary</div></div>
+        <div class="tooltip-btn">👤 User Profile <div class="tooltip-box">Edit your personal details</div></div>
+        <div class="tooltip-btn">⚙️ Settings <div class="tooltip-box">Configure preferences</div></div>
+        <div class="tooltip-btn">📁 Projects <div class="tooltip-box">Manage all your projects</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nc-label">noConflict() prevents $ naming conflicts between both jQuery instances</div>
+
+  <!-- Modal HTML -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-box">
+      <h3 style="color:#a78bfa;margin-bottom:10px">🔔 Notification</h3>
+      <p style="color:#94a3b8;font-size:.9rem">You have 3 unread messages and a pending task due today.</p>
+      <button class="modal-close" id="closeModalBtn">Close</button>
+    </div>
+  </div>
+
+  <!-- Load jQuery v1 (3.6.4) first, alias as $jq1 -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>var $jq1 = jQuery.noConflict(true);</script>
+
+  <!-- Load jQuery v2 (3.7.1) — becomes the default $ -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <script src="question9.js"></script>
+</body>
+</html>
