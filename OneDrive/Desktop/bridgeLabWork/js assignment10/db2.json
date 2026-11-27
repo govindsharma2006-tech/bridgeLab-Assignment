@@ -1,0 +1,11 @@
+{
+  "employees": [
+    { "id": 1, "name": "Alice Johnson",  "department": "Engineering", "role": "Senior Developer",  "status": "active"   },
+    { "id": 2, "name": "Bob Smith",      "department": "Design",      "role": "UI/UX Designer",    "status": "inactive" },
+    { "id": 3, "name": "Carol White",    "department": "Marketing",   "role": "Marketing Lead",    "status": "active"   },
+    { "id": 4, "name": "Dan Lee",        "department": "Engineering", "role": "Backend Developer", "status": "active"   },
+    { "id": 5, "name": "Eve Davis",      "department": "HR",          "role": "HR Manager",        "status": "inactive" },
+    { "id": 6, "name": "Frank Hall",     "department": "Sales",       "role": "Sales Executive",   "status": "active"   },
+    { "id": 7, "name": "Grace Kim",      "department": "Engineering", "role": "QA Engineer",       "status": "inactive" }
+  ]
+}

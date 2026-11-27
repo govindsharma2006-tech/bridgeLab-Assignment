@@ -1,0 +1,9 @@
+{
+  "users": [
+    { "id": 1, "name": "Alice Johnson", "email": "alice@example.com",  "phone": "9000000001", "role": "student"   },
+    { "id": 2, "name": "Bob Smith",     "email": "bob@example.com",    "phone": "9000000002", "role": "developer" },
+    { "id": 3, "name": "Carol White",   "email": "carol@example.com",  "phone": "9000000003", "role": "designer"  },
+    { "id": 4, "name": "Dan Lee",       "email": "dan@example.com",    "phone": "9000000004", "role": "student"   },
+    { "id": 5, "name": "Eve Davis",     "email": "eve@example.com",    "phone": "9000000005", "role": "manager"   }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "users": [
+    { "id": 1, "name": "Alice Johnson",  "email": "alice@example.com",  "role": "Admin"    },
+    { "id": 2, "name": "Bob Smith",      "email": "bob@example.com",    "role": "Editor"   },
+    { "id": 3, "name": "Carol White",    "email": "carol@example.com",  "role": "Viewer"   },
+    { "id": 4, "name": "Dan Lee",        "email": "dan@example.com",    "role": "Editor"   },
+    { "id": 5, "name": "Eve Davis",      "email": "eve@example.com",    "role": "Admin"    }
+  ],
+  "orders": [
+    { "id": 1, "product": "Laptop",      "amount": 75000, "status": "delivered", "userId": 1 },
+    { "id": 2, "product": "Phone",       "amount": 25000, "status": "pending",   "userId": 2 },
+    { "id": 3, "product": "Headphones",  "amount": 3500,  "status": "delivered", "userId": 3 },
+    { "id": 4, "product": "Smart Watch", "amount": 15000, "status": "shipped",   "userId": 1 },
+    { "id": 5, "product": "Keyboard",    "amount": 3499,  "status": "pending",   "userId": 4 },
+    { "id": 6, "product": "Monitor",     "amount": 22000, "status": "delivered", "userId": 5 }
+  ],
+  "products": [
+    { "id": 1, "name": "Laptop",       "price": 75000, "stock": 12, "category": "Electronics" },
+    { "id": 2, "name": "Phone",        "price": 25000, "stock": 30, "category": "Electronics" },
+    { "id": 3, "name": "Headphones",   "price": 3500,  "stock": 50, "category": "Audio"       },
+    { "id": 4, "name": "Smart Watch",  "price": 15000, "stock": 8,  "category": "Wearable"    },
+    { "id": 5, "name": "Keyboard",     "price": 3499,  "stock": 25, "category": "Electronics" },
+    { "id": 6, "name": "Monitor",      "price": 22000, "stock": 6,  "category": "Electronics" }
+  ]
+}

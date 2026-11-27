@@ -1,0 +1,12 @@
+{
+  "products": [
+    { "id": 1, "name": "Wireless Headphones",   "price": 2499, "category": "Electronics", "image": "https://picsum.photos/seed/head/80/80" },
+    { "id": 2, "name": "Mechanical Keyboard",   "price": 3499, "category": "Electronics", "image": "https://picsum.photos/seed/key/80/80" },
+    { "id": 3, "name": "Running Shoes",         "price": 1899, "category": "Footwear",    "image": "https://picsum.photos/seed/shoe/80/80" },
+    { "id": 4, "name": "Leather Wallet",        "price": 799,  "category": "Accessories", "image": "https://picsum.photos/seed/wallet/80/80" },
+    { "id": 5, "name": "Smart Watch",           "price": 5999, "category": "Wearable",    "image": "https://picsum.photos/seed/watch/80/80" },
+    { "id": 6, "name": "Portable Charger",      "price": 1299, "category": "Electronics", "image": "https://picsum.photos/seed/charge/80/80" },
+    { "id": 7, "name": "Noise Cancelling Earbuds","price": 3999,"category": "Electronics", "image": "https://picsum.photos/seed/earbud/80/80" },
+    { "id": 8, "name": "Yoga Mat",              "price": 599,  "category": "Sports",      "image": "https://picsum.photos/seed/yoga/80/80" }
+  ]
+}

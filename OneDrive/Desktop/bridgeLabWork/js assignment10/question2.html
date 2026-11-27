@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q2 – Employee Status Dashboard (XHR + PATCH)</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:36px 16px}
+    h1{text-align:center;color:#34d399;margin-bottom:6px;font-size:1.5rem}
+    .subtitle{text-align:center;color:#64748b;font-size:.85rem;margin-bottom:16px}
+    .server-note{text-align:center;background:#0d2b1e;border:1px solid #34d399;border-radius:8px;padding:10px 16px;color:#6ee7b7;font-size:.82rem;max-width:700px;margin:0 auto 24px}
+    #errorBanner{display:none;max-width:700px;margin:0 auto 16px;background:#450a0a;border:1px solid #f87171;border-radius:8px;padding:10px 16px;color:#f87171;font-weight:600;text-align:center}
+    #loader{text-align:center;color:#34d399;padding:24px}
+    .table-wrap{max-width:700px;margin:0 auto;overflow-x:auto}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:#1e293b;color:#34d399;padding:12px 16px;text-align:left;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #334155}
+    tbody tr{border-bottom:1px solid #1e293b;transition:background .15s}
+    tbody tr:hover{background:#1e293b}
+    tbody td{padding:13px 16px;font-size:.92rem}
+    .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700}
+    .badge-active{background:#064e3b;color:#34d399}
+    .badge-inactive{background:#450a0a;color:#f87171}
+    .toggle-btn{padding:6px 14px;border:none;border-radius:7px;font-weight:700;cursor:pointer;font-size:.8rem;transition:all .2s}
+    .toggle-btn.to-inactive{background:#0f766e;color:#fff}
+    .toggle-btn.to-inactive:hover{background:#0d9488}
+    .toggle-btn.to-active{background:#1d4ed8;color:#fff}
+    .toggle-btn.to-active:hover{background:#2563eb}
+    .toggle-btn:disabled{opacity:.5;cursor:not-allowed}
+  </style>
+</head>
+<body>
+  <h1>👔 Employee Status Dashboard</h1>
+  <p class="subtitle">Q2 — XMLHttpRequest + PATCH | JSON Server on port 3002</p>
+  <div class="server-note">⚙️ Start server: <code>npx json-server db2.json --port 3002</code></div>
+  <div id="errorBanner"></div>
+  <div id="loader">⏳ Loading employees...</div>
+  <div class="table-wrap">
+    <table id="empTable" style="display:none">
+      <thead><tr><th>#</th><th>Name</th><th>Department</th><th>Role</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="empBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const API = "http://localhost:3002/employees";
+
+    // Fetch all employees using XMLHttpRequest
+    function fetchEmployees() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", API);
+      xhr.onload = function () {
+        document.getElementById("loader").style.display = "none";
+        if (xhr.status === 200) {
+          const employees = JSON.parse(xhr.responseText);
+          renderTable(employees);
+        } else {
+          showError("Failed to load employees. Status: " + xhr.status);
+        }
+      };
+      xhr.onerror = function () {
+        document.getElementById("loader").style.display = "none";
+        showError("❌ Cannot connect to server. Is JSON Server running on port 3002?");
+      };
+      xhr.send();
+    }
+
+    function renderTable(employees) {
+      const tbody = document.getElementById("empBody");
+      tbody.innerHTML = "";
+      employees.forEach(emp => {
+        const isActive = emp.status === "active";
+        const row = document.createElement("tr");
+        row.id = "row-" + emp.id;
+        row.innerHTML = `
+          <td>${emp.id}</td>
+          <td>${emp.name}</td>
+          <td>${emp.department}</td>
+          <td>${emp.role}</td>
+          <td><span class="badge ${isActive ? "badge-active" : "badge-inactive"}" id="badge-${emp.id}">${emp.status}</span></td>
+          <td>
+            <button class="toggle-btn ${isActive ? "to-inactive" : "to-active"}"
+              id="btn-${emp.id}"
+              onclick="toggleStatus(${emp.id}, '${emp.status}')">
+              ${isActive ? "Set Inactive" : "Set Active"}
+            </button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+      document.getElementById("empTable").style.display = "table";
+    }
+
+    // PATCH employee status using XMLHttpRequest
+    function toggleStatus(id, currentStatus) {
+      const newStatus = currentStatus === "active" ? "inactive" : "active";
+      const btn = document.getElementById("btn-" + id);
+      btn.disabled = true;
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("PATCH", API + "/" + id);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          // Update UI on success
+          updateRow(id, newStatus);
+        } else {
+          // Revert UI on failure
+          btn.disabled = false;
+          showError("❌ Failed to update status for employee #" + id);
+        }
+      };
+      xhr.onerror = function () {
+        btn.disabled = false;
+        showError("❌ Network error while updating employee #" + id);
+      };
+      xhr.send(JSON.stringify({ status: newStatus }));
+    }
+
+    function updateRow(id, newStatus) {
+      const isActive = newStatus === "active";
+      const badge = document.getElementById("badge-" + id);
+      const btn   = document.getElementById("btn-" + id);
+      badge.className = "badge " + (isActive ? "badge-active" : "badge-inactive");
+      badge.textContent = newStatus;
+      btn.className = "toggle-btn " + (isActive ? "to-inactive" : "to-active");
+      btn.textContent = isActive ? "Set Inactive" : "Set Active";
+      btn.setAttribute("onclick", `toggleStatus(${id}, '${newStatus}')`);
+      btn.disabled = false;
+    }
+
+    function showError(msg) {
+      const banner = document.getElementById("errorBanner");
+      banner.textContent = msg;
+      banner.style.display = "block";
+      setTimeout(() => banner.style.display = "none", 4000);
+    }
+
+    fetchEmployees();
+  </script>
+</body>
+</html>

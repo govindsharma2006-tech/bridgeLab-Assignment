@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q1 – Live Search (jQuery AJAX)</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:36px 16px}
+    h1{text-align:center;color:#38bdf8;margin-bottom:6px;font-size:1.5rem}
+    .subtitle{text-align:center;color:#64748b;font-size:.85rem;margin-bottom:28px}
+    .server-note{text-align:center;background:#1e3a5f;border:1px solid #0ea5e9;border-radius:8px;padding:10px 16px;color:#7dd3fc;font-size:.82rem;max-width:600px;margin:0 auto 24px}
+    .search-wrap{max-width:600px;margin:0 auto 24px;position:relative}
+    #searchInput{width:100%;padding:13px 18px 13px 44px;background:#1e293b;border:2px solid #334155;border-radius:12px;color:#e2e8f0;font-size:1rem;outline:none;transition:border-color .2s}
+    #searchInput:focus{border-color:#38bdf8}
+    .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#64748b;font-size:1.1rem}
+    #loader{display:none;text-align:center;color:#38bdf8;margin:12px 0;font-size:.9rem}
+    #results{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+    .product-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:border-color .2s}
+    .product-card:hover{border-color:#38bdf8}
+    .product-card img{width:64px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#334155}
+    .product-info .p-name{font-weight:700;font-size:.98rem;margin-bottom:4px}
+    .product-info .p-cat{font-size:.78rem;color:#94a3b8}
+    .product-info .p-price{font-size:1rem;font-weight:800;color:#38bdf8;margin-top:4px}
+    .no-results{text-align:center;color:#64748b;padding:32px;font-style:italic}
+  </style>
+</head>
+<body>
+  <h1>🔍 Live Product Search</h1>
+  <p class="subtitle">Q1 — jQuery AJAX | JSON Server on port 3001</p>
+  <div class="server-note">⚙️ Start server: <code>npx json-server db1.json --port 3001</code></div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔎</span>
+    <input type="text" id="searchInput" placeholder="Search products by name..." autocomplete="off"/>
+  </div>
+
+  <div id="loader">⏳ Searching...</div>
+  <div id="results">
+    <div class="no-results">Start typing to search products...</div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    const API = "http://localhost:3001/products";
+    let searchTimer = null;
+
+    // Load all products on page load
+    fetchProducts("");
+
+    // On keyup: debounce 300ms then send AJAX GET with ?q= param
+    $("#searchInput").on("keyup", function () {
+      clearTimeout(searchTimer);
+      const query = $(this).val().trim();
+      searchTimer = setTimeout(() => fetchProducts(query), 300);
+    });
+
+    function fetchProducts(query) {
+      // Show loading indicator
+      $("#loader").show();
+      $("#results").empty();
+
+      $.ajax({
+        url: API,
+        method: "GET",
+        // JSON Server full-text search via ?q= query param
+        data: query ? { q: query } : {},
+        success: function (products) {
+          $("#loader").hide();
+          if (!products.length) {
+            $("#results").html('<div class="no-results">😕 No products found.</div>');
+            return;
+          }
+          products.forEach(p => {
+            const card = `
+              <div class="product-card">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://picsum.photos/80/80'" />
+                <div class="product-info">
+                  <div class="p-name">${p.name}</div>
+                  <div class="p-cat">📂 ${p.category}</div>
+                  <div class="p-price">₹${p.price.toLocaleString()}</div>
+                </div>
+              </div>`;
+            $("#results").append(card);
+          });
+        },
+        error: function () {
+          $("#loader").hide();
+          $("#results").html('<div class="no-results">❌ Could not connect to server. Is JSON Server running on port 3001?</div>');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

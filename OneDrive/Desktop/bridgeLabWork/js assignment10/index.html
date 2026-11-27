@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JS Assignment 10 — AJAX & JSON Server</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0d1a;--surface:#0f1326;--card:#131929;--border:#1e2a45;--accent:#0ea5e9;--accent2:#38bdf8;--accent3:#bae6fd;--text:#e2e8f0;--muted:#64748b}
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;padding:24px 16px 60px}
+
+    header{text-align:center;margin-bottom:36px}
+    header h1{font-size:clamp(1.4rem,4vw,2.2rem);font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    header p{color:var(--muted);margin-top:6px;font-size:.95rem}
+    .badge-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .badge{background:#0c1a30;color:var(--accent2);border:1px solid var(--accent);border-radius:20px;padding:3px 12px;font-size:.75rem;font-weight:600}
+
+    .setup-box{max-width:900px;margin:0 auto 32px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+    .setup-box h2{color:var(--accent2);font-size:.95rem;margin-bottom:14px}
+    .ports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+    .port-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.8rem;font-family:monospace}
+    .port-item .port-num{color:var(--accent2);font-weight:700}
+    .bat-note{margin-top:12px;color:var(--muted);font-size:.82rem}
+    .bat-note code{background:var(--card);padding:2px 8px;border-radius:4px;color:#fbbf24}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;max-width:1100px;margin:0 auto 36px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:14px 14px 0 0}
+    .card:hover{border-color:var(--accent);box-shadow:0 4px 22px rgba(14,165,233,.18)}
+    .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+    .card-num{background:linear-gradient(135deg,#0369a1,#38bdf8);color:#fff;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
+    .port-badge{background:#0c1a30;color:var(--accent2);border-radius:6px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:monospace}
+    .card-title{font-size:.95rem;font-weight:700;color:var(--accent2);margin-bottom:4px}
+    .card-desc{font-size:.8rem;color:var(--muted);line-height:1.4;margin-bottom:10px}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .tag{background:#0c1a30;color:#7dd3fc;border-radius:4px;padding:2px 8px;font-size:.7rem;font-weight:600}
+    .btn-row{display:flex;gap:8px}
+    .btn-open{flex:1;padding:9px;border-radius:8px;border:1px solid #0c3a5f;background:linear-gradient(135deg,#0c1f3f,#0c3060);color:var(--accent2);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:block;text-align:center}
+    .btn-open:hover{background:linear-gradient(135deg,#0c3060,#0369a1);border-color:var(--accent)}
+
+    .preview-section{max-width:1100px;margin:0 auto 36px;display:none}
+    .preview-section.active{display:block}
+    .preview-header{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-bottom:none;border-radius:12px 12px 0 0;padding:12px 16px}
+    .preview-title{display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;color:var(--accent2)}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot-r{background:#ef4444}.dot-y{background:#eab308}.dot-g{background:#22c55e}
+    .btn-close-preview{background:#be123c;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:.8rem;font-weight:700;cursor:pointer}
+    iframe{width:100%;height:640px;border:1px solid var(--border);border-radius:0 0 12px 12px;background:#fff}
+
+    footer{text-align:center;color:var(--muted);font-size:.75rem;margin-top:48px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌐 JS Assignment 10</h1>
+    <p>AJAX · Fetch · XMLHttpRequest · Axios · JSON Server</p>
+    <div class="badge-row">
+      <span class="badge">jQuery AJAX</span>
+      <span class="badge">Fetch API</span>
+      <span class="badge">XMLHttpRequest</span>
+      <span class="badge">Axios</span>
+      <span class="badge">Promise.all</span>
+      <span class="badge">JSON Server</span>
+    </div>
+  </header>
+
+  <div class="setup-box">
+    <h2>⚙️ Start JSON Servers (run in separate terminals or use <code style="color:#fbbf24">start-servers.bat</code>)</h2>
+    <div class="ports-grid" id="portsGrid"></div>
+    <p class="bat-note">💡 Windows shortcut: double-click <code>start-servers.bat</code> to launch all 6 at once.</p>
+  </div>
+
+  <div class="grid" id="cardsGrid"></div>
+
+  <div class="preview-section" id="previewSection">
+    <div class="preview-header">
+      <div class="preview-title">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        &nbsp;<span id="previewTitle">Preview</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a id="newTabLink" href="#" target="_blank" style="background:#0c3060;color:var(--accent2);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:.8rem;font-weight:700;text-decoration:none">↗ New Tab</a>
+        <button class="btn-close-preview" onclick="closePreview()">✕ Close</button>
+      </div>
+    </div>
+    <iframe id="previewFrame" src="" title="Question Preview"></iframe>
+  </div>
+
+  <footer><p>Assignment 10 — JavaScript AJAX | jQuery · Fetch · XHR · Axios · JSON Server · REST APIs</p></footer>
+
+  <script>
+    const questions = [
+      { num:1, file:"question1.html", port:3001, db:"db1.json", title:"Live Search",           tags:["jQuery AJAX","$.ajax()","?q= param","GET"],        desc:"Live search box sends GET ?q= on each keystroke. Displays product image, name, price. Loading spinner + empty state." },
+      { num:2, file:"question2.html", port:3002, db:"db2.json", title:"Employee Dashboard",     tags:["XMLHttpRequest","PATCH","Toggle","Error Handling"], desc:"XHR fetches all employees. Toggle Active/Inactive sends PATCH. UI reverts on failure. Error banner shown." },
+      { num:3, file:"question3.html", port:3003, db:"db3.json", title:"Task Manager + Filters", tags:["jQuery AJAX","Query Params","PATCH","Checkbox"],    desc:"Dropdown filters by priority/completed with query params. Checkbox toggle sends PATCH. Optimistic UI update." },
+      { num:4, file:"question4.html", port:3004, db:"db4.json", title:"Multi-API Dashboard",    tags:["Fetch","Promise.all","Skeleton UI","Error banner"],  desc:"Fetch /users, /orders, /products simultaneously with Promise.all. Skeleton placeholders. Partial failure warning." },
+      { num:5, file:"question5.html", port:3005, db:"db5.json", title:"Timetable Viewer",       tags:["Fetch API","?day= param","Dynamic Render"],         desc:"Dropdown selects day → Fetch /timetable?day=X → renders subject, faculty, time cards. 'No classes' message." },
+      { num:6, file:"question6.html", port:3006, db:"db6.json", title:"Registration + Duplicate Check", tags:["Axios","GET + POST","Email Check","Form"],  desc:"Axios GET /users?email=x checks duplicates before POST. 'Email already registered' shown. Full form validation." },
+    ];
+
+    const portsGrid = document.getElementById("portsGrid");
+    questions.forEach(q => {
+      portsGrid.innerHTML += `<div class="port-item"><span class="port-num">:${q.port}</span> — npx json-server ${q.db} --port ${q.port}</div>`;
+    });
+
+    const grid = document.getElementById("cardsGrid");
+    let activeCard = null;
+    questions.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-num">${q.num}</div>
+          <span class="port-badge">:${q.port}</span>
+        </div>
+        <div class="card-title">${q.title}</div>
+        <div class="card-desc">${q.desc}</div>
+        <div class="tags">${q.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+        <div class="btn-row">
+          <button class="btn-open" onclick="openPreview(${q.num},'${q.file}','${q.title}')">▶ Open Question</button>
+          <a class="btn-open" style="flex:0 0 auto;padding:9px 14px" href="${q.file}" target="_blank">↗</a>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    function openPreview(num, file, title) {
+      if (activeCard !== null) document.getElementById(`status-${activeCard}`) && null;
+      activeCard = num;
+      document.getElementById("previewFrame").src = file;
+      document.getElementById("previewTitle").textContent = `Q${num}: ${title}`;
+      document.getElementById("newTabLink").href = file;
+      const ps = document.getElementById("previewSection");
+      ps.classList.add("active");
+      ps.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+
+    function closePreview() {
+      document.getElementById("previewSection").classList.remove("active");
+      document.getElementById("previewFrame").src = "";
+      activeCard = null;
+    }
+  </script>
+</body>
+</html>

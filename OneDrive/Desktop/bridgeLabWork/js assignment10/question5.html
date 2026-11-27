@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q5 – College Timetable Viewer (Fetch)</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:36px 16px}
+    h1{text-align:center;color:#f472b6;margin-bottom:6px;font-size:1.5rem}
+    .subtitle{text-align:center;color:#64748b;font-size:.85rem;margin-bottom:16px}
+    .server-note{text-align:center;background:#2d0a2a;border:1px solid #f472b6;border-radius:8px;padding:10px 16px;color:#f9a8d4;font-size:.82rem;max-width:700px;margin:0 auto 24px}
+    .controls{display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+    select{padding:10px 18px;background:#1e293b;border:2px solid #334155;border-radius:9px;color:#e2e8f0;font-size:.95rem;outline:none;cursor:pointer;transition:border-color .2s}
+    select:focus{border-color:#f472b6}
+    .day-label{font-weight:700;color:#f472b6;font-size:1rem}
+    #loader{text-align:center;color:#f472b6;padding:20px;display:none}
+    #timetableWrap{max-width:700px;margin:0 auto}
+    .class-card{background:#1e293b;border:1px solid #334155;border-left:4px solid #f472b6;border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:center;transition:border-color .2s}
+    .class-card:hover{border-color:#f472b6}
+    .time-box{background:#2d0a2a;color:#f9a8d4;border-radius:8px;padding:8px 12px;font-size:.8rem;font-weight:700;text-align:center;min-width:100px;flex-shrink:0}
+    .class-info .subject{font-weight:700;font-size:.98rem;margin-bottom:4px}
+    .class-info .faculty{font-size:.82rem;color:#94a3b8}
+    .no-classes{text-align:center;color:#64748b;padding:40px;font-style:italic;font-size:1.05rem}
+  </style>
+</head>
+<body>
+  <h1>📅 College Timetable Viewer</h1>
+  <p class="subtitle">Q5 — Fetch API + Dynamic Rendering | JSON Server on port 3005</p>
+  <div class="server-note">⚙️ Start server: <code>npx json-server db5.json --port 3005</code></div>
+
+  <div class="controls">
+    <span class="day-label">📆 Select Day:</span>
+    <select id="daySelect">
+      <option value="">— Choose a day —</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+    </select>
+  </div>
+
+  <div id="loader">⏳ Fetching timetable...</div>
+  <div id="timetableWrap">
+    <div class="no-classes">Select a day to see the timetable.</div>
+  </div>
+
+  <script>
+    const API = "http://localhost:3005/timetable";
+
+    document.getElementById("daySelect").addEventListener("change", function () {
+      const day = this.value;
+      if (!day) return;
+      fetchTimetable(day);
+    });
+
+    function fetchTimetable(day) {
+      document.getElementById("loader").style.display = "block";
+      document.getElementById("timetableWrap").innerHTML = "";
+
+      // Fetch with query param ?day=Monday
+      fetch(API + "?day=" + encodeURIComponent(day))
+        .then(res => {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(classes => {
+          document.getElementById("loader").style.display = "none";
+          const wrap = document.getElementById("timetableWrap");
+
+          if (!classes.length) {
+            wrap.innerHTML = '<div class="no-classes">📭 No classes today. Enjoy your free day!</div>';
+            return;
+          }
+
+          wrap.innerHTML = `<div style="color:#f472b6;font-weight:700;margin-bottom:14px;font-size:.9rem">${classes.length} class(es) on ${day}</div>`;
+          classes.forEach(c => {
+            wrap.innerHTML += `
+              <div class="class-card">
+                <div class="time-box">🕐 ${c.time}</div>
+                <div class="class-info">
+                  <div class="subject">📚 ${c.subject}</div>
+                  <div class="faculty">👨‍🏫 ${c.faculty}</div>
+                </div>
+              </div>`;
+          });
+        })
+        .catch(() => {
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("timetableWrap").innerHTML =
+            '<div class="no-classes" style="color:#f87171">❌ Cannot connect to server. Is JSON Server running on port 3005?</div>';
+        });
+    }
+  </script>
+</body>
+</html>

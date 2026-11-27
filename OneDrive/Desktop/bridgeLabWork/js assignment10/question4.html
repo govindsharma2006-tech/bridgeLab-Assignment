@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Q4 – Multi-API Dashboard (Fetch + Promise.all)</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:36px 16px}
+    h1{text-align:center;color:#fbbf24;margin-bottom:6px;font-size:1.5rem}
+    .subtitle{text-align:center;color:#64748b;font-size:.85rem;margin-bottom:16px}
+    .server-note{text-align:center;background:#1c1a0f;border:1px solid #fbbf24;border-radius:8px;padding:10px 16px;color:#fde68a;font-size:.82rem;max-width:800px;margin:0 auto 24px}
+    #warningBanner{display:none;max-width:800px;margin:0 auto 16px;background:#450a0a;border:1px solid #f87171;border-radius:8px;padding:12px 16px;color:#f87171;font-weight:600;text-align:center}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;max-width:800px;margin:0 auto 32px}
+    .stat-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:24px;text-align:center;transition:border-color .2s}
+    .stat-card:hover{border-color:#fbbf24}
+    .stat-icon{font-size:2rem;margin-bottom:10px}
+    .stat-label{font-size:.85rem;color:#94a3b8;margin-bottom:8px}
+    .stat-value{font-size:2.4rem;font-weight:800;color:#fbbf24}
+    /* Skeleton loading */
+    .skeleton{background:linear-gradient(90deg,#1e293b 25%,#2d3f54 50%,#1e293b 75%);background-size:200%;animation:shimmer 1.4s infinite;border-radius:8px}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .skeleton-value{height:48px;width:80px;margin:0 auto}
+    .skeleton-label{height:14px;width:60%;margin:8px auto 0}
+
+    .table-section{max-width:800px;margin:0 auto}
+    .section-title{color:#fbbf24;font-weight:700;font-size:1rem;margin-bottom:12px}
+    table{width:100%;border-collapse:collapse;margin-bottom:28px}
+    thead th{background:#1e293b;color:#fbbf24;padding:11px 14px;text-align:left;font-size:.8rem;text-transform:uppercase;border-bottom:2px solid #334155}
+    tbody tr{border-bottom:1px solid #1e293b}
+    tbody tr:hover{background:#1e293b}
+    tbody td{padding:11px 14px;font-size:.88rem}
+    .status-badge{padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:700}
+    .status-delivered{background:#0d2b1e;color:#34d399}
+    .status-pending{background:#1c1a0f;color:#fbbf24}
+    .status-shipped{background:#0c1a30;color:#38bdf8}
+  </style>
+</head>
+<body>
+  <h1>📊 Multi-API Dashboard</h1>
+  <p class="subtitle">Q4 — Fetch + Promise.all | JSON Server on port 3004</p>
+  <div class="server-note">⚙️ Start server: <code>npx json-server db4.json --port 3004</code></div>
+  <div id="warningBanner">⚠️ Some data could not be loaded. Showing partial results.</div>
+
+  <div class="stats-grid" id="statsGrid">
+    <!-- Skeleton placeholders -->
+    <div class="stat-card"><div class="stat-icon">👤</div><div class="skeleton skeleton-value"></div><div class="skeleton skeleton-label" style="margin-top:10px"></div></div>
+    <div class="stat-card"><div class="stat-icon">🛒</div><div class="skeleton skeleton-value"></div><div class="skeleton skeleton-label" style="margin-top:10px"></div></div>
+    <div class="stat-card"><div class="stat-icon">📦</div><div class="skeleton skeleton-value"></div><div class="skeleton skeleton-label" style="margin-top:10px"></div></div>
+  </div>
+
+  <div class="table-section">
+    <div class="section-title">📋 Recent Orders</div>
+    <table id="ordersTable" style="display:none">
+      <thead><tr><th>#</th><th>Product</th><th>Amount</th><th>Status</th></tr></thead>
+      <tbody id="ordersBody"></tbody>
+    </table>
+
+    <div class="section-title">📦 Product Inventory</div>
+    <table id="productsTable" style="display:none">
+      <thead><tr><th>#</th><th>Product</th><th>Price</th><th>Stock</th><th>Category</th></tr></thead>
+      <tbody id="productsBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const BASE = "http://localhost:3004";
+
+    // Use Promise.all to fetch all 3 endpoints simultaneously
+    Promise.all([
+      fetch(BASE + "/users").then(r => r.ok ? r.json() : Promise.reject("users")),
+      fetch(BASE + "/orders").then(r => r.ok ? r.json() : Promise.reject("orders")),
+      fetch(BASE + "/products").then(r => r.ok ? r.json() : Promise.reject("products")),
+    ])
+    .then(([users, orders, products]) => {
+      renderStats(users.length, orders.length, products.length);
+      renderOrders(orders);
+      renderProducts(products);
+    })
+    .catch(() => {
+      // If ANY API fails: show partial warning
+      document.getElementById("warningBanner").style.display = "block";
+      // Try loading each independently to show what we can
+      loadPartially();
+    });
+
+    function renderStats(userCount, orderCount, productCount) {
+      document.getElementById("statsGrid").innerHTML = `
+        <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-value">${userCount}</div><div class="stat-label">Total Users</div></div>
+        <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-value">${orderCount}</div><div class="stat-label">Total Orders</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-value">${productCount}</div><div class="stat-label">Total Products</div></div>
+      `;
+    }
+
+    function renderOrders(orders) {
+      const tbody = document.getElementById("ordersBody");
+      orders.forEach(o => {
+        tbody.innerHTML += `<tr><td>${o.id}</td><td>${o.product}</td><td>₹${o.amount.toLocaleString()}</td>
+          <td><span class="status-badge status-${o.status}">${o.status}</span></td></tr>`;
+      });
+      document.getElementById("ordersTable").style.display = "table";
+    }
+
+    function renderProducts(products) {
+      const tbody = document.getElementById("productsBody");
+      products.forEach(p => {
+        tbody.innerHTML += `<tr><td>${p.id}</td><td>${p.name}</td><td>₹${p.price.toLocaleString()}</td><td>${p.stock}</td><td>${p.category}</td></tr>`;
+      });
+      document.getElementById("productsTable").style.display = "table";
+    }
+
+    function loadPartially() {
+      // Try each endpoint individually with Promise.allSettled
+      Promise.allSettled([
+        fetch(BASE + "/users").then(r => r.json()),
+        fetch(BASE + "/orders").then(r => r.json()),
+        fetch(BASE + "/products").then(r => r.json()),
+      ]).then(([u, o, p]) => {
+        const uc = u.status === "fulfilled" ? u.value.length : "?";
+        const oc = o.status === "fulfilled" ? o.value.length : "?";
+        const pc = p.status === "fulfilled" ? p.value.length : "?";
+        renderStats(uc, oc, pc);
+        if (o.status === "fulfilled") renderOrders(o.value);
+        if (p.status === "fulfilled") renderProducts(p.value);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "timetable": [
+    { "id": 1,  "day": "Monday",    "subject": "Data Structures",      "faculty": "Prof. Sharma",  "time": "09:00 - 10:00" },
+    { "id": 2,  "day": "Monday",    "subject": "Operating Systems",    "faculty": "Prof. Mehta",   "time": "10:15 - 11:15" },
+    { "id": 3,  "day": "Monday",    "subject": "Database Management",  "faculty": "Prof. Kapoor",  "time": "11:30 - 12:30" },
+    { "id": 4,  "day": "Tuesday",   "subject": "Computer Networks",    "faculty": "Prof. Singh",   "time": "09:00 - 10:00" },
+    { "id": 5,  "day": "Tuesday",   "subject": "Web Development",      "faculty": "Prof. Verma",   "time": "10:15 - 11:15" },
+    { "id": 6,  "day": "Tuesday",   "subject": "Software Engineering", "faculty": "Prof. Reddy",   "time": "11:30 - 12:30" },
+    { "id": 7,  "day": "Wednesday", "subject": "Machine Learning",     "faculty": "Prof. Nair",    "time": "09:00 - 10:00" },
+    { "id": 8,  "day": "Wednesday", "subject": "Data Structures",      "faculty": "Prof. Sharma",  "time": "10:15 - 11:15" },
+    { "id": 9,  "day": "Thursday",  "subject": "Cloud Computing",      "faculty": "Prof. Pillai",  "time": "09:00 - 10:00" },
+    { "id": 10, "day": "Thursday",  "subject": "Computer Networks",    "faculty": "Prof. Singh",   "time": "10:15 - 11:15" },
+    { "id": 11, "day": "Friday",    "subject": "Project Lab",          "faculty": "Prof. Verma",   "time": "09:00 - 11:00" },
+    { "id": 12, "day": "Friday",    "subject": "Seminar",              "faculty": "Prof. Kapoor",  "time": "11:15 - 12:15" },
+    { "id": 13, "day": "Saturday",  "subject": "Extra Class: DSA",     "faculty": "Prof. Sharma",  "time": "10:00 - 11:30" }
+  ]
+}
